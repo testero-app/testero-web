@@ -14,6 +14,17 @@ All code, commit messages, issues, pull requests, and documentation must
 be written in **English**. The user-facing interface may be localized
 separately.
 
+## Project Scope
+
+Testero focuses on administering in-person tests and assessments for small
+educational settings. Before starting work on a new feature or a significant
+change, please **open an issue or contact the organization first** to discuss
+whether it fits the project's scope and direction. This avoids wasted effort
+on contributions that may fall outside what the project aims to do.
+
+For small fixes (typos, bugs, minor improvements), feel free to open a pull
+request directly.
+
 ## How to Contribute
 
 ### Reporting Bugs
@@ -109,6 +120,17 @@ git rebase --signoff HEAD~N
 git push --force-with-lease
 ```
 
+## Authorship and AI Tools
+
+You are welcome to use any AI coding tools you find helpful (Claude Code,
+Copilot, and similar). However, **every contribution must be authored by a
+human**, who takes full responsibility for the submitted code.
+
+Commits must be attributed solely to their human author. Do **not** add
+`Co-authored-by` trailers, "Generated with..." signatures, or any other
+attribution referencing AI tools or assistants. The only trailer required
+is the DCO `Signed-off-by:` line with your name.
+
 ## Coding Standards
 
 ### Commit Messages
@@ -135,6 +157,18 @@ Use the [Conventional Commits](https://www.conventionalcommits.org/) format:
 - Reference related issues with `Closes #N`
 - All commits must be DCO-signed (verified automatically)
 - At least one approval is required before merging
+
+## How Pull Requests Are Reviewed
+
+After you open a pull request:
+
+- A maintainer will review it and may request changes.
+- All status checks (including the DCO check) must pass before merging.
+- At least one approval is required.
+
+Testero is a small project maintained in spare time, so reviews may take a
+few days. Please be patient, and feel free to leave a polite reminder if a
+PR goes unanswered for a while.
 
 ## License
 

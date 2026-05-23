@@ -1,6 +1,6 @@
 # testero-web
 
-Frontend for **Testero** — an open source system for administering tests
+Frontend for **Testero**, an open source system for administering tests
 and assessments, designed for educational settings: private schools,
 training organizations, teachers, and trainers.
 
@@ -9,20 +9,6 @@ with an integrated digital workflow.
 
 This repository contains the **web frontend**. The backend lives in
 [testero-backend](https://github.com/testero-app/testero-backend).
-
-## Status
-
-Active milestone: **M1** — validating the student assessment flow with
-real classes. See the [organization profile](https://github.com/testero-app)
-for the overall project status.
-
-## Features (M1)
-
-- One-question-per-page carousel with a sidebar navigation grid
-- Multiple-choice questions (single and multiple correct answers)
-- Open-ended bonus questions
-- "None of the above" option with required justification
-- Progress tracking and submission flow
 
 ## Stack
 
