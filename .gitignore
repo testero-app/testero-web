@@ -141,6 +141,25 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
 .env.local
 .DS_Store
 CLAUDE.local.md
+
+# keys
+*.pem
+
+# vercel
+.vercel
+
+# pnpm debug
+.pnpm-debug.log*
+
+# next.js auto-generated
+next-env.d.ts
+
+# production build
+/build
+
+# materiale sorgente esami
+Materiale Sorgente/
