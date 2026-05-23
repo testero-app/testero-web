@@ -1,0 +1,80 @@
+// Testero ER Model
+// Importa su https://dbdiagram.io/d
+
+Table subject {
+  id varchar [pk]
+  label varchar [not null]
+}
+
+Table test {
+  id varchar [pk]
+  subject_id varchar [not null, ref: > subject.id]
+  title varchar [not null]
+  date date [not null]
+  timer_minutes int [not null]
+  total_pool int [not null, note: 'totale domande disponibili nel pool']
+  questions_per_test int [not null, note: 'domande estratte per ogni istanza']
+  pts_correct decimal [not null, default: 1]
+  pts_wrong decimal [not null, default: 0]
+}
+
+Table question {
+  id varchar [pk]
+  test_id varchar [not null, ref: > test.id]
+  type question_type [not null, note: 'multiple | open']
+  text text [not null]
+  code text [note: 'snippet di codice opzionale']
+  position int [not null]
+}
+
+Table option {
+  id varchar [pk]
+  question_id varchar [not null, ref: > question.id]
+  text varchar [not null]
+  is_correct boolean [not null, default: false]
+  is_fallback boolean [not null, default: false, note: 'opzione "nessuna delle precedenti"']
+  position int [not null]
+}
+
+Table student {
+  id uuid [pk]
+  name varchar [not null]
+  email varchar
+  created_at timestamp [not null, default: `now()`]
+}
+
+Table submission {
+  id uuid [pk]
+  student_id uuid [not null, ref: > student.id]
+  test_id varchar [not null, ref: > test.id]
+  submitted_at timestamp [not null, default: `now()`]
+}
+
+Table answer {
+  id uuid [pk]
+  submission_id uuid [not null, ref: > submission.id]
+  question_id varchar [not null, ref: > question.id]
+  type answer_type [not null, note: 'multiple | open']
+  text text [note: 'risposta testuale per domande open']
+  motivation text [note: 'motivazione quando scelta "nessuna"']
+}
+
+Table answer_selected_option {
+  id uuid [pk]
+  answer_id uuid [not null, ref: > answer.id]
+  option_id varchar [not null, ref: > option.id]
+
+  indexes {
+    (answer_id, option_id) [unique]
+  }
+}
+
+Enum question_type {
+  multiple
+  open
+}
+
+Enum answer_type {
+  multiple
+  open
+}
