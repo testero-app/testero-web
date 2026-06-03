@@ -14,7 +14,7 @@ This repository contains the **web frontend**. The backend lives in
 
 - **Framework**: Next.js (App Router)
 - **Language**: JavaScript
-- **Hosting**: Vercel
+- **Hosting**: [Vercel](https://vercel.com) (any platform that supports Next.js works)
 
 ## Getting Started
 
@@ -39,6 +39,14 @@ npm run dev
 ```
 
 The app will be available at `http://localhost:3000`.
+
+### Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_API_URL` | Backend API URL (e.g. `http://localhost:8080`) |
+
+See [`.env.example`](./.env.example) for the expected format.
 
 ## Contributing
 
