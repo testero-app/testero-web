@@ -73,6 +73,7 @@ export type TSubmissionResult = {
     id: string;
     student_id: string;
     test_id: string;
+    started_at: string | null;
     submitted_at: string;
     answers: TAnswerResult[];
 };
@@ -87,6 +88,7 @@ type TState = {
     availableTests: TTestListItem[];
     // Active test
     testConfig: TTestConfig | null;
+    startedAt: string | null;
     shuffledQuestions: TQuestion[];
     shuffledOptions: TOption[][];
     currentIndex: number;
@@ -104,6 +106,7 @@ type TAction =
     | { type: 'LOGOUT' }
     | { type: 'SET_AVAILABLE_TESTS'; payload: TTestListItem[] }
     | { type: 'SET_TEST_CONFIG'; payload: TTestConfig }
+    | { type: 'SET_STARTED_AT'; payload: string }
     | { type: 'SET_QUESTIONS'; payload: { questions: TQuestion[]; options: TOption[][] } }
     | { type: 'SET_ANSWER'; payload: { questionId: string; answer: TAnswer } }
     | { type: 'GO_TO_QUESTION'; payload: number }
@@ -119,6 +122,7 @@ const initialState: TState = {
     student: null,
     availableTests: [],
     testConfig: null,
+    startedAt: null,
     shuffledQuestions: [],
     shuffledOptions: [],
     currentIndex: 0,
@@ -140,6 +144,8 @@ function reducer(state: TState, action: TAction): TState {
             return { ...state, availableTests: action.payload };
         case 'SET_TEST_CONFIG':
             return { ...state, testConfig: action.payload };
+        case 'SET_STARTED_AT':
+            return { ...state, startedAt: action.payload };
         case 'SET_QUESTIONS':
             return {
                 ...state,
@@ -170,6 +176,7 @@ function reducer(state: TState, action: TAction): TState {
             return {
                 ...state,
                 testConfig: null,
+                startedAt: null,
                 shuffledQuestions: [],
                 shuffledOptions: [],
                 currentIndex: 0,
@@ -269,6 +276,8 @@ export const TestProvider = ({ children }: TestProviderProps) => {
             // Fire-and-forget: track test start anonymously
             recordTestStart(testId, state.token).catch(() => {});
 
+            dispatch({ type: 'SET_STARTED_AT', payload: new Date().toISOString() });
+
             const config = await fetchTestConfig(testId, state.token);
             dispatch({ type: 'SET_TEST_CONFIG', payload: config });
 
@@ -306,7 +315,8 @@ export const TestProvider = ({ children }: TestProviderProps) => {
             state.testConfig.testId,
             state.shuffledQuestions,
             state.answers,
-            state.token
+            state.token,
+            state.startedAt
         );
         dispatch({ type: 'SET_SUBMISSION_RESULT', payload: submissionResult });
 

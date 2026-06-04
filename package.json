@@ -19,6 +19,9 @@
   "overrides": {
     "postcss": "^8.5.10"
   },
+  "overrides": {
+    "postcss": "^8.5.10"
+  },
   "devDependencies": {
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",

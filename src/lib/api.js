@@ -64,7 +64,7 @@ export async function recordTestStart(testId, token) {
     });
 }
 
-export async function createSubmission(testId, questions, answers, token) {
+export async function createSubmission(testId, questions, answers, token, startedAt) {
     const mappedAnswers = questions.map(q => {
         const answer = answers[q.id] || {};
         return {
@@ -79,7 +79,7 @@ export async function createSubmission(testId, questions, answers, token) {
     const res = await fetch(`${API_BASE}/api/submissions`, {
         method: 'POST',
         headers: authHeaders(token),
-        body: JSON.stringify({ test_id: testId, answers: mappedAnswers }),
+        body: JSON.stringify({ test_id: testId, started_at: startedAt, answers: mappedAnswers }),
     });
     if (!res.ok) throw new Error(`Failed to create submission: ${res.status}`);
     return res.json();
