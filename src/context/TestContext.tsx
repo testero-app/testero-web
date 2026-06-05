@@ -43,7 +43,7 @@ export type TTestListItem = {
     questionsPerTest: number;
 };
 
-export type TStudent = {
+export type TUser = {
     id: string;
     name: string;
     username: string;
@@ -71,7 +71,7 @@ export type TAnswerResult = {
 
 export type TSubmissionResult = {
     id: string;
-    student_id: string;
+    user_id: string;
     test_id: string;
     started_at: string | null;
     submitted_at: string;
@@ -83,7 +83,7 @@ export type TSubmissionResult = {
 type TState = {
     // Auth
     token: string | null;
-    student: TStudent | null;
+    user: TUser | null;
     // Test selection
     availableTests: TTestListItem[];
     // Active test
@@ -102,7 +102,7 @@ type TState = {
 };
 
 type TAction =
-    | { type: 'LOGIN_SUCCESS'; payload: { token: string; student: TStudent } }
+    | { type: 'LOGIN_SUCCESS'; payload: { token: string; user: TUser } }
     | { type: 'LOGOUT' }
     | { type: 'SET_AVAILABLE_TESTS'; payload: TTestListItem[] }
     | { type: 'SET_TEST_CONFIG'; payload: TTestConfig }
@@ -119,7 +119,7 @@ type TAction =
 
 const initialState: TState = {
     token: null,
-    student: null,
+    user: null,
     availableTests: [],
     testConfig: null,
     startedAt: null,
@@ -137,7 +137,7 @@ const initialState: TState = {
 function reducer(state: TState, action: TAction): TState {
     switch (action.type) {
         case 'LOGIN_SUCCESS':
-            return { ...state, token: action.payload.token, student: action.payload.student, error: null };
+            return { ...state, token: action.payload.token, user: action.payload.user, error: null };
         case 'LOGOUT':
             return { ...initialState };
         case 'SET_AVAILABLE_TESTS':
@@ -195,7 +195,7 @@ function reducer(state: TState, action: TAction): TState {
 export interface TestContextType {
     // State
     token: string | null;
-    student: TStudent | null;
+    user: TUser | null;
     availableTests: TTestListItem[];
     testConfig: TTestConfig | null;
     shuffledQuestions: TQuestion[];
@@ -241,8 +241,8 @@ export const TestProvider = ({ children }: TestProviderProps) => {
         dispatch({ type: 'SET_LOADING', payload: true });
         dispatch({ type: 'SET_ERROR', payload: null });
         try {
-            const { token, student } = await apiLogin(username, password);
-            dispatch({ type: 'LOGIN_SUCCESS', payload: { token, student } });
+            const { token, user } = await apiLogin(username, password);
+            dispatch({ type: 'LOGIN_SUCCESS', payload: { token, user } });
         } catch (err) {
             dispatch({ type: 'SET_ERROR', payload: (err as Error).message });
             throw err;
@@ -307,7 +307,7 @@ export const TestProvider = ({ children }: TestProviderProps) => {
     }, []);
 
     const doSubmit = useCallback(async (): Promise<TZipInfo> => {
-        if (!state.token || !state.student || !state.testConfig) {
+        if (!state.token || !state.user || !state.testConfig) {
             throw new Error("Missing auth or test data");
         }
 
@@ -321,7 +321,7 @@ export const TestProvider = ({ children }: TestProviderProps) => {
         dispatch({ type: 'SET_SUBMISSION_RESULT', payload: submissionResult });
 
         const zipInfo = await generateEncryptedZip(
-            state.student.name,
+            state.user.name,
             state.shuffledQuestions,
             state.answers,
             state.testConfig.testId,
@@ -329,7 +329,7 @@ export const TestProvider = ({ children }: TestProviderProps) => {
         ) as TZipInfo;
         dispatch({ type: 'SET_ZIP_INFO', payload: zipInfo });
         return zipInfo;
-    }, [state.token, state.student, state.shuffledQuestions, state.answers, state.testConfig]);
+    }, [state.token, state.user, state.shuffledQuestions, state.answers, state.testConfig]);
 
     const resetTest = useCallback(() => {
         dispatch({ type: 'RESET_TEST' });

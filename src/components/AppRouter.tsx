@@ -36,12 +36,12 @@ function LoginView() {
 // ─── Test Selection View ─────────────────────────────────────────────────────
 
 function TestSelectionView() {
-    const { student, availableTests, loading, loadAvailableTests, selectTest, doLogout } = useTest();
+    const { user, availableTests, loading, loadAvailableTests, selectTest, doLogout } = useTest();
     const navigate = useNavigate();
     const [showStartModal, setShowStartModal] = useState(false);
     const [pendingTestId, setPendingTestId] = useState<string | null>(null);
 
-    if (!student) {
+    if (!user) {
         navigate('/');
         return null;
     }
@@ -70,7 +70,7 @@ function TestSelectionView() {
     return (
         <>
             <TestSelectionPage
-                student={student}
+                user={user}
                 tests={availableTests}
                 loading={loading}
                 onLoadTests={loadAvailableTests}
@@ -90,7 +90,7 @@ function TestSelectionView() {
 
 function TestView() {
     const {
-        student, testConfig, shuffledQuestions, shuffledOptions,
+        user, testConfig, shuffledQuestions, shuffledOptions,
         currentIndex, answers, timerExpired,
         setAnswer, goToQuestion, setTimerExpired, doSubmit,
     } = useTest();
@@ -144,7 +144,7 @@ function TestView() {
     return (
         <>
             <TestHeader
-                studentName={student?.name ?? ''}
+                studentName={user?.name ?? ''}
                 timerDisplay={timer.display}
                 timerWarning={timer.warning}
             />
