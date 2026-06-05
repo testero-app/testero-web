@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { TTestListItem, TStudent } from '../context/TestContext';
+import { TTestListItem, TUser } from '../context/TestContext';
 
 interface TestSelectionPageProps {
-    student: TStudent;
+    user: TUser;
     tests: TTestListItem[];
     loading: boolean;
     onLoadTests: () => Promise<void>;
@@ -17,7 +17,7 @@ function getTestAbbrev(title: string): string {
     return (words[words.length - 2][0] + words[words.length - 1][0]).toUpperCase();
 }
 
-export default function TestSelectionPage({ student, tests, loading, onLoadTests, onSelectTest, onLogout }: TestSelectionPageProps) {
+export default function TestSelectionPage({ user, tests, loading, onLoadTests, onSelectTest, onLogout }: TestSelectionPageProps) {
     useEffect(() => {
         if (tests.length === 0) {
             onLoadTests();
@@ -33,8 +33,8 @@ export default function TestSelectionPage({ student, tests, loading, onLoadTests
                 </div>
                 <div className="sel-user">
                     <div className="sel-user-info">
-                        <span className="sel-user-name">{student.name}</span>
-                        <span className="sel-user-class">{student.class_name}</span>
+                        <span className="sel-user-name">{user.name}</span>
+                        <span className="sel-user-class">{user.class_name}</span>
                     </div>
                     <button className="sel-logout" onClick={onLogout}>
                         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
