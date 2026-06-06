@@ -1,5 +1,7 @@
 # testero-web
 
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+
 Frontend for **Testero**, an open source system for administering tests
 and assessments, designed for educational settings: private schools,
 training organizations, teachers, and trainers.
