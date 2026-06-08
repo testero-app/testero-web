@@ -22,7 +22,7 @@ export default function TestSelectionPage({ user, tests, loading, onLoadTests, o
         if (tests.length === 0) {
             onLoadTests();
         }
-    }, []);
+    }, [tests.length, onLoadTests]);
 
     return (
         <div className="sel-page">

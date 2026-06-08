@@ -55,7 +55,32 @@ would solve and any proposed solution.
    `git checkout -b feature/descriptive-name`
 3. Make your changes with **DCO-signed commits** (see below)
 4. Push to your fork and open a **Pull Request** against `main`
-5. Ensure all checks pass (including the DCO check)
+5. Ensure all checks pass (DCO check and CI pipeline — see below)
+
+## CI Pipeline
+
+Every PR to `main` runs through four automated checks (in order):
+
+| Step | Command | What it catches |
+|------|---------|-----------------|
+| **TypeScript** | `npx tsc --noEmit` | Type errors, missing imports |
+| **ESLint** | `npm run lint` | Code quality, React hooks rules, best practices |
+| **Build** | `npm run build` | Build failures, broken pages |
+
+The "Build & Verify" check is a required status check — PRs cannot be
+merged until all steps pass.
+
+### Running Checks Locally
+
+```bash
+# Run all checks (same as CI)
+npx tsc --noEmit && npm run lint && npm run build
+
+# Run individual checks
+npx tsc --noEmit     # type check
+npm run lint         # eslint
+npm run build        # production build
+```
 
 ## Developer Certificate of Origin (DCO)
 
