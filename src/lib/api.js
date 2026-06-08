@@ -38,7 +38,7 @@ export async function fetchAvailableAssessments(token) {
     });
     if (!res.ok) throw new Error(`Failed to fetch assessments: ${res.status}`);
     const data = await res.json();
-    return data.tests;
+    return data.assessments;
 }
 
 export async function fetchAssessmentConfig(assessmentId, token) {
@@ -79,7 +79,7 @@ export async function createSubmission(testId, questions, answers, token, starte
     const res = await fetch(`${API_BASE}/api/submissions`, {
         method: 'POST',
         headers: authHeaders(token),
-        body: JSON.stringify({ test_id: testId, started_at: startedAt, answers: mappedAnswers }),
+        body: JSON.stringify({ assessment_id: testId, started_at: startedAt, answers: mappedAnswers }),
     });
     if (!res.ok) throw new Error(`Failed to create submission: ${res.status}`);
     return res.json();
