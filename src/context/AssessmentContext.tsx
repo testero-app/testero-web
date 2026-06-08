@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useReducer } from "react";
 import { generateEncryptedZip } from "../lib/generateZip";
-import { login as apiLogin, fetchAvailableTests, fetchTestConfig, fetchTestQuestions, createSubmission, recordTestStart } from "../lib/api";
+import { login as apiLogin, fetchAvailableAssessments, fetchAssessmentConfig, fetchAssessmentQuestions, createSubmission, recordAssessmentStart } from "../lib/api";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -25,8 +25,8 @@ export type TScoringRules = {
     pointsPerWrong: number;
 };
 
-export type TTestConfig = {
-    testId: string;
+export type TAssessmentConfig = {
+    assessmentId: string;
     title: string;
     date: string;
     timerMinutes: number;
@@ -35,7 +35,7 @@ export type TTestConfig = {
     scoring: TScoringRules;
 };
 
-export type TTestListItem = {
+export type TAssessmentListItem = {
     id: string;
     title: string;
     date: string;
@@ -84,10 +84,10 @@ type TState = {
     // Auth
     token: string | null;
     user: TUser | null;
-    // Test selection
-    availableTests: TTestListItem[];
-    // Active test
-    testConfig: TTestConfig | null;
+    // Assessment selection
+    availableAssessments: TAssessmentListItem[];
+    // Active assessment
+    assessmentConfig: TAssessmentConfig | null;
     startedAt: string | null;
     shuffledQuestions: TQuestion[];
     shuffledOptions: TOption[][];
@@ -104,8 +104,8 @@ type TState = {
 type TAction =
     | { type: 'LOGIN_SUCCESS'; payload: { token: string; user: TUser } }
     | { type: 'LOGOUT' }
-    | { type: 'SET_AVAILABLE_TESTS'; payload: TTestListItem[] }
-    | { type: 'SET_TEST_CONFIG'; payload: TTestConfig }
+    | { type: 'SET_AVAILABLE_ASSESSMENTS'; payload: TAssessmentListItem[] }
+    | { type: 'SET_ASSESSMENT_CONFIG'; payload: TAssessmentConfig }
     | { type: 'SET_STARTED_AT'; payload: string }
     | { type: 'SET_QUESTIONS'; payload: { questions: TQuestion[]; options: TOption[][] } }
     | { type: 'SET_ANSWER'; payload: { questionId: string; answer: TAnswer } }
@@ -115,13 +115,13 @@ type TAction =
     | { type: 'SET_SUBMISSION_RESULT'; payload: TSubmissionResult }
     | { type: 'SET_LOADING'; payload: boolean }
     | { type: 'SET_ERROR'; payload: string | null }
-    | { type: 'RESET_TEST' };
+    | { type: 'RESET_ASSESSMENT' };
 
 const initialState: TState = {
     token: null,
     user: null,
-    availableTests: [],
-    testConfig: null,
+    availableAssessments: [],
+    assessmentConfig: null,
     startedAt: null,
     shuffledQuestions: [],
     shuffledOptions: [],
@@ -140,10 +140,10 @@ function reducer(state: TState, action: TAction): TState {
             return { ...state, token: action.payload.token, user: action.payload.user, error: null };
         case 'LOGOUT':
             return { ...initialState };
-        case 'SET_AVAILABLE_TESTS':
-            return { ...state, availableTests: action.payload };
-        case 'SET_TEST_CONFIG':
-            return { ...state, testConfig: action.payload };
+        case 'SET_AVAILABLE_ASSESSMENTS':
+            return { ...state, availableAssessments: action.payload };
+        case 'SET_ASSESSMENT_CONFIG':
+            return { ...state, assessmentConfig: action.payload };
         case 'SET_STARTED_AT':
             return { ...state, startedAt: action.payload };
         case 'SET_QUESTIONS':
@@ -172,10 +172,10 @@ function reducer(state: TState, action: TAction): TState {
             return { ...state, loading: action.payload };
         case 'SET_ERROR':
             return { ...state, error: action.payload };
-        case 'RESET_TEST':
+        case 'RESET_ASSESSMENT':
             return {
                 ...state,
-                testConfig: null,
+                assessmentConfig: null,
                 startedAt: null,
                 shuffledQuestions: [],
                 shuffledOptions: [],
@@ -192,12 +192,12 @@ function reducer(state: TState, action: TAction): TState {
 
 // ─── Context ──────────────────────────────────────────────────────────────────
 
-export interface TestContextType {
+export interface AssessmentContextType {
     // State
     token: string | null;
     user: TUser | null;
-    availableTests: TTestListItem[];
-    testConfig: TTestConfig | null;
+    availableAssessments: TAssessmentListItem[];
+    assessmentConfig: TAssessmentConfig | null;
     shuffledQuestions: TQuestion[];
     shuffledOptions: TOption[][];
     currentIndex: number;
@@ -210,31 +210,31 @@ export interface TestContextType {
     // Actions
     doLogin: (username: string, password: string) => Promise<void>;
     doLogout: () => void;
-    loadAvailableTests: () => Promise<void>;
-    selectTest: (testId: string) => Promise<void>;
+    loadAvailableAssessments: () => Promise<void>;
+    selectAssessment: (assessmentId: string) => Promise<void>;
     setAnswer: (questionId: string, answer: TAnswer) => void;
     goToQuestion: (index: number) => void;
     setTimerExpired: () => void;
     doSubmit: () => Promise<TZipInfo>;
-    resetTest: () => void;
+    resetAssessment: () => void;
 }
 
-const TestContext = createContext<TestContextType | null>(null);
+const AssessmentContext = createContext<AssessmentContextType | null>(null);
 
-export const useTest = () => {
-    const context = useContext(TestContext);
+export const useAssessment = () => {
+    const context = useContext(AssessmentContext);
     if (!context)
-        throw new Error("useTest must be used within a TestProvider");
+        throw new Error("useAssessment must be used within an AssessmentProvider");
     return context;
 };
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
 
-interface TestProviderProps {
+interface AssessmentProviderProps {
     children: React.ReactNode;
 }
 
-export const TestProvider = ({ children }: TestProviderProps) => {
+export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const doLogin = useCallback(async (username: string, password: string) => {
@@ -255,12 +255,12 @@ export const TestProvider = ({ children }: TestProviderProps) => {
         dispatch({ type: 'LOGOUT' });
     }, []);
 
-    const loadAvailableTests = useCallback(async () => {
+    const loadAvailableAssessments = useCallback(async () => {
         if (!state.token) return;
         dispatch({ type: 'SET_LOADING', payload: true });
         try {
-            const tests = await fetchAvailableTests(state.token);
-            dispatch({ type: 'SET_AVAILABLE_TESTS', payload: tests });
+            const assessments = await fetchAvailableAssessments(state.token);
+            dispatch({ type: 'SET_AVAILABLE_ASSESSMENTS', payload: assessments });
         } catch (err) {
             dispatch({ type: 'SET_ERROR', payload: (err as Error).message });
         } finally {
@@ -268,20 +268,20 @@ export const TestProvider = ({ children }: TestProviderProps) => {
         }
     }, [state.token]);
 
-    const selectTest = useCallback(async (testId: string) => {
+    const selectAssessment = useCallback(async (assessmentId: string) => {
         if (!state.token) return;
         dispatch({ type: 'SET_LOADING', payload: true });
         dispatch({ type: 'SET_ERROR', payload: null });
         try {
-            // Fire-and-forget: track test start anonymously
-            recordTestStart(testId, state.token).catch(() => {});
+            // Fire-and-forget: track assessment start anonymously
+            recordAssessmentStart(assessmentId, state.token).catch(() => {});
 
             dispatch({ type: 'SET_STARTED_AT', payload: new Date().toISOString() });
 
-            const config = await fetchTestConfig(testId, state.token);
-            dispatch({ type: 'SET_TEST_CONFIG', payload: config });
+            const config = await fetchAssessmentConfig(assessmentId, state.token);
+            dispatch({ type: 'SET_ASSESSMENT_CONFIG', payload: config });
 
-            const data = await fetchTestQuestions(testId, state.token);
+            const data = await fetchAssessmentQuestions(assessmentId, state.token);
             const options = data.questions.map((q: TQuestion) =>
                 q.type === 'multiple' && q.options ? q.options : []
             );
@@ -307,12 +307,12 @@ export const TestProvider = ({ children }: TestProviderProps) => {
     }, []);
 
     const doSubmit = useCallback(async (): Promise<TZipInfo> => {
-        if (!state.token || !state.user || !state.testConfig) {
-            throw new Error("Missing auth or test data");
+        if (!state.token || !state.user || !state.assessmentConfig) {
+            throw new Error("Missing auth or assessment data");
         }
 
         const submissionResult = await createSubmission(
-            state.testConfig.testId,
+            state.assessmentConfig.assessmentId,
             state.shuffledQuestions,
             state.answers,
             state.token,
@@ -324,33 +324,33 @@ export const TestProvider = ({ children }: TestProviderProps) => {
             state.user.name,
             state.shuffledQuestions,
             state.answers,
-            state.testConfig.testId,
-            state.testConfig.title
+            state.assessmentConfig.assessmentId,
+            state.assessmentConfig.title
         ) as TZipInfo;
         dispatch({ type: 'SET_ZIP_INFO', payload: zipInfo });
         return zipInfo;
-    }, [state.token, state.user, state.shuffledQuestions, state.answers, state.testConfig, state.startedAt]);
+    }, [state.token, state.user, state.shuffledQuestions, state.answers, state.assessmentConfig, state.startedAt]);
 
-    const resetTest = useCallback(() => {
-        dispatch({ type: 'RESET_TEST' });
+    const resetAssessment = useCallback(() => {
+        dispatch({ type: 'RESET_ASSESSMENT' });
     }, []);
 
     return (
-        <TestContext.Provider value={{
+        <AssessmentContext.Provider value={{
             ...state,
             doLogin,
             doLogout,
-            loadAvailableTests,
-            selectTest,
+            loadAvailableAssessments,
+            selectAssessment,
             setAnswer,
             goToQuestion,
             setTimerExpired,
             doSubmit,
-            resetTest,
+            resetAssessment,
         }}>
             {children}
-        </TestContext.Provider>
+        </AssessmentContext.Provider>
     );
 };
 
-export default TestContext;
+export default AssessmentContext;

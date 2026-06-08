@@ -1,8 +1,8 @@
-import { TQuestion, TOption, TAnswer } from '../context/TestContext';
+import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
 import Sidebar from './Sidebar';
 import QuestionCard from './QuestionCard';
 
-interface TestPageProps {
+interface AssessmentPageProps {
     shuffledQuestions: TQuestion[];
     shuffledOptions: TOption[][];
     currentIndex: number;
@@ -16,7 +16,7 @@ interface TestPageProps {
     onSubmit: () => void;
 }
 
-export default function TestPage({
+export default function AssessmentPage({
     shuffledQuestions,
     shuffledOptions,
     currentIndex,
@@ -28,13 +28,13 @@ export default function TestPage({
     onNext,
     onAnswer,
     onSubmit
-}: TestPageProps) {
+}: AssessmentPageProps) {
     const question = shuffledQuestions[currentIndex];
     const opts = shuffledOptions[currentIndex] || [];
 
     return (
-        <main className="test-container visible">
-            <div className="test-layout">
+        <main className="assessment-container visible">
+            <div className="assessment-layout">
                 <Sidebar
                     totalQuestions={shuffledQuestions.length}
                     currentIndex={currentIndex}
@@ -54,11 +54,11 @@ export default function TestPage({
                             shuffledOpts={opts}
                             answer={answers[question.id]}
                             onAnswer={onAnswer}
-                            
+
                         />
-                    
+
                     </div>
-                    
+
                 </div>
             </div>
         </main>
