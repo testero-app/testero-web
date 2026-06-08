@@ -1,4 +1,4 @@
-import { TQuestion, TAnswer } from '../context/TestContext';
+import { TQuestion, TAnswer } from '../context/AssessmentContext';
 
 /**
  * Controlla se la sola opzione selezionata è "Nessuna delle precedenti".

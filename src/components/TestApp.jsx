@@ -1,14 +1,14 @@
 'use client';
 
 import { useReducer, useCallback, useEffect, useMemo } from 'react';
-import { fetchSubjects, fetchTestConfig, fetchTestQuestions } from '../lib/api';
+import { fetchAssessmentConfig, fetchAssessmentQuestions } from '../lib/api';
 import { generateEncryptedZip } from '../lib/generateZip';
 import { useTimer } from '../hooks/useTimer';
 
 
 import LandingPage from './LandingPage';
-import TestHeader from './TestHeader';
-import TestPage from './TestPage';
+import TestHeader from './AssessmentHeader';
+import TestPage from './AssessmentPage';
 import RecapPage from './RecapPage';
 import StartModal from './StartModal';
 import SubmitModal from './SubmitModal';

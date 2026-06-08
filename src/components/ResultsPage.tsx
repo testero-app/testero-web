@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import hljs from '../lib/highlight';
-import { TQuestion, TOption, TAnswer, TAnswerResult } from '../context/TestContext';
+import { TQuestion, TOption, TAnswer, TAnswerResult } from '../context/AssessmentContext';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 

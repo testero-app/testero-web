@@ -1,28 +1,28 @@
 import { useEffect } from 'react';
-import { TTestListItem, TUser } from '../context/TestContext';
+import { TAssessmentListItem, TUser } from '../context/AssessmentContext';
 
-interface TestSelectionPageProps {
+interface AssessmentSelectionPageProps {
     user: TUser;
-    tests: TTestListItem[];
+    assessments: TAssessmentListItem[];
     loading: boolean;
-    onLoadTests: () => Promise<void>;
-    onSelectTest: (testId: string) => void;
+    onLoadAssessments: () => Promise<void>;
+    onSelectAssessment: (assessmentId: string) => void;
     onLogout: () => void;
 }
 
-function getTestAbbrev(title: string): string {
+function getAssessmentAbbrev(title: string): string {
     const words = title.split(/\s+/).filter(w => w.length > 3);
     if (words.length === 0) return title.slice(0, 2).toUpperCase();
     if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
     return (words[words.length - 2][0] + words[words.length - 1][0]).toUpperCase();
 }
 
-export default function TestSelectionPage({ user, tests, loading, onLoadTests, onSelectTest, onLogout }: TestSelectionPageProps) {
+export default function AssessmentSelectionPage({ user, assessments, loading, onLoadAssessments, onSelectAssessment, onLogout }: AssessmentSelectionPageProps) {
     useEffect(() => {
-        if (tests.length === 0) {
-            onLoadTests();
+        if (assessments.length === 0) {
+            onLoadAssessments();
         }
-    }, [tests.length, onLoadTests]);
+    }, [assessments.length, onLoadAssessments]);
 
     return (
         <div className="sel-page">
@@ -55,7 +55,7 @@ export default function TestSelectionPage({ user, tests, loading, onLoadTests, o
 
                 {loading && <p className="sel-empty-text">Caricamento...</p>}
 
-                {!loading && tests.length === 0 && (
+                {!loading && assessments.length === 0 && (
                     <div className="sel-empty">
                         <div className="sel-empty-icon">
                             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -68,21 +68,21 @@ export default function TestSelectionPage({ user, tests, loading, onLoadTests, o
                     </div>
                 )}
 
-                {!loading && tests.length > 0 && (
-                    <div className="sel-tests">
-                        {tests.map(test => (
+                {!loading && assessments.length > 0 && (
+                    <div className="sel-assessments">
+                        {assessments.map(assessment => (
                             <button
-                                key={test.id}
-                                className="sel-test-card"
-                                onClick={() => onSelectTest(test.id)}
+                                key={assessment.id}
+                                className="sel-assessment-card"
+                                onClick={() => onSelectAssessment(assessment.id)}
                             >
-                                <div className="sel-test-body">
-                                    <h3 className="sel-test-title">{test.title}</h3>
-                                    <div className="sel-test-meta">
-                                        {test.questionsPerTest} domande<span className="sel-sep">&middot;</span>{test.timerMinutes} min
+                                <div className="sel-assessment-body">
+                                    <h3 className="sel-assessment-title">{assessment.title}</h3>
+                                    <div className="sel-assessment-meta">
+                                        {assessment.questionsPerAssessment} domande<span className="sel-sep">&middot;</span>{assessment.timerMinutes} min
                                     </div>
                                 </div>
-                                <svg className="sel-test-arrow" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                                <svg className="sel-assessment-arrow" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M6 4l5 5-5 5"/>
                                 </svg>
                             </button>

@@ -2,13 +2,13 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { MemoryRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import { TestProvider, useTest, TQuestion, TOption } from '../context/TestContext';
+import { AssessmentProvider, useAssessment, TQuestion, TOption } from '../context/AssessmentContext';
 import { useTimer } from '../hooks/useTimer';
 
 import LoginPage from './LoginPage';
-import TestSelectionPage from './TestSelectionPage';
-import TestHeader from './TestHeader';
-import TestPage from './TestPage';
+import AssessmentSelectionPage from './AssessmentSelectionPage';
+import AssessmentHeader from './AssessmentHeader';
+import AssessmentPage from './AssessmentPage';
 import RecapPage from './RecapPage';
 import ResultsPage from './ResultsPage';
 import StartModal from './StartModal';
@@ -18,13 +18,13 @@ import FinalModal from './FinalModal';
 // ─── Login View ──────────────────────────────────────────────────────────────
 
 function LoginView() {
-    const { doLogin, loading, error } = useTest();
+    const { doLogin, loading, error } = useAssessment();
     const navigate = useNavigate();
 
     const handleLogin = useCallback(async (username: string, password: string) => {
         try {
             await doLogin(username, password);
-            navigate('/select-test');
+            navigate('/select-assessment');
         } catch {
             // error is already in state
         }
@@ -33,29 +33,29 @@ function LoginView() {
     return <LoginPage onLogin={handleLogin} loading={loading} error={error} />;
 }
 
-// ─── Test Selection View ─────────────────────────────────────────────────────
+// ─── Assessment Selection View ──────────────────────────────────────────────
 
-function TestSelectionView() {
-    const { user, availableTests, loading, loadAvailableTests, selectTest, doLogout } = useTest();
+function AssessmentSelectionView() {
+    const { user, availableAssessments, loading, loadAvailableAssessments, selectAssessment, doLogout } = useAssessment();
     const navigate = useNavigate();
     const [showStartModal, setShowStartModal] = useState(false);
-    const [pendingTestId, setPendingTestId] = useState<string | null>(null);
+    const [pendingAssessmentId, setPendingAssessmentId] = useState<string | null>(null);
 
-    const handleSelectTest = useCallback((testId: string) => {
-        setPendingTestId(testId);
+    const handleSelectAssessment = useCallback((assessmentId: string) => {
+        setPendingAssessmentId(assessmentId);
         setShowStartModal(true);
     }, []);
 
     const handleStartConfirm = useCallback(async () => {
-        if (!pendingTestId) return;
+        if (!pendingAssessmentId) return;
         setShowStartModal(false);
         try {
-            await selectTest(pendingTestId);
-            navigate('/test');
+            await selectAssessment(pendingAssessmentId);
+            navigate('/assessment');
         } catch {
             // error in state
         }
-    }, [pendingTestId, selectTest, navigate]);
+    }, [pendingAssessmentId, selectAssessment, navigate]);
 
     const handleLogout = useCallback(() => {
         doLogout();
@@ -74,12 +74,12 @@ function TestSelectionView() {
 
     return (
         <>
-            <TestSelectionPage
+            <AssessmentSelectionPage
                 user={user}
-                tests={availableTests}
+                assessments={availableAssessments}
                 loading={loading}
-                onLoadTests={loadAvailableTests}
-                onSelectTest={handleSelectTest}
+                onLoadAssessments={loadAvailableAssessments}
+                onSelectAssessment={handleSelectAssessment}
                 onLogout={handleLogout}
             />
             <StartModal
@@ -91,14 +91,14 @@ function TestSelectionView() {
     );
 }
 
-// ─── Test View ────────────────────────────────────────────────────────────────
+// ─── Assessment View ─────────────────────────────────────────────────────────
 
-function TestView() {
+function AssessmentView() {
     const {
-        user, testConfig, shuffledQuestions, shuffledOptions,
+        user, assessmentConfig, shuffledQuestions, shuffledOptions,
         currentIndex, answers, timerExpired,
         setAnswer, goToQuestion, setTimerExpired, doSubmit,
-    } = useTest();
+    } = useAssessment();
     const navigate = useNavigate();
     const [showSubmitModal, setShowSubmitModal] = useState(false);
     const [showFinalModal, setShowFinalModal] = useState(false);
@@ -108,7 +108,7 @@ function TestView() {
         navigate('/recap');
     }, [setTimerExpired, navigate]);
 
-    const timer = useTimer(testConfig?.timerMinutes ?? 60, onTimerExpire);
+    const timer = useTimer(assessmentConfig?.timerMinutes ?? 60, onTimerExpire);
 
     useEffect(() => {
         timer.start();
@@ -148,12 +148,12 @@ function TestView() {
 
     return (
         <>
-            <TestHeader
+            <AssessmentHeader
                 studentName={user?.name ?? ''}
                 timerDisplay={timer.display}
                 timerWarning={timer.warning}
             />
-            <TestPage
+            <AssessmentPage
                 shuffledQuestions={shuffledQuestions}
                 shuffledOptions={shuffledOptions}
                 currentIndex={currentIndex}
@@ -185,7 +185,7 @@ function TestView() {
 function RecapView() {
     const {
         shuffledQuestions, shuffledOptions, answers, timerExpired, doSubmit,
-    } = useTest();
+    } = useAssessment();
     const navigate = useNavigate();
     const [showFinalModal, setShowFinalModal] = useState(false);
 
@@ -221,7 +221,7 @@ function RecapView() {
                 answeredCount={answeredCount}
                 totalQuestions={shuffledQuestions.length}
                 timerExpired={timerExpired}
-                onBackToTest={() => navigate('/test')}
+                onBackToTest={() => navigate('/assessment')}
                 onFinalSubmit={handleFinalSubmitClick}
             />
             <FinalModal
@@ -238,8 +238,8 @@ function RecapView() {
 function ResultsView() {
     const {
         shuffledQuestions, shuffledOptions, answers,
-        submissionResult, zipInfo, doSubmit, resetTest,
-    } = useTest();
+        submissionResult, zipInfo, doSubmit, resetAssessment,
+    } = useAssessment();
     const navigate = useNavigate();
 
     const handleRedownload = async () => {
@@ -250,13 +250,13 @@ function ResultsView() {
         }
     };
 
-    const handleBackToTests = () => {
-        resetTest();
-        navigate('/select-test');
+    const handleBackToAssessments = () => {
+        resetAssessment();
+        navigate('/select-assessment');
     };
 
     if (!submissionResult) {
-        navigate('/select-test');
+        navigate('/select-assessment');
         return null;
     }
 
@@ -266,7 +266,7 @@ function ResultsView() {
             shuffledOptions={shuffledOptions}
             answers={answers}
             answerResults={submissionResult.answers}
-            onBackToTests={handleBackToTests}
+            onBackToTests={handleBackToAssessments}
             onRedownload={handleRedownload}
             zipName={zipInfo?.zipName}
         />
@@ -289,16 +289,16 @@ function isQuestionAnswered(question: { type: string; options?: unknown[] }, ans
 
 export default function AppRouter() {
     return (
-        <TestProvider>
+        <AssessmentProvider>
             <MemoryRouter initialEntries={['/']}>
                 <Routes>
                     <Route path="/" element={<LoginView />} />
-                    <Route path="/select-test" element={<TestSelectionView />} />
-                    <Route path="/test" element={<TestView />} />
+                    <Route path="/select-assessment" element={<AssessmentSelectionView />} />
+                    <Route path="/assessment" element={<AssessmentView />} />
                     <Route path="/recap" element={<RecapView />} />
                     <Route path="/results" element={<ResultsView />} />
                 </Routes>
             </MemoryRouter>
-        </TestProvider>
+        </AssessmentProvider>
     );
 }
