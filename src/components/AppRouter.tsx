@@ -41,11 +41,6 @@ function TestSelectionView() {
     const [showStartModal, setShowStartModal] = useState(false);
     const [pendingTestId, setPendingTestId] = useState<string | null>(null);
 
-    if (!user) {
-        navigate('/');
-        return null;
-    }
-
     const handleSelectTest = useCallback((testId: string) => {
         setPendingTestId(testId);
         setShowStartModal(true);
@@ -66,6 +61,16 @@ function TestSelectionView() {
         doLogout();
         navigate('/');
     }, [doLogout, navigate]);
+
+    useEffect(() => {
+        if (!user) {
+            navigate('/');
+        }
+    }, [user, navigate]);
+
+    if (!user) {
+        return null;
+    }
 
     return (
         <>
@@ -188,14 +193,6 @@ function RecapView() {
         return shuffledQuestions.filter((q) => isQuestionAnswered(q, answers[q.id])).length;
     }, [shuffledQuestions, answers]);
 
-    const handleFinalSubmitClick = useCallback(() => {
-        if (timerExpired) {
-            handleFinalSubmit();
-        } else {
-            setShowFinalModal(true);
-        }
-    }, [timerExpired]);
-
     const handleFinalSubmit = useCallback(async () => {
         setShowFinalModal(false);
         try {
@@ -206,6 +203,14 @@ function RecapView() {
             alert('Errore durante la generazione del file. Riprova.\n\n' + (err as Error).message);
         }
     }, [doSubmit, navigate]);
+
+    const handleFinalSubmitClick = useCallback(() => {
+        if (timerExpired) {
+            handleFinalSubmit();
+        } else {
+            setShowFinalModal(true);
+        }
+    }, [timerExpired, handleFinalSubmit]);
 
     return (
         <>

@@ -50,6 +50,28 @@ The app will be available at `http://localhost:3000`.
 
 See [`.env.example`](./.env.example) for the expected format.
 
+## CI & Code Quality
+
+Run all checks locally:
+
+```bash
+npx tsc --noEmit && npm run lint && npm run build
+```
+
+The CI pipeline runs on every PR to `main`:
+
+| Step | What it does |
+|------|-------------|
+| **TypeScript** | Verifies type safety (`tsc --noEmit`) |
+| **ESLint** | Enforces code quality and React best practices |
+| **Build** | Verifies the production build succeeds |
+
+The "Build & Verify" check is **required** — PRs cannot be merged if any
+step fails.
+
+> **For contributors:** see [CONTRIBUTING.md](./CONTRIBUTING.md#ci-pipeline)
+> for details on running checks locally.
+
 ## Contributing
 
 Contributions are welcome. Please read [CONTRIBUTING.md](./CONTRIBUTING.md)

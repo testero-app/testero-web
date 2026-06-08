@@ -329,7 +329,7 @@ export const TestProvider = ({ children }: TestProviderProps) => {
         ) as TZipInfo;
         dispatch({ type: 'SET_ZIP_INFO', payload: zipInfo });
         return zipInfo;
-    }, [state.token, state.user, state.shuffledQuestions, state.answers, state.testConfig]);
+    }, [state.token, state.user, state.shuffledQuestions, state.answers, state.testConfig, state.startedAt]);
 
     const resetTest = useCallback(() => {
         dispatch({ type: 'RESET_TEST' });

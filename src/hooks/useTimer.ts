@@ -15,7 +15,9 @@ export function useTimer(totalMinutes: number, onExpire: () => void) {
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const onExpireRef = useRef(onExpire);
 
-    onExpireRef.current = onExpire;
+    useEffect(() => {
+        onExpireRef.current = onExpire;
+    }, [onExpire]);
 
     const start = useCallback(() => {
         setRemainingSeconds(totalMinutes * 60);
