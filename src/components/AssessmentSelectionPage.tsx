@@ -79,7 +79,7 @@ export default function AssessmentSelectionPage({ user, assessments, loading, on
                                 <div className="sel-assessment-body">
                                     <h3 className="sel-assessment-title">{assessment.title}</h3>
                                     <div className="sel-assessment-meta">
-                                        {assessment.questionsPerTest} domande<span className="sel-sep">&middot;</span>{assessment.timerMinutes} min
+                                        {assessment.questionsPerAssessment} domande<span className="sel-sep">&middot;</span>{assessment.timerMinutes} min
                                     </div>
                                 </div>
                                 <svg className="sel-assessment-arrow" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">

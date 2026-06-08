@@ -31,7 +31,7 @@ export type TAssessmentConfig = {
     date: string;
     timerMinutes: number;
     totalPool: number;
-    questionsPerTest: number;
+    questionsPerAssessment: number;
     scoring: TScoringRules;
 };
 
@@ -40,7 +40,7 @@ export type TAssessmentListItem = {
     title: string;
     date: string;
     timerMinutes: number;
-    questionsPerTest: number;
+    questionsPerAssessment: number;
 };
 
 export type TUser = {
