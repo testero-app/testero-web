@@ -1,4 +1,4 @@
-import { TQuestion, TOption, TAnswer } from '../context/TestContext';
+import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
 import RecapQuestion from './RecapQuestion';
 interface RecapPageProps {
     shuffledQuestions: TQuestion[];

@@ -23,32 +23,32 @@ export default function Sidebar({
     const remaining = totalQuestions - answeredCount;
 
     return (
-        <aside className="t-sidebar">
+        <aside className="a-sidebar">
             {/* Progress */}
             <div>
-                <div className="t-progress-block">
+                <div className="a-progress-block">
                     <div>
-                        <div className="t-progress-num">
-                            {answeredCount}<span className="t-progress-total"> / {totalQuestions}</span>
+                        <div className="a-progress-num">
+                            {answeredCount}<span className="a-progress-total"> / {totalQuestions}</span>
                         </div>
-                        <div className="t-progress-label" style={{ marginTop: 4 }}>Risposte date</div>
+                        <div className="a-progress-label" style={{ marginTop: 4 }}>Risposte date</div>
                     </div>
-                    <div className="t-progress-label" style={{ textAlign: 'right' }}>{pct}%</div>
+                    <div className="a-progress-label" style={{ textAlign: 'right' }}>{pct}%</div>
                 </div>
-                <div className="t-progress-bar">
-                    <div className="t-progress-fill" style={{ width: `${pct}%` }}></div>
+                <div className="a-progress-bar">
+                    <div className="a-progress-fill" style={{ width: `${pct}%` }}></div>
                 </div>
             </div>
 
             {/* Grid */}
-            <div className="t-grid-section">
-                <div className="t-grid-label">
+            <div className="a-grid-section">
+                <div className="a-grid-label">
                     <span>Domande</span>
                     <span style={{ color: 'var(--ink-soft, #3a3c37)' }}>{totalQuestions}</span>
                 </div>
-                <div className="t-grid">
+                <div className="a-grid">
                     {Array.from({ length: totalQuestions }, (_, i) => {
-                        let cls = 't-cell';
+                        let cls = 'a-cell';
                         if (i === currentIndex) cls += ' current';
                         else if (answeredSet.has(i)) cls += ' answered';
                         return (
@@ -58,26 +58,26 @@ export default function Sidebar({
                         );
                     })}
                 </div>
-                <div className="t-legend">
-                    <span className="t-legend-item"><span className="t-lg t-lg-current"></span>Corrente</span>
-                    <span className="t-legend-item"><span className="t-lg t-lg-answered"></span>Risposta</span>
-                    <span className="t-legend-item"><span className="t-lg t-lg-empty"></span>Vuota</span>
+                <div className="a-legend">
+                    <span className="a-legend-item"><span className="a-lg a-lg-current"></span>Corrente</span>
+                    <span className="a-legend-item"><span className="a-lg a-lg-answered"></span>Risposta</span>
+                    <span className="a-legend-item"><span className="a-lg a-lg-empty"></span>Vuota</span>
                 </div>
             </div>
 
             {/* Nav */}
-            <div className="t-nav-row">
-                <button className="t-nav-btn" disabled={currentIndex === 0} onClick={onPrev}>
-                    <span className="t-arrow">&#8592;</span> Precedente
+            <div className="a-nav-row">
+                <button className="a-nav-btn" disabled={currentIndex === 0} onClick={onPrev}>
+                    <span className="a-arrow">&#8592;</span> Precedente
                 </button>
-                <button className="t-nav-btn" disabled={currentIndex === totalQuestions - 1} onClick={onNext}>
-                    Successiva <span className="t-arrow">&#8594;</span>
+                <button className="a-nav-btn" disabled={currentIndex === totalQuestions - 1} onClick={onNext}>
+                    Successiva <span className="a-arrow">&#8594;</span>
                 </button>
             </div>
 
             {/* Submit */}
-            <div className="t-submit-block">
-                <button className="t-submit" onClick={onSubmit}>
+            <div className="a-submit-block">
+                <button className="a-submit" onClick={onSubmit}>
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 8l3.5 3.5L13 5"/></svg>
                     Consegna test
                 </button>

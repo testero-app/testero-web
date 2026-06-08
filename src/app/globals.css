@@ -26,9 +26,9 @@ body {
     line-height: 1.6;
 }
 
-/* ─── Test Header ────────────────────────────────────────────────────────── */
+/* ─── Assessment Header ─────────────────────────────────────────────────── */
 
-.t-header {
+.a-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -40,7 +40,7 @@ body {
     z-index: 100;
 }
 
-.t-header-brand {
+.a-header-brand {
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -51,7 +51,7 @@ body {
     text-transform: uppercase;
 }
 
-.t-brand-dot {
+.a-brand-dot {
     width: 18px;
     height: 18px;
     border-radius: 50%;
@@ -59,7 +59,7 @@ body {
     position: relative;
 }
 
-.t-brand-dot::after {
+.a-brand-dot::after {
     content: "";
     position: absolute;
     inset: 4px;
@@ -67,19 +67,19 @@ body {
     background: var(--accent);
 }
 
-.t-header-right {
+.a-header-right {
     display: flex;
     align-items: center;
     gap: 18px;
 }
 
-.t-header-user {
+.a-header-user {
     font-size: 14px;
     color: var(--ink);
     font-weight: 500;
 }
 
-.t-header-timer {
+.a-header-timer {
     font-family: var(--font-mono), 'Courier New', monospace;
     font-size: 14px;
     font-weight: 600;
@@ -94,7 +94,7 @@ body {
     gap: 8px;
 }
 
-.t-header-timer::before {
+.a-header-timer::before {
     content: "";
     width: 6px;
     height: 6px;
@@ -102,23 +102,23 @@ body {
     background: var(--accent);
 }
 
-.t-timer-warn {
+.a-timer-warn {
     color: var(--error);
     background: rgba(184, 84, 80, 0.08);
     border-color: rgba(184, 84, 80, 0.3);
 }
 
-.t-timer-warn::before {
+.a-timer-warn::before {
     background: var(--error);
 }
 
-/* ─── Test Layout ────────────────────────────────────────────────────────── */
+/* ─── Assessment Layout ─────────────────────────────────────────────────── */
 
-.test-container {
+.assessment-container {
     display: none;
 }
 
-.test-container.visible {
+.assessment-container.visible {
     display: block;
 }
 
@@ -280,7 +280,7 @@ body {
     font-weight: 500;
 }
 
-.test-layout {
+.assessment-layout {
     max-width: 1320px;
     margin: 32px auto;
     padding: 0 32px;
@@ -290,9 +290,9 @@ body {
     align-items: start;
 }
 
-/* ─── Test Sidebar ───────────────────────────────────────────────────────── */
+/* ─── Assessment Sidebar ────────────────────────────────────────────────── */
 
-.t-sidebar {
+.a-sidebar {
     position: sticky;
     top: 90px;
     background: #fff;
@@ -304,7 +304,7 @@ body {
     gap: 22px;
 }
 
-.t-progress-block {
+.a-progress-block {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -312,7 +312,7 @@ body {
     border-bottom: 1px dashed var(--border-light);
 }
 
-.t-progress-num {
+.a-progress-num {
     font-family: var(--font-mono), 'Courier New', monospace;
     font-size: 28px;
     font-weight: 600;
@@ -320,12 +320,12 @@ body {
     letter-spacing: -0.5px;
 }
 
-.t-progress-total {
+.a-progress-total {
     color: var(--ink-light);
     font-weight: 400;
 }
 
-.t-progress-label {
+.a-progress-label {
     font-size: 11px;
     letter-spacing: 1.5px;
     color: var(--ink-light);
@@ -333,7 +333,7 @@ body {
     font-family: var(--font-mono), 'Courier New', monospace;
 }
 
-.t-progress-bar {
+.a-progress-bar {
     height: 4px;
     background: var(--paper);
     border-radius: 2px;
@@ -341,20 +341,20 @@ body {
     margin-top: 6px;
 }
 
-.t-progress-fill {
+.a-progress-fill {
     height: 100%;
     background: var(--accent);
     border-radius: 2px;
     transition: width 0.3s;
 }
 
-.t-grid-section {
+.a-grid-section {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.t-grid-label {
+.a-grid-label {
     font-size: 11px;
     letter-spacing: 1.5px;
     color: var(--ink-light);
@@ -365,13 +365,13 @@ body {
     justify-content: space-between;
 }
 
-.t-grid {
+.a-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 6px;
 }
 
-.t-cell {
+.a-cell {
     aspect-ratio: 1;
     display: flex;
     align-items: center;
@@ -387,22 +387,22 @@ body {
     transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.08s;
 }
 
-.t-cell:hover {
+.a-cell:hover {
     background: #ebe6dc;
 }
 
-.t-cell:active {
+.a-cell:active {
     transform: scale(0.96);
 }
 
-.t-cell.answered {
+.a-cell.answered {
     background: #edf2ee;
     color: #1f4a3b;
     border-color: #d9e4dc;
     font-weight: 600;
 }
 
-.t-cell.current {
+.a-cell.current {
     background: var(--accent);
     color: #fff;
     border-color: var(--accent);
@@ -410,14 +410,14 @@ body {
     box-shadow: 0 0 0 2px var(--paper), 0 0 0 3px var(--accent);
 }
 
-.t-legend {
+.a-legend {
     display: flex;
     flex-wrap: wrap;
     gap: 14px;
     padding-top: 4px;
 }
 
-.t-legend-item {
+.a-legend-item {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -427,27 +427,27 @@ body {
     letter-spacing: 0.5px;
 }
 
-.t-lg {
+.a-lg {
     width: 10px;
     height: 10px;
     border-radius: 3px;
 }
 
-.t-lg-empty {
+.a-lg-empty {
     background: #f6f2eb;
     border: 1px solid var(--border-light);
 }
 
-.t-lg-answered {
+.a-lg-answered {
     background: #edf2ee;
     border: 1px solid #d9e4dc;
 }
 
-.t-lg-current {
+.a-lg-current {
     background: var(--accent);
 }
 
-.t-nav-row {
+.a-nav-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
@@ -455,7 +455,7 @@ body {
     border-top: 1px dashed var(--border-light);
 }
 
-.t-nav-btn {
+.a-nav-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -472,25 +472,25 @@ body {
     transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
-.t-nav-btn:hover:not(:disabled) {
+.a-nav-btn:hover:not(:disabled) {
     background: #f6f2eb;
     border-color: #3a3c37;
 }
 
-.t-nav-btn:disabled {
+.a-nav-btn:disabled {
     color: #c5c6b9;
     cursor: not-allowed;
 }
 
-.t-arrow {
+.a-arrow {
     font-family: var(--font-mono), 'Courier New', monospace;
 }
 
-.t-submit-block {
+.a-submit-block {
     padding-top: 4px;
 }
 
-.t-submit {
+.a-submit {
     width: 100%;
     display: inline-flex;
     align-items: center;
@@ -508,12 +508,12 @@ body {
     transition: background 0.15s, color 0.15s;
 }
 
-.t-submit:hover {
+.a-submit:hover {
     background: var(--accent);
     color: #fff;
 }
 
-.t-submit-hint {
+.a-submit-hint {
     font-size: 11px;
     color: var(--ink-light);
     text-align: center;
@@ -522,7 +522,7 @@ body {
     letter-spacing: 0.3px;
 }
 
-/* ─── Test Main Content ──────────────────────────────────────────────────── */
+/* ─── Assessment Main Content ───────────────────────────────────────────── */
 
 .main-content {
     background: #fff;
@@ -998,7 +998,7 @@ body {
     background: #234a3c;
 }
 
-.test-header.hidden {
+.assessment-header.hidden {
     display: none;
 }
 
@@ -1212,7 +1212,7 @@ body {
     padding-bottom: 8px;
 }
 
-/* ─── Test Selection Page ────────────────────────────────────────────────── */
+/* ─── Assessment Selection Page ─────────────────────────────────────────── */
 
 .sel-page {
     min-height: 100vh;
@@ -1366,7 +1366,7 @@ body {
     background: var(--accent);
 }
 
-.sel-tests {
+.sel-assessments {
     width: 100%;
     max-width: 520px;
     display: flex;
@@ -1374,7 +1374,7 @@ body {
     gap: 12px;
 }
 
-.sel-test-card {
+.sel-assessment-card {
     display: flex;
     align-items: center;
     gap: 20px;
@@ -1390,16 +1390,16 @@ body {
     width: 100%;
 }
 
-.sel-test-card:hover {
+.sel-assessment-card:hover {
     border-color: var(--accent);
     box-shadow: 0 1px 0 rgba(16,20,18,0.04), 0 6px 18px rgba(16,20,18,0.08);
 }
 
-.sel-test-card:active {
+.sel-assessment-card:active {
     transform: translateY(1px);
 }
 
-.sel-test-icon {
+.sel-assessment-icon {
     width: 44px;
     height: 44px;
     flex-shrink: 0;
@@ -1414,12 +1414,12 @@ body {
     font-weight: 600;
 }
 
-.sel-test-body {
+.sel-assessment-body {
     flex: 1;
     min-width: 0;
 }
 
-.sel-test-title {
+.sel-assessment-title {
     font-size: 16px;
     font-weight: 500;
     color: var(--ink);
@@ -1427,7 +1427,7 @@ body {
     line-height: 1.3;
 }
 
-.sel-test-meta {
+.sel-assessment-meta {
     font-family: var(--font-mono), 'Courier New', monospace;
     font-size: 12px;
     color: var(--ink-light);
@@ -1439,13 +1439,13 @@ body {
     opacity: 0.5;
 }
 
-.sel-test-arrow {
+.sel-assessment-arrow {
     color: var(--ink-light);
     flex-shrink: 0;
     transition: color 0.15s, transform 0.15s;
 }
 
-.sel-test-card:hover .sel-test-arrow {
+.sel-assessment-card:hover .sel-assessment-arrow {
     color: var(--accent);
     transform: translateX(2px);
 }
@@ -1677,8 +1677,8 @@ body {
     .sel-user-info { display: none; }
     .sel-main { padding: 32px 16px; }
     .sel-heading { font-size: 26px; }
-    .sel-test-card { padding: 16px 18px; gap: 14px; }
-    .sel-test-icon { width: 38px; height: 38px; font-size: 12px; }
+    .sel-assessment-card { padding: 16px 18px; gap: 14px; }
+    .sel-assessment-icon { width: 38px; height: 38px; font-size: 12px; }
     .results-stats { gap: 20px; }
     .results-stat-num { font-size: 1.5rem; }
 }

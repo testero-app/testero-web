@@ -1,6 +1,6 @@
 import JSZip from 'jszip';
 
-export function collectAnswers(studentName, shuffledQuestions, answers, testId) {
+export function collectAnswers(studentName, shuffledQuestions, answers, assessmentId) {
     const timestamp = new Date().toISOString();
     const answersObj = {};
 
@@ -39,7 +39,7 @@ export function collectAnswers(studentName, shuffledQuestions, answers, testId) 
     });
 
     return {
-        testId: testId,
+        testId: assessmentId,
         student: studentName,
         submittedAt: timestamp,
         answers: answersObj
@@ -113,16 +113,16 @@ export function generateMarkdown(data, title, questions) {
     return lines.join('\n');
 }
 
-export async function generateEncryptedZip(studentName, shuffledQuestions, answers, testId, title) {
-    const data = collectAnswers(studentName, shuffledQuestions, answers, testId);
+export async function generateEncryptedZip(studentName, shuffledQuestions, answers, assessmentId, title) {
+    const data = collectAnswers(studentName, shuffledQuestions, answers, assessmentId);
     const jsonContent = JSON.stringify(data, null, 2);
 
     const safeName = data.student.replace(/\s+/g, '_').toUpperCase();
-    const fileName = `${safeName}_${testId}.json`;
-    const zipName = `${safeName}_${testId}.zip`;
+    const fileName = `${safeName}_${assessmentId}.json`;
+    const zipName = `${safeName}_${assessmentId}.zip`;
 
     const mdContent = generateMarkdown(data, title, shuffledQuestions);
-    const mdFileName = `${safeName}_${testId}.md`;
+    const mdFileName = `${safeName}_${assessmentId}.md`;
 
     const zip = new JSZip();
     zip.file(fileName, jsonContent);
