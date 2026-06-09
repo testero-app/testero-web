@@ -1,4 +1,5 @@
 import JSZip from 'jszip';
+import { FIVE_OPTION_COUNT, FALLBACK_SUFFIX_E, FALLBACK_SUFFIX_D } from './questionUtils';
 
 export function collectAnswers(studentName, shuffledQuestions, answers, assessmentId) {
     const timestamp = new Date().toISOString();
@@ -18,13 +19,9 @@ export function collectAnswers(studentName, shuffledQuestions, answers, assessme
             const answer = answers[questionId];
             const selectedIds = answer ? (answer.selectedIds || []) : [];
 
-            let hasNessuna;
-            if (question.options.length === 5) {
-                hasNessuna = selectedIds.length === 1 && selectedIds[0].endsWith("_e");
-
-            } else {
-                hasNessuna = selectedIds.length === 1 && selectedIds[0].endsWith("_d");
-            }
+            const suffix = question.options.length === FIVE_OPTION_COUNT
+                ? FALLBACK_SUFFIX_E : FALLBACK_SUFFIX_D;
+            const hasNessuna = selectedIds.length === 1 && selectedIds[0].endsWith(suffix);
             const motivation = answer ? (answer.motivation || '') : '';
 
             if (hasNessuna && motivation) {

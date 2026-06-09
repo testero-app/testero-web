@@ -3,6 +3,7 @@
 import { useReducer, useCallback, useEffect, useMemo } from 'react';
 import { fetchAssessmentConfig, fetchAssessmentQuestions } from '../lib/api';
 import { generateEncryptedZip } from '../lib/generateZip';
+import { isQuestionAnswered, DEFAULT_TIMER_MINUTES } from '../lib/questionUtils';
 import { useTimer } from '../hooks/useTimer';
 
 
@@ -80,31 +81,7 @@ function reducer(state, action) {
     }
 }
 
-function isQuestionAnswered(question, answer) {
-
-    if (question.type === 'open') {
-        return answer?.text?.trim().length > 0;
-    }
-    const selectedIds = answer?.selectedIds || [];
-
-    if (selectedIds.length === 0) return false;
-
-    checkIfJavaOrPython()
-}
-
-function checkIfJavaOrPython() {
-
-    if (question.options.length === 5) {
-        onlyNessuna = selectedIds.length === 1 && selectedIds[0].endsWith("_e");
-
-    } else {
-        onlyNessuna = selectedIds.length === 1 && selectedIds[0].endsWith("_d");
-    }
-    if (onlyNessuna) {
-        return (answer?.motivation || '').trim().length > 0;
-    }
-    return onlyNessuna;
-}
+// isQuestionAnswered is imported from ../lib/questionUtils
 
 export default function TestApp() {
     const [state, dispatch] = useReducer(reducer, initialState);
@@ -116,7 +93,7 @@ export default function TestApp() {
         }
     }, [state.phase]);
 
-    const timer = useTimer(state.testConfig?.timerMinutes || 60, onTimerExpire);
+    const timer = useTimer(state.testConfig?.timerMinutes || DEFAULT_TIMER_MINUTES, onTimerExpire);
 
     // Load subjects on mount
     useEffect(() => {
@@ -247,8 +224,7 @@ export default function TestApp() {
             );
             alert(`Test consegnato!\n\nFile scaricato: ${zipInfo.zipName}\n(contiene ${zipInfo.fileName} e ${zipInfo.mdFileName})\n\nConsegna questo file al docente.`);
             dispatch({ type: 'SUBMITTED', payload: zipInfo });
-        } catch (error) {
-            console.error('Errore generazione ZIP:', error);
+        } catch {
             alert('Errore durante la generazione del file. Riprova.');
         }
     };
@@ -262,8 +238,7 @@ export default function TestApp() {
                 state.testConfig.testId,
                 state.testConfig.title
             );
-        } catch (error) {
-            console.error('Errore ri-generazione ZIP:', error);
+        } catch {
             alert('Errore durante il download. Riprova.');
         }
     };
