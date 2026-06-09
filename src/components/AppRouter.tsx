@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { MemoryRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { AssessmentProvider, useAssessment, TQuestion, TOption } from '../context/AssessmentContext';
+import { isQuestionAnswered, DEFAULT_TIMER_MINUTES } from '../lib/questionUtils';
 import { useTimer } from '../hooks/useTimer';
 
 import LoginPage from './LoginPage';
@@ -108,7 +109,7 @@ function AssessmentView() {
         navigate('/recap');
     }, [setTimerExpired, navigate]);
 
-    const timer = useTimer(assessmentConfig?.timerMinutes ?? 60, onTimerExpire);
+    const timer = useTimer(assessmentConfig?.timerMinutes ?? DEFAULT_TIMER_MINUTES, onTimerExpire);
 
     useEffect(() => {
         timer.start();
@@ -141,7 +142,6 @@ function AssessmentView() {
             await doSubmit();
             navigate('/results');
         } catch (err) {
-            console.error('doSubmit error:', err);
             alert('Errore durante la generazione del file. Riprova.\n\n' + (err as Error).message);
         }
     }, [doSubmit, timer, navigate]);
@@ -199,7 +199,6 @@ function RecapView() {
             await doSubmit();
             navigate('/results');
         } catch (err) {
-            console.error('doSubmit error:', err);
             alert('Errore durante la generazione del file. Riprova.\n\n' + (err as Error).message);
         }
     }, [doSubmit, navigate]);
@@ -273,17 +272,7 @@ function ResultsView() {
     );
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function isQuestionAnswered(question: { type: string; options?: unknown[] }, answer: { selectedIds?: string[]; text?: string; motivation?: string } | undefined): boolean {
-    if (question.type === 'open') return (answer?.text?.trim().length ?? 0) > 0;
-    const selectedIds = answer?.selectedIds ?? [];
-    if (selectedIds.length === 0) return false;
-    const suffix = question.options?.length === 5 ? '_e' : '_d';
-    const onlyNessuna = selectedIds.length === 1 && selectedIds[0].endsWith(suffix);
-    if (onlyNessuna) return (answer?.motivation ?? '').trim().length > 0;
-    return true;
-}
+// isQuestionAnswered is imported from ../lib/questionUtils
 
 // ─── App Router ───────────────────────────────────────────────────────────────
 
