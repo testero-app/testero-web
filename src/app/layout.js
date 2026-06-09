@@ -16,7 +16,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata = {
-    title: 'Cert Java',
+    title: 'Testero',
+    description: 'Sistema open source per la somministrazione di test e verifiche in ambito didattico',
 };
 
 export default function RootLayout({ children }) {
