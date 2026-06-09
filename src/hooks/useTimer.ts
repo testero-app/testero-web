@@ -58,7 +58,8 @@ export function useTimer(totalMinutes: number, onExpire: () => void) {
         };
     }, [isRunning]);
 
-    const warning = remainingSeconds <= 300;
+    const WARNING_THRESHOLD_SECONDS = 300;
+    const warning = remainingSeconds <= WARNING_THRESHOLD_SECONDS;
     const display = formatTime(remainingSeconds);
 
     return { remainingSeconds, display, warning, expired, start, stop };

@@ -1,4 +1,5 @@
 import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
+import { isQuestionAnswered } from '../lib/questionUtils';
 import RecapQuestion from './RecapQuestion';
 interface RecapPageProps {
     shuffledQuestions: TQuestion[];
@@ -61,25 +62,7 @@ export default function RecapPage({
 
 
 function getIsAnswered(question: TQuestion, answer: TAnswer | undefined): boolean {
-    if (question.type === 'open') {
-        return (answer?.text?.trim().length ?? 0) > 0;
-    }
-    const selectedIds = answer?.selectedIds ?? [];
-    if (selectedIds.length === 0) return false;
-   
-    // Check if only "Nessuna" (fallback) option was selected
-    let onlyNessuna
-    if (question.options){
-        if (question.options.length === 5) {
-        onlyNessuna = selectedIds.length === 1 && selectedIds[0].endsWith("_e");
-    } else {
-        onlyNessuna = selectedIds.length === 1 && selectedIds[0].endsWith("_d");
-    }
-    }
-    if (onlyNessuna) {
-        return (answer?.motivation || '').trim().length > 0;
-    }
-    return true;
+    return isQuestionAnswered(question, answer);
 }
 
 

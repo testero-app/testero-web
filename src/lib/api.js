@@ -36,7 +36,10 @@ export async function fetchAvailableAssessments(token) {
     const res = await fetch(`${API_BASE}/api/assessments`, {
         headers: authHeaders(token),
     });
-    if (!res.ok) throw new Error(`Failed to fetch assessments: ${res.status}`);
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `Failed to fetch assessments: ${res.status}`);
+    }
     const data = await res.json();
     return data.assessments;
 }
@@ -45,7 +48,10 @@ export async function fetchAssessmentConfig(assessmentId, token) {
     const res = await fetch(`${API_BASE}/api/assessments/${assessmentId}/config`, {
         headers: authHeaders(token),
     });
-    if (!res.ok) throw new Error(`Failed to fetch assessment config: ${res.status}`);
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `Failed to fetch assessment config: ${res.status}`);
+    }
     return res.json();
 }
 
@@ -53,7 +59,10 @@ export async function fetchAssessmentQuestions(assessmentId, token) {
     const res = await fetch(`${API_BASE}/api/assessments/${assessmentId}/questions`, {
         headers: authHeaders(token),
     });
-    if (!res.ok) throw new Error(`Failed to fetch assessment questions: ${res.status}`);
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `Failed to fetch assessment questions: ${res.status}`);
+    }
     return res.json();
 }
 
@@ -81,6 +90,9 @@ export async function createSubmission(testId, questions, answers, token, starte
         headers: authHeaders(token),
         body: JSON.stringify({ assessment_id: testId, started_at: startedAt, answers: mappedAnswers }),
     });
-    if (!res.ok) throw new Error(`Failed to create submission: ${res.status}`);
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `Failed to create submission: ${res.status}`);
+    }
     return res.json();
 }
