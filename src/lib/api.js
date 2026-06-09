@@ -73,7 +73,7 @@ export async function recordAssessmentStart(assessmentId, token) {
     });
 }
 
-export async function createSubmission(testId, questions, answers, token, startedAt) {
+export async function createSubmission(assessmentId, questions, answers, token, startedAt) {
     const mappedAnswers = questions.map(q => {
         const answer = answers[q.id] || {};
         return {
@@ -88,7 +88,7 @@ export async function createSubmission(testId, questions, answers, token, starte
     const res = await fetch(`${API_BASE}/api/submissions`, {
         method: 'POST',
         headers: authHeaders(token),
-        body: JSON.stringify({ assessment_id: testId, started_at: startedAt, answers: mappedAnswers }),
+        body: JSON.stringify({ assessment_id: assessmentId, started_at: startedAt, answers: mappedAnswers }),
     });
     if (!res.ok) {
         const body = await res.json().catch(() => ({}));

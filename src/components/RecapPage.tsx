@@ -8,7 +8,7 @@ interface RecapPageProps {
     answeredCount: number;
     totalQuestions: number;
     timerExpired: boolean;
-    onBackToTest: () => void;
+    onBackToAssessment: () => void;
     onFinalSubmit: () => void;
 }
 
@@ -19,7 +19,7 @@ export default function RecapPage({
     answeredCount,
     totalQuestions,
     timerExpired,
-    onBackToTest,
+    onBackToAssessment,
     onFinalSubmit
 }: RecapPageProps) {
     return (
@@ -50,7 +50,7 @@ export default function RecapPage({
             </div>
             <div className="recap-actions">
                 {!timerExpired && (
-                    <button className="btn-back" onClick={onBackToTest}>← Torna al test</button>
+                    <button className="btn-back" onClick={onBackToAssessment}>← Torna al test</button>
                 )}
                 <button className="btn-final-submit" onClick={onFinalSubmit}>
                     {timerExpired ? 'Scarica risposte' : 'Conferma e consegna'}
