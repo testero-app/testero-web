@@ -9,7 +9,7 @@ interface ResultsPageProps {
     shuffledOptions: TOption[][];
     answers: Record<string, TAnswer>;
     answerResults: TAnswerResult[];
-    onBackToTests: () => void;
+    onBackToAssessments: () => void;
     onRedownload: () => void;
     zipName?: string;
 }
@@ -19,7 +19,7 @@ export default function ResultsPage({
     shuffledOptions,
     answers,
     answerResults,
-    onBackToTests,
+    onBackToAssessments,
     onRedownload,
     zipName,
 }: ResultsPageProps) {
@@ -100,7 +100,7 @@ export default function ResultsPage({
                 </button>
                 <button
                     className="btn-final-submit"
-                    onClick={onBackToTests}
+                    onClick={onBackToAssessments}
                     style={{ background: 'var(--accent)' }}
                 >
                     Torna ai test

@@ -220,7 +220,7 @@ function RecapView() {
                 answeredCount={answeredCount}
                 totalQuestions={shuffledQuestions.length}
                 timerExpired={timerExpired}
-                onBackToTest={() => navigate('/assessment')}
+                onBackToAssessment={() => navigate('/assessment')}
                 onFinalSubmit={handleFinalSubmitClick}
             />
             <FinalModal
@@ -265,7 +265,7 @@ function ResultsView() {
             shuffledOptions={shuffledOptions}
             answers={answers}
             answerResults={submissionResult.answers}
-            onBackToTests={handleBackToAssessments}
+            onBackToAssessments={handleBackToAssessments}
             onRedownload={handleRedownload}
             zipName={zipInfo?.zipName}
         />
