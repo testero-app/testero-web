@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useReducer } from "react";
 import { generateEncryptedZip } from "../lib/generateZip";
-import { login as apiLogin, fetchAvailableAssessments, fetchAssessmentConfig, fetchAssessmentQuestions, createSubmission, recordAssessmentStart } from "../lib/api";
+import { login as apiLogin, fetchAvailableAssessments, fetchAssessmentConfig, fetchAssessmentQuestions, startAssessment, submitAssessment } from "../lib/api";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -88,7 +88,7 @@ type TState = {
     availableAssessments: TAssessmentListItem[];
     // Active assessment
     assessmentConfig: TAssessmentConfig | null;
-    startedAt: string | null;
+    submissionId: string | null;
     shuffledQuestions: TQuestion[];
     shuffledOptions: TOption[][];
     currentIndex: number;
@@ -106,7 +106,7 @@ type TAction =
     | { type: 'LOGOUT' }
     | { type: 'SET_AVAILABLE_ASSESSMENTS'; payload: TAssessmentListItem[] }
     | { type: 'SET_ASSESSMENT_CONFIG'; payload: TAssessmentConfig }
-    | { type: 'SET_STARTED_AT'; payload: string }
+    | { type: 'SET_SUBMISSION_ID'; payload: string }
     | { type: 'SET_QUESTIONS'; payload: { questions: TQuestion[]; options: TOption[][] } }
     | { type: 'SET_ANSWER'; payload: { questionId: string; answer: TAnswer } }
     | { type: 'GO_TO_QUESTION'; payload: number }
@@ -122,7 +122,7 @@ const initialState: TState = {
     user: null,
     availableAssessments: [],
     assessmentConfig: null,
-    startedAt: null,
+    submissionId: null,
     shuffledQuestions: [],
     shuffledOptions: [],
     currentIndex: 0,
@@ -144,8 +144,8 @@ function reducer(state: TState, action: TAction): TState {
             return { ...state, availableAssessments: action.payload };
         case 'SET_ASSESSMENT_CONFIG':
             return { ...state, assessmentConfig: action.payload };
-        case 'SET_STARTED_AT':
-            return { ...state, startedAt: action.payload };
+        case 'SET_SUBMISSION_ID':
+            return { ...state, submissionId: action.payload };
         case 'SET_QUESTIONS':
             return {
                 ...state,
@@ -176,7 +176,7 @@ function reducer(state: TState, action: TAction): TState {
             return {
                 ...state,
                 assessmentConfig: null,
-                startedAt: null,
+                submissionId: null,
                 shuffledQuestions: [],
                 shuffledOptions: [],
                 currentIndex: 0,
@@ -273,10 +273,8 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
         dispatch({ type: 'SET_LOADING', payload: true });
         dispatch({ type: 'SET_ERROR', payload: null });
         try {
-            // Fire-and-forget: track assessment start anonymously
-            recordAssessmentStart(assessmentId, state.token).catch(() => {});
-
-            dispatch({ type: 'SET_STARTED_AT', payload: new Date().toISOString() });
+            const { submission_id } = await startAssessment(assessmentId, state.token);
+            dispatch({ type: 'SET_SUBMISSION_ID', payload: submission_id });
 
             const config = await fetchAssessmentConfig(assessmentId, state.token);
             dispatch({ type: 'SET_ASSESSMENT_CONFIG', payload: config });
@@ -307,16 +305,15 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
     }, []);
 
     const doSubmit = useCallback(async (): Promise<TZipInfo> => {
-        if (!state.token || !state.user || !state.assessmentConfig) {
+        if (!state.token || !state.user || !state.assessmentConfig || !state.submissionId) {
             throw new Error("Missing auth or assessment data");
         }
 
-        const submissionResult = await createSubmission(
-            state.assessmentConfig.assessmentId,
+        const submissionResult = await submitAssessment(
+            state.submissionId,
             state.shuffledQuestions,
             state.answers,
-            state.token,
-            state.startedAt
+            state.token
         );
         dispatch({ type: 'SET_SUBMISSION_RESULT', payload: submissionResult });
 
@@ -329,7 +326,7 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
         ) as TZipInfo;
         dispatch({ type: 'SET_ZIP_INFO', payload: zipInfo });
         return zipInfo;
-    }, [state.token, state.user, state.shuffledQuestions, state.answers, state.assessmentConfig, state.startedAt]);
+    }, [state.token, state.user, state.shuffledQuestions, state.answers, state.assessmentConfig, state.submissionId]);
 
     const resetAssessment = useCallback(() => {
         dispatch({ type: 'RESET_ASSESSMENT' });
