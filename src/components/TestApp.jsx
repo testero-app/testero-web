@@ -94,7 +94,7 @@ function isQuestionAnswered(question, answer) {
 
 function checkIfJavaOrPython() {
 
-    if (question.options.length == 5) {
+    if (question.options.length === 5) {
         onlyNessuna = selectedIds.length === 1 && selectedIds[0].endsWith("_e");
 
     } else {

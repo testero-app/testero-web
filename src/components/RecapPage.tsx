@@ -67,12 +67,10 @@ function getIsAnswered(question: TQuestion, answer: TAnswer | undefined): boolea
     const selectedIds = answer?.selectedIds ?? [];
     if (selectedIds.length === 0) return false;
    
-    //suffix either _e or _d nonsense
-    
-    // se è stata selezionata 1 opzione          e  quell'opzione finisce con _e o _d
+    // Check if only "Nessuna" (fallback) option was selected
     let onlyNessuna
     if (question.options){
-        if (question.options.length == 5) {
+        if (question.options.length === 5) {
         onlyNessuna = selectedIds.length === 1 && selectedIds[0].endsWith("_e");
     } else {
         onlyNessuna = selectedIds.length === 1 && selectedIds[0].endsWith("_d");
@@ -81,8 +79,6 @@ function getIsAnswered(question: TQuestion, answer: TAnswer | undefined): boolea
     if (onlyNessuna) {
         return (answer?.motivation || '').trim().length > 0;
     }
-    //se è stata selezionata 1 opzione e finisce con _e o _d ritorna la motivazione della risposta, se questa è null quindi se l'id non è _e ritorna ''
-    if (onlyNessuna) return (answer?.motivation ?? '').trim().length > 0;
     return true;
 }
 

@@ -19,7 +19,7 @@ export function collectAnswers(studentName, shuffledQuestions, answers, assessme
             const selectedIds = answer ? (answer.selectedIds || []) : [];
 
             let hasNessuna;
-            if (question.options.length == 5) {
+            if (question.options.length === 5) {
                 hasNessuna = selectedIds.length === 1 && selectedIds[0].endsWith("_e");
 
             } else {
