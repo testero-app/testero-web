@@ -8,8 +8,8 @@ import { useTimer } from '../hooks/useTimer';
 
 
 import LandingPage from './LandingPage';
-import TestHeader from './AssessmentHeader';
-import TestPage from './AssessmentPage';
+import AssessmentHeader from './AssessmentHeader';
+import AssessmentPage from './AssessmentPage';
 import RecapPage from './RecapPage';
 import StartModal from './StartModal';
 import SubmitModal from './SubmitModal';
@@ -21,7 +21,7 @@ const initialState = {
     studentName: '',
     selectedSubject: null,
     subjects: [],
-    testConfig: null,
+    assessmentConfig: null,
     loading: false,
     error: null,
     shuffledQuestions: [],
@@ -37,8 +37,8 @@ function reducer(state, action) {
     switch (action.type) {
         case 'SET_SUBJECTS':
             return { ...state, subjects: action.payload };
-        case 'SET_TEST_CONFIG':
-            return { ...state, testConfig: action.payload };
+        case 'SET_ASSESSMENT_CONFIG':
+            return { ...state, assessmentConfig: action.payload };
         case 'SET_LOADING':
             return { ...state, loading: action.payload };
         case 'SET_ERROR':
@@ -46,15 +46,15 @@ function reducer(state, action) {
         case 'SET_NAME':
             return { ...state, studentName: action.payload };
         case 'SET_SUBJECT':
-            return { ...state, selectedSubject: action.payload, testConfig: null };
+            return { ...state, selectedSubject: action.payload, assessmentConfig: null };
         case 'SHOW_MODAL':
             return { ...state, modals: { ...state.modals, [action.payload]: true } };
         case 'HIDE_MODAL':
             return { ...state, modals: { ...state.modals, [action.payload]: false } };
-        case 'START_TEST':
+        case 'START_ASSESSMENT':
             return {
                 ...state,
-                phase: 'test',
+                phase: 'assessment',
                 shuffledQuestions: action.payload.questions,
                 shuffledOptions: action.payload.options,
                 currentIndex: 0,
@@ -70,8 +70,8 @@ function reducer(state, action) {
             };
         case 'SHOW_RECAP':
             return { ...state, phase: 'recap', modals: { start: false, submit: false, final: false } };
-        case 'BACK_TO_TEST':
-            return { ...state, phase: 'test' };
+        case 'BACK_TO_ASSESSMENT':
+            return { ...state, phase: 'assessment' };
         case 'SUBMITTED':
             return { ...state, phase: 'submitted', zipInfo: action.payload };
         case 'TIMER_EXPIRED':
@@ -83,17 +83,17 @@ function reducer(state, action) {
 
 // isQuestionAnswered is imported from ../lib/questionUtils
 
-export default function TestApp() {
+export default function AssessmentApp() {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const onTimerExpire = useCallback(() => {
         dispatch({ type: 'TIMER_EXPIRED' });
-        if (state.phase === 'test') {
+        if (state.phase === 'assessment') {
             dispatch({ type: 'SHOW_RECAP' });
         }
     }, [state.phase]);
 
-    const timer = useTimer(state.testConfig?.timerMinutes || DEFAULT_TIMER_MINUTES, onTimerExpire);
+    const timer = useTimer(state.assessmentConfig?.timerMinutes || DEFAULT_TIMER_MINUTES, onTimerExpire);
 
     // Load subjects on mount
     useEffect(() => {
@@ -115,15 +115,15 @@ export default function TestApp() {
         return () => { cancelled = true; };
     }, []);
 
-    // Load test config when subject changes
+    // Load assessment config when subject changes
     useEffect(() => {
         if (!state.selectedSubject) return;
         let cancelled = false;
         dispatch({ type: 'SET_LOADING', payload: true });
-        fetchTestConfig(state.selectedSubject.id)
+        fetchAssessmentConfig(state.selectedSubject.id)
             .then(config => {
                 if (!cancelled) {
-                    dispatch({ type: 'SET_TEST_CONFIG', payload: config });
+                    dispatch({ type: 'SET_ASSESSMENT_CONFIG', payload: config });
                     dispatch({ type: 'SET_LOADING', payload: false });
                 }
             })
@@ -138,7 +138,7 @@ export default function TestApp() {
 
     // Keyboard navigation
     useEffect(() => {
-        if (state.phase !== 'test') return;
+        if (state.phase !== 'assessment') return;
 
         const handler = (e) => {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -168,13 +168,13 @@ export default function TestApp() {
     const handleStartConfirm = async () => {
         dispatch({ type: 'SET_LOADING', payload: true });
         try {
-            const data = await fetchTestQuestions(state.selectedSubject.id);
+            const data = await fetchAssessmentQuestions(state.selectedSubject.id);
             const questions = data.questions;
             const options = questions.map(q =>
                 q.type === 'multiple' && q.options ? q.options : []
             );
 
-            dispatch({ type: 'START_TEST', payload: { questions, options } });
+            dispatch({ type: 'START_ASSESSMENT', payload: { questions, options } });
             timer.start();
         } catch (err) {
             dispatch({ type: 'SET_ERROR', payload: err.message });
@@ -198,8 +198,8 @@ export default function TestApp() {
         dispatch({ type: 'SHOW_RECAP' });
     };
 
-    const handleBackToTest = () => {
-        dispatch({ type: 'BACK_TO_TEST' });
+    const handleBackToAssessment = () => {
+        dispatch({ type: 'BACK_TO_ASSESSMENT' });
     };
 
     const handleFinalSubmitClick = () => {
@@ -219,8 +219,8 @@ export default function TestApp() {
                 state.studentName.trim().toUpperCase(),
                 state.shuffledQuestions,
                 state.answers,
-                state.testConfig.testId,
-                state.testConfig.title
+                state.assessmentConfig.assessmentId,
+                state.assessmentConfig.title
             );
             alert(`Test consegnato!\n\nFile scaricato: ${zipInfo.zipName}\n(contiene ${zipInfo.fileName} e ${zipInfo.mdFileName})\n\nConsegna questo file al docente.`);
             dispatch({ type: 'SUBMITTED', payload: zipInfo });
@@ -235,8 +235,8 @@ export default function TestApp() {
                 state.studentName.trim().toUpperCase(),
                 state.shuffledQuestions,
                 state.answers,
-                state.testConfig.testId,
-                state.testConfig.title
+                state.assessmentConfig.assessmentId,
+                state.assessmentConfig.title
             );
         } catch {
             alert('Errore durante il download. Riprova.');
@@ -269,7 +269,7 @@ export default function TestApp() {
                 <LandingPage
                     subjects={state.subjects}
                     selectedSubject={state.selectedSubject}
-                    testConfig={state.testConfig}
+                    assessmentConfig={state.assessmentConfig}
                     onSubjectChange={(subject) => dispatch({ type: 'SET_SUBJECT', payload: subject })}
                     studentName={state.studentName}
                     onNameChange={(name) => dispatch({ type: 'SET_NAME', payload: name })}
@@ -296,7 +296,7 @@ export default function TestApp() {
                     answeredCount={answeredCount}
                     totalQuestions={state.shuffledQuestions.length}
                     timerExpired={state.timerExpired}
-                    onBackToTest={handleBackToTest}
+                    onBackToAssessment={handleBackToAssessment}
                     onFinalSubmit={handleFinalSubmitClick}
                 />
                 <FinalModal
@@ -308,15 +308,15 @@ export default function TestApp() {
         );
     }
 
-    // phase === 'test'
+    // phase === 'assessment'
     return (
         <>
-            <TestHeader
+            <AssessmentHeader
                 studentName={state.studentName.trim().toUpperCase()}
                 timerDisplay={timer.display}
                 timerWarning={timer.warning}
             />
-            <TestPage
+            <AssessmentPage
                 shuffledQuestions={state.shuffledQuestions}
                 shuffledOptions={state.shuffledOptions}
                 currentIndex={state.currentIndex}

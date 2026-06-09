@@ -72,7 +72,7 @@ export type TAnswerResult = {
 export type TSubmissionResult = {
     id: string;
     user_id: string;
-    test_id: string;
+    assessment_id: string;
     started_at: string | null;
     submitted_at: string;
     answers: TAnswerResult[];

@@ -36,7 +36,7 @@ export function collectAnswers(studentName, shuffledQuestions, answers, assessme
     });
 
     return {
-        testId: assessmentId,
+        assessmentId,
         student: studentName,
         submittedAt: timestamp,
         answers: answersObj
@@ -49,7 +49,7 @@ export function generateMarkdown(data, title, questions) {
     lines.push('');
     lines.push(`**Studente:** ${data.student}`);
     lines.push(`**Data consegna:** ${new Date(data.submittedAt).toLocaleString('it-IT')}`);
-    lines.push(`**Test ID:** ${data.testId}`);
+    lines.push(`**Assessment ID:** ${data.assessmentId}`);
     lines.push('');
     lines.push('---');
     lines.push('');
