@@ -66,14 +66,19 @@ export async function fetchAssessmentQuestions(assessmentId, token) {
     return res.json();
 }
 
-export async function recordAssessmentStart(assessmentId, token) {
-    await fetch(`${API_BASE}/api/assessments/${assessmentId}/start`, {
+export async function startAssessment(assessmentId, token) {
+    const res = await fetch(`${API_BASE}/api/assessments/${assessmentId}/start`, {
         method: 'POST',
         headers: authHeaders(token),
     });
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `Failed to start assessment: ${res.status}`);
+    }
+    return res.json();
 }
 
-export async function createSubmission(assessmentId, questions, answers, token, startedAt) {
+export async function submitAssessment(submissionId, questions, answers, token) {
     const mappedAnswers = questions.map(q => {
         const answer = answers[q.id] || {};
         return {
@@ -85,14 +90,14 @@ export async function createSubmission(assessmentId, questions, answers, token, 
         };
     });
 
-    const res = await fetch(`${API_BASE}/api/submissions`, {
-        method: 'POST',
+    const res = await fetch(`${API_BASE}/api/submissions/${submissionId}`, {
+        method: 'PUT',
         headers: authHeaders(token),
-        body: JSON.stringify({ assessment_id: assessmentId, started_at: startedAt, answers: mappedAnswers }),
+        body: JSON.stringify({ answers: mappedAnswers }),
     });
     if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        throw new Error(body.detail || `Failed to create submission: ${res.status}`);
+        throw new Error(body.detail || `Failed to submit assessment: ${res.status}`);
     }
     return res.json();
 }
