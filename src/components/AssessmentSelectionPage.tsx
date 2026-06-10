@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, ReactNode } from 'react';
 import { TAssessmentListItem, TUser } from '../context/AssessmentContext';
 
 interface AssessmentSelectionPageProps {
@@ -8,6 +8,9 @@ interface AssessmentSelectionPageProps {
     onLoadAssessments: () => Promise<void>;
     onSelectAssessment: (assessmentId: string) => void;
     onLogout: () => void;
+    activeTab?: 'assessments' | 'history';
+    onTabChange?: (tab: 'assessments' | 'history') => void;
+    historyContent?: ReactNode;
 }
 
 function getAssessmentAbbrev(title: string): string {
@@ -17,7 +20,7 @@ function getAssessmentAbbrev(title: string): string {
     return (words[words.length - 2][0] + words[words.length - 1][0]).toUpperCase();
 }
 
-export default function AssessmentSelectionPage({ user, assessments, loading, onLoadAssessments, onSelectAssessment, onLogout }: AssessmentSelectionPageProps) {
+export default function AssessmentSelectionPage({ user, assessments, loading, onLoadAssessments, onSelectAssessment, onLogout, activeTab = 'assessments', onTabChange, historyContent }: AssessmentSelectionPageProps) {
     useEffect(() => {
         if (assessments.length === 0) {
             onLoadAssessments();
@@ -49,13 +52,38 @@ export default function AssessmentSelectionPage({ user, assessments, loading, on
 
             <main className="sel-main">
                 <div className="sel-page-head">
-                    <h1 className="sel-heading">Scegli una verifica</h1>
-                    <p className="sel-desc">Seleziona il test che vuoi sostenere. Il tempo parte al primo click.</p>
+                    <h1 className="sel-heading">
+                        {activeTab === 'assessments' ? 'Scegli una verifica' : 'I miei risultati'}
+                    </h1>
+                    <p className="sel-desc">
+                        {activeTab === 'assessments'
+                            ? 'Seleziona il test che vuoi sostenere. Il tempo parte al primo click.'
+                            : 'Rivedi i risultati delle verifiche che hai completato.'}
+                    </p>
                 </div>
 
-                {loading && <p className="sel-empty-text">Caricamento...</p>}
+                {onTabChange && (
+                    <div className="sel-tabs">
+                        <button
+                            className={`sel-tab ${activeTab === 'assessments' ? 'sel-tab--active' : ''}`}
+                            onClick={() => onTabChange('assessments')}
+                        >
+                            Verifiche
+                        </button>
+                        <button
+                            className={`sel-tab ${activeTab === 'history' ? 'sel-tab--active' : ''}`}
+                            onClick={() => onTabChange('history')}
+                        >
+                            I miei risultati
+                        </button>
+                    </div>
+                )}
 
-                {!loading && assessments.length === 0 && (
+                {activeTab === 'history' && historyContent}
+
+                {activeTab === 'assessments' && loading && <p className="sel-empty-text">Caricamento...</p>}
+
+                {activeTab === 'assessments' && !loading && assessments.length === 0 && (
                     <div className="sel-empty">
                         <div className="sel-empty-icon">
                             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -68,7 +96,7 @@ export default function AssessmentSelectionPage({ user, assessments, loading, on
                     </div>
                 )}
 
-                {!loading && assessments.length > 0 && (
+                {activeTab === 'assessments' && !loading && assessments.length > 0 && (
                     <div className="sel-assessments">
                         {assessments.map(assessment => (
                             <button

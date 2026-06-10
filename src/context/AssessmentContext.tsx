@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useReducer } from "react";
 import { generateEncryptedZip } from "../lib/generateZip";
-import { login as apiLogin, fetchAvailableAssessments, fetchAssessmentConfig, fetchAssessmentQuestions, startAssessment, submitAssessment } from "../lib/api";
+import { login as apiLogin, fetchAvailableAssessments, fetchAssessmentConfig, fetchAssessmentQuestions, startAssessment, submitAssessment, fetchSubmissionHistory } from "../lib/api";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -78,6 +78,19 @@ export type TSubmissionResult = {
     answers: TAnswerResult[];
 };
 
+export type TSubmissionSummary = {
+    id: string;
+    assessment_id: string;
+    assessment_title: string;
+    started_at: string | null;
+    submitted_at: string;
+    score: number | null;
+    total_questions: number;
+    correct_count: number;
+    wrong_count: number;
+    unanswered_count: number;
+};
+
 // ─── State & Reducer ──────────────────────────────────────────────────────────
 
 type TState = {
@@ -96,6 +109,8 @@ type TState = {
     timerExpired: boolean;
     zipInfo: TZipInfo | null;
     submissionResult: TSubmissionResult | null;
+    // History
+    submissionHistory: TSubmissionSummary[];
     // UI
     loading: boolean;
     error: string | null;
@@ -115,7 +130,8 @@ type TAction =
     | { type: 'SET_SUBMISSION_RESULT'; payload: TSubmissionResult }
     | { type: 'SET_LOADING'; payload: boolean }
     | { type: 'SET_ERROR'; payload: string | null }
-    | { type: 'RESET_ASSESSMENT' };
+    | { type: 'RESET_ASSESSMENT' }
+    | { type: 'SET_SUBMISSION_HISTORY'; payload: TSubmissionSummary[] };
 
 const initialState: TState = {
     token: null,
@@ -130,6 +146,7 @@ const initialState: TState = {
     timerExpired: false,
     zipInfo: null,
     submissionResult: null,
+    submissionHistory: [],
     loading: false,
     error: null,
 };
@@ -172,6 +189,8 @@ function reducer(state: TState, action: TAction): TState {
             return { ...state, loading: action.payload };
         case 'SET_ERROR':
             return { ...state, error: action.payload };
+        case 'SET_SUBMISSION_HISTORY':
+            return { ...state, submissionHistory: action.payload };
         case 'RESET_ASSESSMENT':
             return {
                 ...state,
@@ -205,12 +224,14 @@ export interface AssessmentContextType {
     timerExpired: boolean;
     zipInfo: TZipInfo | null;
     submissionResult: TSubmissionResult | null;
+    submissionHistory: TSubmissionSummary[];
     loading: boolean;
     error: string | null;
     // Actions
     doLogin: (username: string, password: string) => Promise<void>;
     doLogout: () => void;
     loadAvailableAssessments: () => Promise<void>;
+    loadSubmissionHistory: () => Promise<void>;
     selectAssessment: (assessmentId: string) => Promise<void>;
     setAnswer: (questionId: string, answer: TAnswer) => void;
     goToQuestion: (index: number) => void;
@@ -261,6 +282,19 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
         try {
             const assessments = await fetchAvailableAssessments(state.token);
             dispatch({ type: 'SET_AVAILABLE_ASSESSMENTS', payload: assessments });
+        } catch (err) {
+            dispatch({ type: 'SET_ERROR', payload: (err as Error).message });
+        } finally {
+            dispatch({ type: 'SET_LOADING', payload: false });
+        }
+    }, [state.token]);
+
+    const loadSubmissionHistory = useCallback(async () => {
+        if (!state.token) return;
+        dispatch({ type: 'SET_LOADING', payload: true });
+        try {
+            const submissions = await fetchSubmissionHistory(state.token);
+            dispatch({ type: 'SET_SUBMISSION_HISTORY', payload: submissions });
         } catch (err) {
             dispatch({ type: 'SET_ERROR', payload: (err as Error).message });
         } finally {
@@ -338,6 +372,7 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
             doLogin,
             doLogout,
             loadAvailableAssessments,
+            loadSubmissionHistory,
             selectAssessment,
             setAnswer,
             goToQuestion,
