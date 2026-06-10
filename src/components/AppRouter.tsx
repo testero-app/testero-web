@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { MemoryRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import { AssessmentProvider, useAssessment, TQuestion, TOption } from '../context/AssessmentContext';
+import { AssessmentProvider, useAssessment, TQuestion, TOption, TSubmissionSummary } from '../context/AssessmentContext';
 import { isQuestionAnswered, DEFAULT_TIMER_MINUTES } from '../lib/questionUtils';
 import { useTimer } from '../hooks/useTimer';
 
@@ -12,6 +12,8 @@ import AssessmentHeader from './AssessmentHeader';
 import AssessmentPage from './AssessmentPage';
 import RecapPage from './RecapPage';
 import ResultsPage from './ResultsPage';
+import SubmissionHistoryPage from './SubmissionHistoryPage';
+import HistoryDetailPage from './HistoryDetailPage';
 import StartModal from './StartModal';
 import SubmitModal from './SubmitModal';
 import FinalModal from './FinalModal';
@@ -37,10 +39,16 @@ function LoginView() {
 // ─── Assessment Selection View ──────────────────────────────────────────────
 
 function AssessmentSelectionView() {
-    const { user, availableAssessments, loading, loadAvailableAssessments, selectAssessment, doLogout } = useAssessment();
+    const {
+        user, availableAssessments, submissionHistory, loading,
+        loadAvailableAssessments, loadSubmissionHistory,
+        selectAssessment, doLogout,
+    } = useAssessment();
     const navigate = useNavigate();
     const [showStartModal, setShowStartModal] = useState(false);
     const [pendingAssessmentId, setPendingAssessmentId] = useState<string | null>(null);
+    const [activeTab, setActiveTab] = useState<'assessments' | 'history'>('assessments');
+    const [selectedSubmission, setSelectedSubmission] = useState<TSubmissionSummary | null>(null);
 
     const handleSelectAssessment = useCallback((assessmentId: string) => {
         setPendingAssessmentId(assessmentId);
@@ -63,6 +71,19 @@ function AssessmentSelectionView() {
         navigate('/');
     }, [doLogout, navigate]);
 
+    const handleTabChange = useCallback((tab: 'assessments' | 'history') => {
+        setActiveTab(tab);
+        setSelectedSubmission(null);
+        if (tab === 'history') {
+            loadSubmissionHistory();
+        }
+    }, [loadSubmissionHistory]);
+
+    const handleSelectSubmission = useCallback((submissionId: string) => {
+        const sub = submissionHistory.find(s => s.id === submissionId);
+        if (sub) setSelectedSubmission(sub);
+    }, [submissionHistory]);
+
     useEffect(() => {
         if (!user) {
             navigate('/');
@@ -71,6 +92,15 @@ function AssessmentSelectionView() {
 
     if (!user) {
         return null;
+    }
+
+    if (selectedSubmission) {
+        return (
+            <HistoryDetailPage
+                submission={selectedSubmission}
+                onBack={() => setSelectedSubmission(null)}
+            />
+        );
     }
 
     return (
@@ -82,6 +112,17 @@ function AssessmentSelectionView() {
                 onLoadAssessments={loadAvailableAssessments}
                 onSelectAssessment={handleSelectAssessment}
                 onLogout={handleLogout}
+                activeTab={activeTab}
+                onTabChange={handleTabChange}
+                historyContent={
+                    activeTab === 'history' ? (
+                        <SubmissionHistoryPage
+                            submissions={submissionHistory}
+                            loading={loading}
+                            onSelectSubmission={handleSelectSubmission}
+                        />
+                    ) : undefined
+                }
             />
             <StartModal
                 visible={showStartModal}

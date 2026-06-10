@@ -78,6 +78,18 @@ export async function startAssessment(assessmentId, token) {
     return res.json();
 }
 
+export async function fetchSubmissionHistory(token) {
+    const res = await fetch(`${API_BASE}/api/submissions/mine`, {
+        headers: authHeaders(token),
+    });
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `Failed to fetch submission history: ${res.status}`);
+    }
+    const data = await res.json();
+    return data.submissions;
+}
+
 export async function submitAssessment(submissionId, questions, answers, token) {
     const mappedAnswers = questions.map(q => {
         const answer = answers[q.id] || {};
