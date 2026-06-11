@@ -40,7 +40,7 @@ function LoginView() {
 
 function AssessmentSelectionView() {
     const {
-        user, availableAssessments, submissionHistory, loading,
+        user, token, availableAssessments, submissionHistory, loading,
         loadAvailableAssessments, loadSubmissionHistory,
         selectAssessment, doLogout,
     } = useAssessment();
@@ -99,6 +99,7 @@ function AssessmentSelectionView() {
             <HistoryDetailPage
                 submission={selectedSubmission}
                 onBack={() => setSelectedSubmission(null)}
+                token={token!}
             />
         );
     }

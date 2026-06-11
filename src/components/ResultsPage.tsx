@@ -1,8 +1,6 @@
-import { useEffect, useRef } from 'react';
-import hljs from '../lib/highlight';
+import { useEffect } from 'react';
 import { TQuestion, TOption, TAnswer, TAnswerResult } from '../context/AssessmentContext';
-
-const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+import ReviewQuestionCard from './ReviewQuestionCard';
 
 interface ResultsPageProps {
     shuffledQuestions: TQuestion[];
@@ -80,15 +78,24 @@ export default function ResultsPage({
                     const opts = shuffledOptions[idx] || [];
                     const answer = answers[question.id];
                     const result = resultMap.get(question.id);
+                    const correctOptionIds = new Set(result?.correct_option_ids ?? []);
 
                     return (
-                        <ResultQuestion
+                        <ReviewQuestionCard
                             key={question.id}
-                            question={question}
+                            questionText={question.text}
+                            questionCode={question.code}
+                            questionType={question.type}
                             displayIndex={idx}
-                            shuffledOpts={opts}
-                            answer={answer}
-                            result={result}
+                            isCorrect={result?.is_correct ?? null}
+                            options={opts.map(o => ({
+                                id: o.id,
+                                text: o.text,
+                                isCorrect: correctOptionIds.has(o.id),
+                            }))}
+                            selectedOptionIds={new Set(answer?.selectedIds || [])}
+                            answerText={answer?.text}
+                            motivation={answer?.motivation}
                         />
                     );
                 })}
@@ -106,110 +113,6 @@ export default function ResultsPage({
                     Torna ai test
                 </button>
             </div>
-        </div>
-    );
-}
-
-// ─── Single Question Result ──────────────────────────────────────────────────
-
-interface ResultQuestionProps {
-    question: TQuestion;
-    displayIndex: number;
-    shuffledOpts: TOption[];
-    answer: TAnswer | undefined;
-    result: TAnswerResult | undefined;
-}
-
-function ResultQuestion({ question, displayIndex, shuffledOpts, answer, result }: ResultQuestionProps) {
-    const codeRef = useRef<HTMLElement>(null);
-
-    useEffect(() => {
-        if (codeRef.current) {
-            hljs.highlightElement(codeRef.current);
-        }
-    }, [question.code]);
-
-    const isCorrect = result?.is_correct;
-    const correctOptionIds = new Set(result?.correct_option_ids ?? []);
-
-    // Badge for question status
-    let badgeClass = 'results-badge-pending';
-    let badgeText = 'In attesa di correzione';
-    if (isCorrect === true) {
-        badgeClass = 'results-badge-correct';
-        badgeText = 'Corretta';
-    } else if (isCorrect === false) {
-        badgeClass = 'results-badge-wrong';
-        badgeText = 'Sbagliata';
-    }
-
-    if (question.type === 'open') {
-        const answerText = answer?.text || '';
-        const hasAnswer = answerText.trim().length > 0;
-
-        return (
-            <div className={`recap-question results-question results-question-pending`}>
-                <div className="recap-question-header">
-                    <span className="recap-question-number">Domanda {displayIndex + 1} (Bonus)</span>
-                    <span className={`recap-badge ${badgeClass}`}>{badgeText}</span>
-                </div>
-                <div className="recap-question-text">{question.text}</div>
-                <div className={`recap-open-answer${hasAnswer ? '' : ' empty'}`}>
-                    {hasAnswer ? answerText : 'Nessuna risposta'}
-                </div>
-            </div>
-        );
-    }
-
-    const selectedIds = new Set(answer?.selectedIds || []);
-    const motivation = answer?.motivation || '';
-    const hasNessuna = Array.from(selectedIds).some(id => id.endsWith('_e') || id.endsWith('_d'));
-
-    return (
-        <div className={`recap-question results-question ${isCorrect === true ? 'results-question-correct' : isCorrect === false ? 'results-question-wrong' : ''}`}>
-            <div className="recap-question-header">
-                <span className="recap-question-number">Domanda {displayIndex + 1}</span>
-                <span className={`recap-badge ${badgeClass}`}>{badgeText}</span>
-            </div>
-            <div className="recap-question-text">{question.text}</div>
-
-            {question.code && (
-                <div className="code-snippet">
-                    <pre><code ref={codeRef} className="language-java">{question.code}</code></pre>
-                </div>
-            )}
-
-            <div className="recap-options">
-                {shuffledOpts.map((opt, idx) => {
-                    const isSelected = selectedIds.has(opt.id);
-                    const isCorrectOption = correctOptionIds.has(opt.id);
-
-                    let optionClass = 'recap-option';
-                    if (isSelected && isCorrectOption) {
-                        optionClass += ' results-option-correct';
-                    } else if (isSelected && !isCorrectOption) {
-                        optionClass += ' results-option-wrong';
-                    } else if (!isSelected && isCorrectOption) {
-                        optionClass += ' results-option-missed';
-                    }
-
-                    return (
-                        <div key={opt.id} className={optionClass}>
-                            <span className="recap-option-letter">{LETTERS[idx]})</span>
-                            <span className="results-option-text">{opt.text}</span>
-                            {isSelected && isCorrectOption && <span className="results-icon">&#10003;</span>}
-                            {isSelected && !isCorrectOption && <span className="results-icon results-icon-wrong">&#10007;</span>}
-                            {!isSelected && isCorrectOption && <span className="results-icon results-icon-missed">&#10003;</span>}
-                        </div>
-                    );
-                })}
-            </div>
-
-            {hasNessuna && motivation && (
-                <div className="recap-motivation">
-                    <strong>Motivazione:</strong> {motivation}
-                </div>
-            )}
         </div>
     );
 }
