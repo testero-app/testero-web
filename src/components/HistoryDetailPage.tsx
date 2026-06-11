@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
-import { TSubmissionSummary } from '../context/AssessmentContext';
+import { TSubmissionSummary, TSubmissionReview } from '../context/AssessmentContext';
+import { fetchSubmissionReview } from '../lib/api';
+import ReviewQuestionCard from './ReviewQuestionCard';
 
 interface HistoryDetailPageProps {
     submission: TSubmissionSummary;
     onBack: () => void;
+    token: string;
 }
 
 function formatFullDate(isoDate: string): string {
@@ -19,10 +22,27 @@ function formatDuration(startedAt: string | null, submittedAt: string): string {
     return `${minutes} minuti`;
 }
 
-export default function HistoryDetailPage({ submission, onBack }: HistoryDetailPageProps) {
+export default function HistoryDetailPage({ submission, onBack, token }: HistoryDetailPageProps) {
+    const [review, setReview] = useState<TSubmissionReview | null>(null);
+    const [reviewLoading, setReviewLoading] = useState(false);
+    const [reviewError, setReviewError] = useState<string | null>(null);
+
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
+
+    async function loadReview() {
+        setReviewLoading(true);
+        setReviewError(null);
+        try {
+            const data = await fetchSubmissionReview(submission.id, token);
+            setReview(data);
+        } catch (e: any) {
+            setReviewError(e.message || 'Errore nel caricamento');
+        } finally {
+            setReviewLoading(false);
+        }
+    }
 
     const total = submission.total_questions;
     const correct = submission.correct_count;
@@ -84,6 +104,48 @@ export default function HistoryDetailPage({ submission, onBack }: HistoryDetailP
                     </p>
                 )}
             </div>
+
+            {!review && (
+                <div className="recap-actions">
+                    <button
+                        className="btn-final-submit"
+                        onClick={loadReview}
+                        disabled={reviewLoading}
+                        style={{ background: 'var(--accent)' }}
+                    >
+                        {reviewLoading ? 'Caricamento...' : 'Rivedi le risposte'}
+                    </button>
+                </div>
+            )}
+
+            {reviewError && (
+                <p style={{ color: 'var(--wrong)', textAlign: 'center', margin: '1rem 0' }}>
+                    {reviewError}
+                </p>
+            )}
+
+            {review && (
+                <div>
+                    {review.questions.map((q, idx) => (
+                        <ReviewQuestionCard
+                            key={q.id}
+                            questionText={q.text}
+                            questionCode={q.code}
+                            questionType={q.type}
+                            displayIndex={idx}
+                            isCorrect={q.is_correct}
+                            options={q.options.map(o => ({
+                                id: o.id,
+                                text: o.text,
+                                isCorrect: o.is_correct,
+                            }))}
+                            selectedOptionIds={new Set(q.selected_option_ids)}
+                            answerText={q.answer_text}
+                            motivation={q.motivation}
+                        />
+                    ))}
+                </div>
+            )}
 
             <div className="recap-actions">
                 <button

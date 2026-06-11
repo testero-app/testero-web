@@ -63,10 +63,10 @@ export type TZipInfo = {
 };
 
 export type TAnswerResult = {
-    question_id: string;
+    question_snapshot_id: string;
     type: string;
     is_correct: boolean | null;
-    correct_option_ids: string[];
+    correct_option_snapshot_ids: string[];
 };
 
 export type TSubmissionResult = {
@@ -76,6 +76,35 @@ export type TSubmissionResult = {
     started_at: string | null;
     submitted_at: string;
     answers: TAnswerResult[];
+};
+
+export type TReviewOption = {
+    id: string;
+    text: string;
+    position: number;
+    is_correct: boolean;
+};
+
+export type TReviewQuestion = {
+    id: string;
+    type: string;
+    text: string;
+    code: string | null;
+    position: number;
+    is_correct: boolean | null;
+    selected_option_ids: string[];
+    answer_text: string;
+    motivation: string;
+    options: TReviewOption[];
+};
+
+export type TSubmissionReview = {
+    id: string;
+    assessment_title: string;
+    started_at: string | null;
+    submitted_at: string;
+    score: number | null;
+    questions: TReviewQuestion[];
 };
 
 export type TSubmissionSummary = {
