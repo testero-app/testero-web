@@ -25,7 +25,7 @@ export default function ResultsPage({
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
-    const resultMap = new Map(answerResults.map(r => [r.question_id, r]));
+    const resultMap = new Map(answerResults.map(r => [r.question_snapshot_id, r]));
 
     const mcQuestions = shuffledQuestions.filter(q => q.type === 'multiple');
     const correctCount = mcQuestions.filter(q => resultMap.get(q.id)?.is_correct === true).length;
@@ -78,7 +78,7 @@ export default function ResultsPage({
                     const opts = shuffledOptions[idx] || [];
                     const answer = answers[question.id];
                     const result = resultMap.get(question.id);
-                    const correctOptionIds = new Set(result?.correct_option_ids ?? []);
+                    const correctOptionIds = new Set(result?.correct_option_snapshot_ids ?? []);
 
                     return (
                         <ReviewQuestionCard

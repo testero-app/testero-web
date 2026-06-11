@@ -283,6 +283,12 @@ function ResultsView() {
     } = useAssessment();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (!submissionResult) {
+            navigate('/select-assessment');
+        }
+    }, [submissionResult, navigate]);
+
     const handleRedownload = async () => {
         try {
             await doSubmit();
@@ -297,7 +303,6 @@ function ResultsView() {
     };
 
     if (!submissionResult) {
-        navigate('/select-assessment');
         return null;
     }
 
