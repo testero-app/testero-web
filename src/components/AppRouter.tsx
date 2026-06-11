@@ -40,7 +40,7 @@ function LoginView() {
 
 function AssessmentSelectionView() {
     const {
-        user, availableAssessments, submissionHistory, loading,
+        user, token, availableAssessments, submissionHistory, loading,
         loadAvailableAssessments, loadSubmissionHistory,
         selectAssessment, doLogout,
     } = useAssessment();
@@ -99,6 +99,7 @@ function AssessmentSelectionView() {
             <HistoryDetailPage
                 submission={selectedSubmission}
                 onBack={() => setSelectedSubmission(null)}
+                token={token!}
             />
         );
     }
@@ -282,6 +283,12 @@ function ResultsView() {
     } = useAssessment();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (!submissionResult) {
+            navigate('/select-assessment');
+        }
+    }, [submissionResult, navigate]);
+
     const handleRedownload = async () => {
         try {
             await doSubmit();
@@ -296,7 +303,6 @@ function ResultsView() {
     };
 
     if (!submissionResult) {
-        navigate('/select-assessment');
         return null;
     }
 
