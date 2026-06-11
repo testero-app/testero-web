@@ -35,6 +35,7 @@ export default function ReviewQuestionCard({
     }, [questionCode]);
 
     // Badge for question status
+    const isUnanswered = questionType === 'multiple' && isCorrect === null && selectedOptionIds.size === 0;
     let badgeClass = 'results-badge-pending';
     let badgeText = 'In attesa di correzione';
     if (isCorrect === true) {
@@ -43,6 +44,8 @@ export default function ReviewQuestionCard({
     } else if (isCorrect === false) {
         badgeClass = 'results-badge-wrong';
         badgeText = 'Sbagliata';
+    } else if (isUnanswered) {
+        badgeText = 'Non data';
     }
 
     if (questionType === 'open') {
