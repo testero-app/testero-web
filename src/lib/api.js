@@ -114,6 +114,21 @@ export async function submitAssessment(submissionId, questions, answers, token) 
     return res.json();
 }
 
+export function saveAnswer(submissionId, questionSnapshotId, answer, token) {
+    fetch(`${API_BASE}/api/submissions/${submissionId}/answers/${questionSnapshotId}`, {
+        method: 'PUT',
+        headers: authHeaders(token),
+        body: JSON.stringify({
+            type: answer.type || 'multiple',
+            text: answer.text || '',
+            motivation: answer.motivation || '',
+            selected_option_ids: answer.selectedIds || [],
+        }),
+    }).catch(() => {
+        // Fire-and-forget: silently ignore errors
+    });
+}
+
 export async function fetchSubmissionReview(submissionId, token) {
     const res = await fetch(`${API_BASE}/api/submissions/${submissionId}/review`, {
         headers: authHeaders(token),
