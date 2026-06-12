@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useReducer } from "react";
 import { generateEncryptedZip } from "../lib/generateZip";
-import { login as apiLogin, fetchAvailableAssessments, fetchAssessmentConfig, fetchAssessmentQuestions, startAssessment, submitAssessment, fetchSubmissionHistory } from "../lib/api";
+import { login as apiLogin, fetchAvailableAssessments, fetchAssessmentConfig, fetchAssessmentQuestions, startAssessment, submitAssessment, fetchSubmissionHistory, saveAnswer } from "../lib/api";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -360,8 +360,19 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
     }, []);
 
     const goToQuestion = useCallback((index: number) => {
+        // Save the current question's answer before navigating
+        if (state.submissionId && state.token && state.shuffledQuestions.length > 0) {
+            const currentQuestion = state.shuffledQuestions[state.currentIndex];
+            const currentAnswer = state.answers[currentQuestion.id] || {};
+            saveAnswer(
+                state.submissionId,
+                currentQuestion.id,
+                { ...currentAnswer, type: currentQuestion.type },
+                state.token
+            );
+        }
         dispatch({ type: 'GO_TO_QUESTION', payload: index });
-    }, []);
+    }, [state.submissionId, state.token, state.shuffledQuestions, state.currentIndex, state.answers]);
 
     const setTimerExpired = useCallback(() => {
         dispatch({ type: 'SET_TIMER_EXPIRED' });
