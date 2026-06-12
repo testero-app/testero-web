@@ -17,6 +17,7 @@ import HistoryDetailPage from './HistoryDetailPage';
 import StartModal from './StartModal';
 import SubmitModal from './SubmitModal';
 import FinalModal from './FinalModal';
+import AlertModal from './AlertModal';
 
 // ─── Login View ──────────────────────────────────────────────────────────────
 
@@ -145,6 +146,7 @@ function AssessmentView() {
     const navigate = useNavigate();
     const [showSubmitModal, setShowSubmitModal] = useState(false);
     const [showFinalModal, setShowFinalModal] = useState(false);
+    const [alertModal, setAlertModal] = useState({ visible: false, title: '', message: '' });
 
     const onTimerExpire = useCallback(() => {
         setTimerExpired();
@@ -184,7 +186,11 @@ function AssessmentView() {
             await doSubmit();
             navigate('/results');
         } catch (err) {
-            alert('Errore durante la generazione del file. Riprova.\n\n' + (err as Error).message);
+            setAlertModal({
+                visible: true,
+                title: 'Errore',
+                message: 'Errore durante la generazione del file. Riprova.\n\n' + (err as Error).message,
+            });
         }
     }, [doSubmit, timer, navigate]);
 
@@ -218,6 +224,12 @@ function AssessmentView() {
                 onConfirm={handleFinalSubmit}
                 onCancel={() => setShowFinalModal(false)}
             />
+            <AlertModal
+                visible={alertModal.visible}
+                title={alertModal.title}
+                message={alertModal.message}
+                onClose={() => setAlertModal({ visible: false, title: '', message: '' })}
+            />
         </>
     );
 }
@@ -230,6 +242,7 @@ function RecapView() {
     } = useAssessment();
     const navigate = useNavigate();
     const [showFinalModal, setShowFinalModal] = useState(false);
+    const [alertModal, setAlertModal] = useState({ visible: false, title: '', message: '' });
 
     const answeredCount = useMemo(() => {
         return shuffledQuestions.filter((q) => isQuestionAnswered(q, answers[q.id])).length;
@@ -241,7 +254,11 @@ function RecapView() {
             await doSubmit();
             navigate('/results');
         } catch (err) {
-            alert('Errore durante la generazione del file. Riprova.\n\n' + (err as Error).message);
+            setAlertModal({
+                visible: true,
+                title: 'Errore',
+                message: 'Errore durante la generazione del file. Riprova.\n\n' + (err as Error).message,
+            });
         }
     }, [doSubmit, navigate]);
 
@@ -270,6 +287,12 @@ function RecapView() {
                 onConfirm={handleFinalSubmit}
                 onCancel={() => setShowFinalModal(false)}
             />
+            <AlertModal
+                visible={alertModal.visible}
+                title={alertModal.title}
+                message={alertModal.message}
+                onClose={() => setAlertModal({ visible: false, title: '', message: '' })}
+            />
         </>
     );
 }
@@ -282,6 +305,7 @@ function ResultsView() {
         submissionResult, zipInfo, doSubmit, resetAssessment,
     } = useAssessment();
     const navigate = useNavigate();
+    const [alertModal, setAlertModal] = useState({ visible: false, title: '', message: '' });
 
     useEffect(() => {
         if (!submissionResult) {
@@ -293,7 +317,11 @@ function ResultsView() {
         try {
             await doSubmit();
         } catch {
-            alert('Errore durante il download. Riprova.');
+            setAlertModal({
+                visible: true,
+                title: 'Errore',
+                message: 'Errore durante il download. Riprova.',
+            });
         }
     };
 
@@ -307,15 +335,23 @@ function ResultsView() {
     }
 
     return (
-        <ResultsPage
-            shuffledQuestions={shuffledQuestions}
-            shuffledOptions={shuffledOptions}
-            answers={answers}
-            answerResults={submissionResult.answers}
-            onBackToAssessments={handleBackToAssessments}
-            onRedownload={handleRedownload}
-            zipName={zipInfo?.zipName}
-        />
+        <>
+            <ResultsPage
+                shuffledQuestions={shuffledQuestions}
+                shuffledOptions={shuffledOptions}
+                answers={answers}
+                answerResults={submissionResult.answers}
+                onBackToAssessments={handleBackToAssessments}
+                onRedownload={handleRedownload}
+                zipName={zipInfo?.zipName}
+            />
+            <AlertModal
+                visible={alertModal.visible}
+                title={alertModal.title}
+                message={alertModal.message}
+                onClose={() => setAlertModal({ visible: false, title: '', message: '' })}
+            />
+        </>
     );
 }
 

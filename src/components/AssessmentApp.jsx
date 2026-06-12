@@ -14,6 +14,7 @@ import RecapPage from './RecapPage';
 import StartModal from './StartModal';
 import SubmitModal from './SubmitModal';
 import FinalModal from './FinalModal';
+import AlertModal from './AlertModal';
 
 
 const initialState = {
@@ -30,6 +31,7 @@ const initialState = {
     answers: {},
     timerExpired: false,
     modals: { start: false, submit: false, final: false },
+    alertModal: { visible: false, title: '', message: '' },
 
 };
 
@@ -76,6 +78,10 @@ function reducer(state, action) {
             return { ...state, phase: 'submitted', zipInfo: action.payload };
         case 'TIMER_EXPIRED':
             return { ...state, timerExpired: true, modals: { start: false, submit: false, final: false } };
+        case 'SHOW_ALERT':
+            return { ...state, alertModal: { visible: true, title: action.payload.title, message: action.payload.message } };
+        case 'HIDE_ALERT':
+            return { ...state, alertModal: { visible: false, title: '', message: '' } };
         default:
             return state;
     }
@@ -222,10 +228,19 @@ export default function AssessmentApp() {
                 state.assessmentConfig.assessmentId,
                 state.assessmentConfig.title
             );
-            alert(`Test consegnato!\n\nFile scaricato: ${zipInfo.zipName}\n(contiene ${zipInfo.fileName} e ${zipInfo.mdFileName})\n\nConsegna questo file al docente.`);
             dispatch({ type: 'SUBMITTED', payload: zipInfo });
+            dispatch({
+                type: 'SHOW_ALERT',
+                payload: {
+                    title: 'Test consegnato',
+                    message: `File scaricato: ${zipInfo.zipName}\n(contiene ${zipInfo.fileName} e ${zipInfo.mdFileName})\n\nConsegna questo file al docente.`,
+                },
+            });
         } catch {
-            alert('Errore durante la generazione del file. Riprova.');
+            dispatch({
+                type: 'SHOW_ALERT',
+                payload: { title: 'Errore', message: 'Errore durante la generazione del file. Riprova.' },
+            });
         }
     };
 
@@ -239,27 +254,38 @@ export default function AssessmentApp() {
                 state.assessmentConfig.title
             );
         } catch {
-            alert('Errore durante il download. Riprova.');
+            dispatch({
+                type: 'SHOW_ALERT',
+                payload: { title: 'Errore', message: 'Errore durante il download. Riprova.' },
+            });
         }
     };
 
     if (state.phase === 'submitted') {
         return (
-            <div className="landing-page">
-                <div className="landing-card">
-                    <h1 className="landing-welcome">Test consegnato</h1>
-                    <p className="landing-motto">Il test è stato consegnato con successo.</p>
-                    <p style={{ margin: '1rem 0' }}>
-                        File: <strong>{state.zipInfo.zipName}</strong>
-                    </p>
-                    <p style={{ marginBottom: '1.5rem', color: '#666' }}>
-                        Se il download non è andato a buon fine, puoi riscaricare il file.
-                    </p>
-                    <button className="btn-start" onClick={handleRedownload}>
-                        Scarica di nuovo
-                    </button>
+            <>
+                <div className="landing-page">
+                    <div className="landing-card">
+                        <h1 className="landing-welcome">Test consegnato</h1>
+                        <p className="landing-motto">Il test è stato consegnato con successo.</p>
+                        <p style={{ margin: '1rem 0' }}>
+                            File: <strong>{state.zipInfo.zipName}</strong>
+                        </p>
+                        <p style={{ marginBottom: '1.5rem', color: '#666' }}>
+                            Se il download non è andato a buon fine, puoi riscaricare il file.
+                        </p>
+                        <button className="btn-start" onClick={handleRedownload}>
+                            Scarica di nuovo
+                        </button>
+                    </div>
                 </div>
-            </div>
+                <AlertModal
+                    visible={state.alertModal.visible}
+                    title={state.alertModal.title}
+                    message={state.alertModal.message}
+                    onClose={() => dispatch({ type: 'HIDE_ALERT' })}
+                />
+            </>
         );
     }
 
@@ -282,6 +308,12 @@ export default function AssessmentApp() {
                     onConfirm={handleStartConfirm}
                     onCancel={() => dispatch({ type: 'HIDE_MODAL', payload: 'start' })}
                 />
+                <AlertModal
+                    visible={state.alertModal.visible}
+                    title={state.alertModal.title}
+                    message={state.alertModal.message}
+                    onClose={() => dispatch({ type: 'HIDE_ALERT' })}
+                />
             </>
         );
     }
@@ -303,6 +335,12 @@ export default function AssessmentApp() {
                     visible={state.modals.final}
                     onConfirm={doFinalSubmit}
                     onCancel={() => dispatch({ type: 'HIDE_MODAL', payload: 'final' })}
+                />
+                <AlertModal
+                    visible={state.alertModal.visible}
+                    title={state.alertModal.title}
+                    message={state.alertModal.message}
+                    onClose={() => dispatch({ type: 'HIDE_ALERT' })}
                 />
             </>
         );
@@ -338,6 +376,12 @@ export default function AssessmentApp() {
                 visible={state.modals.final}
                 onConfirm={doFinalSubmit}
                 onCancel={() => dispatch({ type: 'HIDE_MODAL', payload: 'final' })}
+            />
+            <AlertModal
+                visible={state.alertModal.visible}
+                title={state.alertModal.title}
+                message={state.alertModal.message}
+                onClose={() => dispatch({ type: 'HIDE_ALERT' })}
             />
         </>
     );
