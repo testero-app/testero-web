@@ -23,6 +23,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="it">
+            <head>
+                <script dangerouslySetInnerHTML={{ __html: `console.log("Testero FE v${process.env.NEXT_PUBLIC_APP_VERSION}")` }} />
+            </head>
             <body className={`${dmSans.variable} ${jetbrainsMono.variable} ${dmSans.className}`}>{children}</body>
         </html>
     );

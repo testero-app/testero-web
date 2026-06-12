@@ -1,6 +1,12 @@
+import { readFileSync } from 'fs';
+
+const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+    env: {
+        NEXT_PUBLIC_APP_VERSION: pkg.version,
+    },
 };
 
 export default nextConfig;
