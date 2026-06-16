@@ -1,0 +1,40 @@
+.page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--m-space-8) var(--m-space-6);
+    min-height: 100vh;
+    background: var(--m-bg);
+}
+
+.header {
+    background: var(--m-white);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-lg);
+    padding: var(--m-space-6);
+    margin-bottom: var(--m-space-6);
+    text-align: center;
+}
+
+.title {
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--m-text-heading);
+    margin-bottom: var(--m-space-2);
+}
+
+.counter {
+    font-size: 14px;
+    color: var(--m-text-secondary);
+}
+
+.counterStrong {
+    font-weight: 700;
+    color: var(--m-teal-dark);
+}
+
+.actions {
+    display: flex;
+    gap: var(--m-space-3);
+    justify-content: center;
+    margin-top: var(--m-space-6);
+}

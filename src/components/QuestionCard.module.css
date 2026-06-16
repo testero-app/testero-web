@@ -1,0 +1,203 @@
+.card {
+    background: var(--m-white);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-lg);
+    padding: var(--m-space-7);
+    box-shadow: var(--m-shadow-sm);
+}
+
+.header {
+    margin-bottom: var(--m-space-4);
+}
+
+.number {
+    font-family: var(--m-font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--m-teal-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--m-text-heading);
+    line-height: 1.6;
+    margin-bottom: var(--m-space-5);
+}
+
+/* ── Code Snippet ───────────────────────────────────────────────────────── */
+
+.codeSnippet {
+    background: #1B2838;
+    border-radius: var(--m-radius-sm);
+    padding: var(--m-space-4);
+    margin-bottom: var(--m-space-5);
+    overflow-x: auto;
+}
+
+.codeSnippet pre {
+    margin: 0;
+}
+
+.codeSnippet code {
+    font-family: var(--m-font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    color: #E0E0E0;
+}
+
+/* ── Options ────────────────────────────────────────────────────────────── */
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--m-space-2);
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: var(--m-space-3);
+    padding: 13px 16px;
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-md);
+    background: var(--m-white);
+    cursor: pointer;
+    transition: background var(--m-transition-fast), border-color var(--m-transition-fast);
+}
+
+.option:hover {
+    background: #F6FFFD;
+    border-color: var(--m-teal);
+}
+
+.optionSelected {
+    border-color: var(--m-teal);
+    border-width: 2px;
+    padding: 12px 15px;
+    background: var(--m-success-light);
+}
+
+/* ── Checkbox ───────────────────────────────────────────────────────────── */
+
+.checkbox {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border: 2px solid var(--m-border-input);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--m-transition-fast), border-color var(--m-transition-fast);
+}
+
+.option:hover .checkbox {
+    border-color: var(--m-teal);
+}
+
+.checkboxSelected {
+    background: var(--m-teal);
+    border-color: var(--m-teal);
+}
+
+.checkmark {
+    display: none;
+    width: 12px;
+    height: 12px;
+    color: var(--m-white);
+}
+
+.checkboxSelected .checkmark {
+    display: block;
+}
+
+/* ── Letter & Text ──────────────────────────────────────────────────────── */
+
+.letter {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--m-text-label);
+    min-width: 16px;
+}
+
+.optionSelected .letter {
+    color: var(--m-teal-dark);
+    font-weight: 800;
+}
+
+.optionText {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--m-text-hover);
+    line-height: 1.4;
+    flex: 1;
+}
+
+.optionSelected .optionText {
+    color: var(--m-text-heading);
+}
+
+/* ── Motivation ─────────────────────────────────────────────────────────── */
+
+.motivationContainer {
+    display: none;
+    margin-top: var(--m-space-4);
+}
+
+.motivationVisible {
+    display: block;
+}
+
+.motivationInput {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1.5px solid var(--m-border-input);
+    border-radius: 9px;
+    background: var(--m-surface);
+    font-family: var(--m-font-body);
+    font-size: 14px;
+    color: var(--m-text-heading);
+    outline: none;
+    transition: border-color var(--m-transition-fast), box-shadow var(--m-transition-fast);
+}
+
+.motivationInput:focus {
+    border-color: var(--m-teal);
+    box-shadow: var(--m-focus-ring);
+    background: var(--m-white);
+}
+
+.motivationInput::placeholder {
+    color: var(--m-text-label);
+}
+
+/* ── Open Answer ────────────────────────────────────────────────────────── */
+
+.openTextarea {
+    width: 100%;
+    min-height: 160px;
+    padding: var(--m-space-4);
+    border: 1.5px solid var(--m-border-input);
+    border-radius: var(--m-radius-md);
+    background: var(--m-surface);
+    font-family: var(--m-font-body);
+    font-size: 14px;
+    color: var(--m-text-heading);
+    line-height: 1.6;
+    resize: vertical;
+    outline: none;
+    transition: border-color var(--m-transition-fast), box-shadow var(--m-transition-fast);
+}
+
+.openTextarea:focus {
+    border-color: var(--m-teal);
+    box-shadow: var(--m-focus-ring);
+    background: var(--m-white);
+}
+
+.openTextarea::placeholder {
+    color: var(--m-text-label);
+}

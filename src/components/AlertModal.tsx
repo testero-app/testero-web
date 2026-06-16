@@ -1,3 +1,5 @@
+import { Modal, Button } from './ui';
+
 interface AlertModalProps {
     visible: boolean;
     title: string;
@@ -7,14 +9,13 @@ interface AlertModalProps {
 
 export default function AlertModal({ visible, title, message, onClose }: AlertModalProps) {
     return (
-        <div className={`modal-overlay${visible ? ' visible' : ''}`}>
-            <div className="modal">
-                <h3>{title}</h3>
-                <p>{message}</p>
-                <div className="modal-actions">
-                    <button className="btn-confirm" onClick={onClose}>OK</button>
-                </div>
-            </div>
-        </div>
+        <Modal
+            open={visible}
+            onClose={onClose}
+            title={title}
+            actions={<Button variant="primary" onClick={onClose}>OK</Button>}
+        >
+            <p>{message}</p>
+        </Modal>
     );
 }

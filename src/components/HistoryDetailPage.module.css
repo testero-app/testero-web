@@ -1,0 +1,125 @@
+.page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--m-space-8) var(--m-space-6);
+    min-height: 100vh;
+    background: var(--m-bg);
+}
+
+.backBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--m-space-2);
+    font-family: var(--m-font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--m-text-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: var(--m-space-6);
+    transition: color var(--m-transition-fast);
+}
+
+.backBtn:hover {
+    color: var(--m-teal);
+}
+
+.header {
+    background: var(--m-white);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-lg);
+    padding: var(--m-space-6);
+    margin-bottom: var(--m-space-4);
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--m-text-heading);
+    margin: 0 0 var(--m-space-1);
+}
+
+.date {
+    font-family: var(--m-font-mono);
+    font-size: 13px;
+    color: var(--m-text-label);
+}
+
+.summary {
+    background: var(--m-white);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-lg);
+    padding: var(--m-space-6);
+    margin-bottom: var(--m-space-6);
+}
+
+.stats {
+    display: flex;
+    gap: var(--m-space-8);
+    margin-bottom: var(--m-space-5);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.statNum {
+    font-family: var(--m-font-mono);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.statLabel {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--m-text-label);
+}
+
+.statCorrect .statNum { color: var(--m-teal); }
+.statWrong .statNum { color: var(--m-error); }
+.statUnanswered .statNum { color: var(--m-text-label); }
+
+.bar {
+    display: flex;
+    height: 8px;
+    border-radius: var(--m-radius-full);
+    overflow: hidden;
+    margin-bottom: var(--m-space-3);
+}
+
+.barCorrect { background: var(--m-teal); }
+.barWrong { background: var(--m-error); }
+.barUnanswered { background: var(--m-border); }
+
+.scoreLine {
+    font-size: 13px;
+    color: var(--m-text-secondary);
+}
+
+.timeLine {
+    font-family: var(--m-font-mono);
+    font-size: 13px;
+    color: var(--m-text-label);
+    padding-top: var(--m-space-4);
+    border-top: 1px solid var(--m-border);
+    margin-top: var(--m-space-4);
+}
+
+.actions {
+    display: flex;
+    gap: var(--m-space-3);
+    justify-content: center;
+    margin-top: var(--m-space-6);
+}
+
+.errorText {
+    text-align: center;
+    color: var(--m-error-text);
+    font-size: 14px;
+    margin: var(--m-space-4) 0;
+}

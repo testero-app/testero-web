@@ -1,6 +1,9 @@
 import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
 import { isQuestionAnswered } from '../lib/questionUtils';
+import { Button } from './ui';
 import RecapQuestion from './RecapQuestion';
+import styles from './RecapPage.module.css';
+
 interface RecapPageProps {
     shuffledQuestions: TQuestion[];
     shuffledOptions: TOption[][];
@@ -20,22 +23,21 @@ export default function RecapPage({
     totalQuestions,
     timerExpired,
     onBackToAssessment,
-    onFinalSubmit
+    onFinalSubmit,
 }: RecapPageProps) {
     return (
-        <div className="recap-page visible">
-            <div className="recap-header">
-                <h2 className="recap-title">Riepilogo risposte</h2>
-                <p className="recap-counter">
-                    <strong>{answeredCount}</strong> / {totalQuestions} risposte date
+        <div className={styles.page}>
+            <div className={styles.header}>
+                <h2 className={styles.title}>Riepilogo risposte</h2>
+                <p className={styles.counter}>
+                    <span className={styles.counterStrong}>{answeredCount}</span> / {totalQuestions} risposte date
                 </p>
             </div>
             <div>
                 {shuffledQuestions.map((question, idx) => {
                     const opts = shuffledOptions[idx] || [];
                     const answer = answers[question.id];
-                    const isAnswered = getIsAnswered(question, answer);
-
+                    const answered = isQuestionAnswered(question, answer);
                     return (
                         <RecapQuestion
                             key={question.id}
@@ -43,27 +45,19 @@ export default function RecapPage({
                             displayIndex={idx}
                             shuffledOpts={opts}
                             answer={answer}
-                            isAnswered={isAnswered}
+                            isAnswered={answered}
                         />
                     );
                 })}
             </div>
-            <div className="recap-actions">
+            <div className={styles.actions}>
                 {!timerExpired && (
-                    <button className="btn-back" onClick={onBackToAssessment}>← Torna al test</button>
+                    <Button variant="ghost" onClick={onBackToAssessment}>&larr; Torna al test</Button>
                 )}
-                <button className="btn-final-submit" onClick={onFinalSubmit}>
+                <Button variant="primary" onClick={onFinalSubmit}>
                     {timerExpired ? 'Scarica risposte' : 'Conferma e consegna'}
-                </button>
+                </Button>
             </div>
         </div>
     );
 }
-
-
-function getIsAnswered(question: TQuestion, answer: TAnswer | undefined): boolean {
-    return isQuestionAnswered(question, answer);
-}
-
-
-

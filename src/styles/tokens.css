@@ -1,0 +1,151 @@
+/* ===================================================================
+   TESTERO · Design System CSS
+   Estratto fedelmente dai mock "Testero Schermate UIUX".
+   =================================================================== */
+
+/* ----------------------------------------------------------------
+   1. TOKEN
+   ---------------------------------------------------------------- */
+:root {
+  /* — Brand / accento — */
+  --ts-navy:            #102a43;
+  --ts-navy-900:        #0d2236;
+  --ts-navy-950:        #0d1f33;
+  --ts-teal:            #14b8a6;
+  --ts-teal-700:        #0e7c7b;
+  --ts-teal-ink:        #06302c;
+
+  /* — Stati — */
+  --ts-success:         #14b8a6;
+  --ts-success-700:     #0e7c7b;
+  --ts-success-bg:      #e6fcfa;
+  --ts-warning:         #f59e0b;
+  --ts-warning-700:     #9a6a08;
+  --ts-warning-600:     #c47308;
+  --ts-warning-bg:      #fef3e2;
+  --ts-warning-bg-soft: #fffaf2;
+  --ts-warning-border:  #f3cd86;
+  --ts-danger:          #e5484d;
+  --ts-danger-700:      #c0353a;
+  --ts-danger-bg:       #fdeded;
+
+  /* — Neutri / superfici — */
+  --ts-canvas:          #e7eaee;
+  --ts-app-bg:          #f0f4f8;
+  --ts-surface:         #ffffff;
+  --ts-surface-subtle:  #f8fafc;
+
+  /* — Bordi — */
+  --ts-border:          #e1e6ec;
+  --ts-border-soft:     #eef1f4;
+  --ts-border-input:    #dde4ec;
+
+  /* — Testo — */
+  --ts-ink:             #102a43;
+  --ts-text:            #334e68;
+  --ts-text-muted:      #486581;
+  --ts-text-soft:       #6b7a89;
+  --ts-text-faint:      #8696a6;
+  --ts-text-fainter:    #9aa6b2;
+  --ts-text-placeholder:#b0bcc8;
+  --ts-on-dark:         #cfe0e8;
+  --ts-on-dark-muted:   #9fc2cd;
+
+  /* — Raggi — */
+  --ts-r-sm:   7px;
+  --ts-r-md:   10px;
+  --ts-r-lg:   13px;
+  --ts-r-xl:   18px;
+  --ts-r-pill: 99px;
+
+  /* — Ombre — */
+  --ts-shadow-card:  0 1px 2px rgba(16,42,67,.05);
+  --ts-shadow-pop:   0 16px 40px rgba(16,42,67,.12);
+  --ts-shadow-modal: 0 24px 60px rgba(0,0,0,.40);
+  --ts-focus-ring:   0 0 0 3px rgba(20,184,166,.12);
+
+  /* — Tipografia — */
+  --ts-font-ui:   'Sora', system-ui, sans-serif;
+  --ts-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* ── Backward-compat aliases (used in CSS Modules) ──────────── */
+  --m-navy:            var(--ts-navy);
+  --m-navy-hover:      #173a5c;
+  --m-navy-pressed:    var(--ts-navy-950);
+  --m-teal:            var(--ts-teal);
+  --m-teal-hover:      #10a596;
+  --m-teal-pressed:    #0e8f82;
+  --m-teal-dark:       var(--ts-teal-700);
+  --m-teal-darkest:    var(--ts-teal-ink);
+
+  --m-bg:              var(--ts-app-bg);
+  --m-surface:         var(--ts-surface-subtle);
+  --m-surface-alt:     var(--ts-app-bg);
+  --m-border:          var(--ts-border);
+  --m-border-input:    var(--ts-border-input);
+  --m-border-disabled: var(--ts-border-soft);
+
+  --m-text-heading:    var(--ts-ink);
+  --m-text-hover:      var(--ts-text);
+  --m-text-primary:    var(--ts-text-muted);
+  --m-text-secondary:  var(--ts-text-soft);
+  --m-text-label:      var(--ts-text-fainter);
+  --m-text-disabled:   var(--ts-text-placeholder);
+  --m-white:           var(--ts-surface);
+
+  --m-success:         var(--ts-success);
+  --m-success-bg:      var(--ts-success-bg);
+  --m-success-light:   #effdfb;
+  --m-warning:         var(--ts-warning);
+  --m-warning-bg:      var(--ts-warning-bg);
+  --m-warning-dark:    var(--ts-warning-700);
+  --m-warning-text:    #3A2A00;
+  --m-error:           var(--ts-danger);
+  --m-error-hover:     #D23A3F;
+  --m-error-pressed:   #BF3035;
+  --m-error-bg:        var(--ts-danger-bg);
+  --m-error-text:      var(--ts-danger-700);
+  --m-error-surface:   #FFFAFA;
+
+  --m-btn-disabled-bg:        var(--ts-border);
+  --m-btn-disabled-text:      var(--ts-text-fainter);
+  --m-btn-accent-disabled-bg: var(--ts-success-bg);
+  --m-btn-accent-disabled-text:#9FC9C4;
+
+  --m-radius-sm:   var(--ts-r-sm);
+  --m-radius-md:   var(--ts-r-md);
+  --m-radius-lg:   var(--ts-r-lg);
+  --m-radius-xl:   var(--ts-r-xl);
+  --m-radius-2xl:  20px;
+  --m-radius-full: var(--ts-r-pill);
+
+  --m-shadow-sm:   var(--ts-shadow-card);
+  --m-shadow-md:   0 8px 16px rgba(16,42,67,.10);
+  --m-shadow-lg:   var(--ts-shadow-pop);
+  --m-shadow-xl:   var(--ts-shadow-modal);
+  --m-focus-ring:  var(--ts-focus-ring);
+
+  --m-font-body:   var(--ts-font-ui);
+  --m-font-mono:   var(--ts-font-mono);
+
+  --m-transition-fast: 120ms ease;
+  --m-transition-base: 200ms ease;
+  --m-transition-slow: 300ms ease;
+
+  --m-space-1: 4px;  --m-space-2: 8px;  --m-space-3: 12px;
+  --m-space-4: 16px; --m-space-5: 20px; --m-space-6: 24px;
+  --m-space-7: 28px; --m-space-8: 32px; --m-space-10: 40px;
+  --m-space-12: 48px; --m-space-14: 56px; --m-space-16: 64px;
+}
+
+/* ─── Animations ──────────────────────────────────────────────────────── */
+
+@keyframes m-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes m-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}

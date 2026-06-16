@@ -1,0 +1,25 @@
+.track {
+    width: 100%;
+    height: 8px;
+    background: var(--m-border);
+    border-radius: var(--m-radius-full);
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    border-radius: var(--m-radius-full);
+    transition: width var(--m-transition-slow);
+}
+
+.teal {
+    background: var(--m-teal);
+}
+
+.warning {
+    background: var(--m-warning);
+}
+
+.danger {
+    background: var(--m-error);
+}

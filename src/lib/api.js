@@ -123,10 +123,49 @@ export function saveAnswer(submissionId, questionSnapshotId, answer, token) {
             text: answer.text || '',
             motivation: answer.motivation || '',
             selected_option_ids: answer.selectedIds || [],
+            flagged: answer.flagged ?? false,
         }),
     }).catch(() => {
         // Fire-and-forget: silently ignore errors
     });
+}
+
+export async function fetchSavedAnswers(submissionId, token) {
+    const res = await fetch(`${API_BASE}/api/submissions/${submissionId}/answers`, {
+        headers: authHeaders(token),
+    });
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `Failed to fetch saved answers: ${res.status}`);
+    }
+    return res.json();
+}
+
+export async function fetchUserProfile(token) {
+    const res = await fetch(`${API_BASE}/api/users/me`, {
+        headers: authHeaders(token),
+    });
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `Failed to fetch profile: ${res.status}`);
+    }
+    return res.json();
+}
+
+export async function changePassword(currentPassword, newPassword, confirmPassword, token) {
+    const res = await fetch(`${API_BASE}/api/users/me/password`, {
+        method: 'PUT',
+        headers: authHeaders(token),
+        body: JSON.stringify({
+            current_password: currentPassword,
+            new_password: newPassword,
+            confirm_password: confirmPassword,
+        }),
+    });
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `Failed to change password: ${res.status}`);
+    }
 }
 
 export async function fetchSubmissionReview(submissionId, token) {

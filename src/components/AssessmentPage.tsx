@@ -1,6 +1,7 @@
 import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
 import Sidebar from './Sidebar';
 import QuestionCard from './QuestionCard';
+import styles from './AssessmentPage.module.css';
 
 interface AssessmentPageProps {
     shuffledQuestions: TQuestion[];
@@ -27,14 +28,14 @@ export default function AssessmentPage({
     onPrev,
     onNext,
     onAnswer,
-    onSubmit
+    onSubmit,
 }: AssessmentPageProps) {
     const question = shuffledQuestions[currentIndex];
     const opts = shuffledOptions[currentIndex] || [];
 
     return (
-        <main className="assessment-container visible">
-            <div className="assessment-layout">
+        <main className={styles.container}>
+            <div className={styles.layout}>
                 <Sidebar
                     totalQuestions={shuffledQuestions.length}
                     currentIndex={currentIndex}
@@ -45,20 +46,15 @@ export default function AssessmentPage({
                     onNext={onNext}
                     onSubmit={onSubmit}
                 />
-                <div className="main-content">
-                    <div className="question-container">
-                        <QuestionCard
-                            key={question.id}
-                            question={question}
-                            displayIndex={currentIndex}
-                            shuffledOpts={opts}
-                            answer={answers[question.id]}
-                            onAnswer={onAnswer}
-
-                        />
-
-                    </div>
-
+                <div>
+                    <QuestionCard
+                        key={question.id}
+                        question={question}
+                        displayIndex={currentIndex}
+                        shuffledOpts={opts}
+                        answer={answers[question.id]}
+                        onAnswer={onAnswer}
+                    />
                 </div>
             </div>
         </main>

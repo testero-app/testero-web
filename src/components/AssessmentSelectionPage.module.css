@@ -1,0 +1,148 @@
+.main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: var(--m-space-8) var(--m-space-6);
+}
+
+.pageHead {
+    margin-bottom: var(--m-space-6);
+}
+
+.heading {
+    font-family: var(--m-font-body);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--m-text-heading);
+    margin-bottom: var(--m-space-2);
+}
+
+.desc {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--m-text-secondary);
+    line-height: 1.5;
+}
+
+.tabs {
+    margin-bottom: var(--m-space-6);
+}
+
+/* ── Assessment Cards Grid ──────────────────────────────────────────────── */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--m-space-4);
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--m-space-5) var(--m-space-5) var(--m-space-4);
+    background: var(--m-white);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-lg);
+    cursor: pointer;
+    transition: box-shadow var(--m-transition-fast), border-color var(--m-transition-fast);
+    text-align: left;
+    font-family: var(--m-font-body);
+    width: 100%;
+}
+
+.card:hover {
+    border-color: var(--m-border-input);
+    box-shadow: var(--m-shadow-sm);
+}
+
+.cardTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--m-space-3);
+}
+
+.cardTitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--m-text-heading);
+    line-height: 1.3;
+    flex: 1;
+    margin-right: var(--m-space-3);
+}
+
+.cardMeta {
+    display: flex;
+    align-items: center;
+    gap: var(--m-space-2);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--m-text-label);
+    margin-top: auto;
+    padding-top: var(--m-space-3);
+    border-top: 1px solid var(--m-border);
+}
+
+.metaSep {
+    color: var(--m-border);
+}
+
+.cardArrow {
+    display: flex;
+    align-items: center;
+    color: var(--m-text-label);
+    transition: color var(--m-transition-fast), transform var(--m-transition-fast);
+}
+
+.card:hover .cardArrow {
+    color: var(--m-teal);
+    transform: translateX(2px);
+}
+
+/* ── Empty State ────────────────────────────────────────────────────────── */
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--m-space-16) var(--m-space-6);
+}
+
+.emptyIcon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--m-surface);
+    border-radius: var(--m-radius-lg);
+    color: var(--m-text-label);
+    margin-bottom: var(--m-space-5);
+}
+
+.emptyTitle {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--m-text-heading);
+    margin-bottom: var(--m-space-2);
+}
+
+.emptyText {
+    font-size: 13px;
+    color: var(--m-text-secondary);
+    line-height: 1.6;
+    max-width: 320px;
+}
+
+.loadingText {
+    text-align: center;
+    padding: var(--m-space-10);
+    font-size: 14px;
+    color: var(--m-text-label);
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

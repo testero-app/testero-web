@@ -1,19 +1,26 @@
+import { TimerChip } from './ui';
+import styles from './AssessmentHeader.module.css';
+
 interface AssessmentHeaderProps {
     studentName: string;
     timerDisplay: string;
     timerWarning: boolean;
+    remainingSeconds?: number;
 }
 
-export default function AssessmentHeader({ studentName, timerDisplay, timerWarning }: AssessmentHeaderProps) {
+export default function AssessmentHeader({ studentName, timerDisplay, remainingSeconds }: AssessmentHeaderProps) {
     return (
-        <header className="a-header">
-            <span className="a-header-brand">
-                <span className="a-brand-dot"></span>
-                Testero
-            </span>
-            <div className="a-header-right">
-                <span className="a-header-user">{studentName}</span>
-                <span className={`a-header-timer${timerWarning ? ' a-timer-warn' : ''}`}>{timerDisplay}</span>
+        <header className={styles.header}>
+            <div className={styles.brand}>
+                <span className={styles.logo}>&lt;/&gt;</span>
+                <span>Testero</span>
+            </div>
+            <div className={styles.right}>
+                <span className={styles.userName}>{studentName}</span>
+                <TimerChip
+                    display={timerDisplay}
+                    remainingSeconds={remainingSeconds ?? 999}
+                />
             </div>
         </header>
     );

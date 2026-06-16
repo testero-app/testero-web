@@ -18,6 +18,9 @@ import StartModal from './StartModal';
 import SubmitModal from './SubmitModal';
 import FinalModal from './FinalModal';
 import AlertModal from './AlertModal';
+import ProfilePage from './ProfilePage';
+import ChangePasswordPage from './ChangePasswordPage';
+import ErrorPage from './ErrorPage';
 
 // ─── Login View ──────────────────────────────────────────────────────────────
 
@@ -114,6 +117,7 @@ function AssessmentSelectionView() {
                 onLoadAssessments={loadAvailableAssessments}
                 onSelectAssessment={handleSelectAssessment}
                 onLogout={handleLogout}
+                onProfile={() => navigate('/profile')}
                 activeTab={activeTab}
                 onTabChange={handleTabChange}
                 historyContent={
@@ -200,6 +204,7 @@ function AssessmentView() {
                 studentName={user?.name ?? ''}
                 timerDisplay={timer.display}
                 timerWarning={timer.warning}
+                remainingSeconds={timer.remainingSeconds}
             />
             <AssessmentPage
                 shuffledQuestions={shuffledQuestions}
@@ -355,7 +360,63 @@ function ResultsView() {
     );
 }
 
-// isQuestionAnswered is imported from ../lib/questionUtils
+// ─── Profile View ────────────────────────────────────────────────────────────
+
+function ProfileView() {
+    const { user, doLogout } = useAssessment();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user) navigate('/');
+    }, [user, navigate]);
+
+    if (!user) return null;
+
+    return (
+        <ProfilePage
+            user={user}
+            onBack={() => navigate('/select-assessment')}
+            onLogout={() => { doLogout(); navigate('/'); }}
+            onChangePassword={() => navigate('/change-password')}
+        />
+    );
+}
+
+// ─── Change Password View ────────────────────────────────────────────────────
+
+function ChangePasswordView() {
+    const { user, token, doLogout } = useAssessment();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user) navigate('/');
+    }, [user, navigate]);
+
+    if (!user || !token) return null;
+
+    return (
+        <ChangePasswordPage
+            user={user}
+            token={token}
+            onBack={() => navigate('/profile')}
+            onLogout={() => { doLogout(); navigate('/'); }}
+        />
+    );
+}
+
+// ─── Not Found View ──────────────────────────────────────────────────────────
+
+function NotFoundView() {
+    const navigate = useNavigate();
+    return (
+        <ErrorPage
+            code="404"
+            title="Pagina non trovata"
+            message="La pagina che stai cercando non esiste."
+            onAction={() => navigate('/')}
+        />
+    );
+}
 
 // ─── App Router ───────────────────────────────────────────────────────────────
 
@@ -369,6 +430,9 @@ export default function AppRouter() {
                     <Route path="/assessment" element={<AssessmentView />} />
                     <Route path="/recap" element={<RecapView />} />
                     <Route path="/results" element={<ResultsView />} />
+                    <Route path="/profile" element={<ProfileView />} />
+                    <Route path="/change-password" element={<ChangePasswordView />} />
+                    <Route path="*" element={<NotFoundView />} />
                 </Routes>
             </MemoryRouter>
         </AssessmentProvider>
