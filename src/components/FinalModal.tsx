@@ -1,4 +1,4 @@
-import { Modal, Button } from './ui';
+import { Modal } from './ui';
 
 interface FinalModalProps {
     visible: boolean;
@@ -14,8 +14,8 @@ export default function FinalModal({ visible, onConfirm, onCancel }: FinalModalP
             title="Consegnare il test?"
             actions={
                 <>
-                    <Button variant="ghost" onClick={onCancel}>Annulla</Button>
-                    <Button variant="primary" onClick={onConfirm}>Consegna</Button>
+                    <button className="ts-btn ts-btn--ghost" onClick={onCancel}>Annulla</button>
+                    <button className="ts-btn ts-btn--dark" onClick={onConfirm}>Consegna</button>
                 </>
             }
         >

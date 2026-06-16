@@ -1,4 +1,4 @@
-import { Button, ProgressBar } from './ui';
+import { ProgressBar } from './ui';
 import styles from './Sidebar.module.css';
 
 interface SidebarProps {
@@ -67,20 +67,28 @@ export default function Sidebar({
 
             {/* Nav */}
             <div className={styles.navRow}>
-                <Button variant="ghost" size="sm" disabled={currentIndex === 0} onClick={onPrev}>
+                <span
+                    className={styles.navLink}
+                    style={{ color: currentIndex === 0 ? '#b0bcc8' : '#0e7c7b', cursor: currentIndex === 0 ? 'default' : 'pointer' }}
+                    onClick={currentIndex === 0 ? undefined : onPrev}
+                >
                     &larr; Precedente
-                </Button>
-                <Button variant="ghost" size="sm" disabled={currentIndex === totalQuestions - 1} onClick={onNext}>
+                </span>
+                <span
+                    className={styles.navLink}
+                    style={{ color: currentIndex === totalQuestions - 1 ? '#b0bcc8' : '#0e7c7b', cursor: currentIndex === totalQuestions - 1 ? 'default' : 'pointer' }}
+                    onClick={currentIndex === totalQuestions - 1 ? undefined : onNext}
+                >
                     Successiva &rarr;
-                </Button>
+                </span>
             </div>
 
             {/* Submit */}
             <div className={styles.submitBlock}>
-                <Button variant="primary" fullWidth onClick={onSubmit}>
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 8l3.5 3.5L13 5" /></svg>
+                <button className="ts-btn ts-btn--dark ts-btn--block" onClick={onSubmit}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="2.6"><path d="M5 12l5 5L20 6" /></svg>
                     Consegna test
-                </Button>
+                </button>
             </div>
         </aside>
     );

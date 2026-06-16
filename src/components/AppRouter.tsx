@@ -202,9 +202,16 @@ function AssessmentView() {
         <>
             <AssessmentHeader
                 studentName={user?.name ?? ''}
+                assessmentTitle={assessmentConfig?.title}
                 timerDisplay={timer.display}
                 timerWarning={timer.warning}
                 remainingSeconds={timer.remainingSeconds}
+                currentIndex={currentIndex}
+                totalQuestions={shuffledQuestions.length}
+                answeredCount={answeredCount}
+                answeredSet={answeredSet}
+                onGoTo={goToQuestion}
+                onSubmit={() => setShowSubmitModal(true)}
             />
             <AssessmentPage
                 shuffledQuestions={shuffledQuestions}

@@ -1,40 +1,63 @@
 .page {
     max-width: 800px;
     margin: 0 auto;
-    padding: var(--m-space-8) var(--m-space-6);
+    padding: 32px 24px 100px;      /* padding-bottom per spazio sotto la sticky bar */
     min-height: 100vh;
-    background: var(--m-bg);
+    background: var(--ts-app-bg);
 }
 
 .header {
-    background: var(--m-white);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius-lg);
-    padding: var(--m-space-6);
-    margin-bottom: var(--m-space-6);
+    background: #fff;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    padding: 24px;
+    margin-bottom: 24px;
     text-align: center;
 }
 
 .title {
     font-size: 21px;
     font-weight: 800;
-    color: var(--m-text-heading);
-    margin-bottom: var(--m-space-2);
+    color: var(--ts-ink);
+    margin-bottom: 8px;
 }
 
 .counter {
     font-size: 14px;
-    color: var(--m-text-secondary);
+    color: var(--ts-text-soft);
 }
 
 .counterStrong {
     font-weight: 700;
-    color: var(--m-teal-dark);
+    color: var(--ts-teal-700);
 }
 
-.actions {
+/* ── Sticky submit bar ──────────────────────────────────────────────── */
+
+.submitBar {
+    position: sticky;
+    bottom: 0;
     display: flex;
-    gap: var(--m-space-3);
-    justify-content: center;
-    margin-top: var(--m-space-6);
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 24px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-top: 1px solid #e1e6ec;
+    box-shadow: 0 -4px 20px rgba(16, 42, 67, 0.06);
+    margin-top: 24px;
+}
+
+.submitBarCounter {
+    font-family: var(--ts-font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ts-text-faint);
+}
+
+.submitBarActions {
+    display: flex;
+    gap: 11px;
 }

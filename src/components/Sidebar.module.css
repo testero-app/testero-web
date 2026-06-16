@@ -1,14 +1,14 @@
 .sidebar {
     position: sticky;
-    top: 90px;
+    top: 24px;
     height: fit-content;
     display: flex;
     flex-direction: column;
-    gap: var(--m-space-5);
-    padding: var(--m-space-5);
-    background: var(--m-white);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius-lg);
+    gap: 20px;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-xl);
 }
 
 /* ── Progress ───────────────────────────────────────────────────────────── */
@@ -65,45 +65,42 @@
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 34px);
-    gap: 6px;
-    justify-content: start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .cell {
-    width: 34px;
-    height: 34px;
+    width: 46px;
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius-sm);
-    background: var(--m-white);
-    font-family: var(--m-font-body);
-    font-size: 13px;
+    border: 1px solid var(--ts-border);
+    border-radius: 11px;
+    background: #fff;
+    font-family: var(--ts-font-mono);
+    font-size: 15px;
     font-weight: 700;
-    color: var(--m-text-label);
+    color: var(--ts-text);
     cursor: pointer;
-    transition: background var(--m-transition-fast), border-color var(--m-transition-fast),
-                color var(--m-transition-fast);
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
 }
 
 .cell:hover {
-    border-color: var(--m-teal);
-    color: var(--m-teal-dark);
+    border-color: #c3ccd6;
 }
 
 .cellCurrent {
-    background: var(--m-teal);
-    border-color: var(--m-teal);
-    color: var(--m-white);
+    background: var(--ts-teal);
+    color: var(--ts-teal-ink);
+    border-color: var(--ts-teal);
 }
 
 .cellAnswered {
-    background: var(--m-navy);
-    border-color: var(--m-navy);
-    color: var(--m-white);
+    background: var(--ts-navy);
+    color: #fff;
+    border-color: var(--ts-navy);
 }
 
 .cellFlagged {
@@ -153,13 +150,16 @@
 
 .navRow {
     display: flex;
-    gap: var(--m-space-2);
-    border-top: 1px solid var(--m-border);
-    padding-top: var(--m-space-4);
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--ts-border-soft);
+    padding-top: 20px;
 }
 
-.navRow > * {
-    flex: 1;
+.navLink {
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
 }
 
 .submitBlock {

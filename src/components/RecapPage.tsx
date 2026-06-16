@@ -1,6 +1,5 @@
 import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
 import { isQuestionAnswered } from '../lib/questionUtils';
-import { Button } from './ui';
 import RecapQuestion from './RecapQuestion';
 import styles from './RecapPage.module.css';
 
@@ -33,6 +32,7 @@ export default function RecapPage({
                     <span className={styles.counterStrong}>{answeredCount}</span> / {totalQuestions} risposte date
                 </p>
             </div>
+
             <div>
                 {shuffledQuestions.map((question, idx) => {
                     const opts = shuffledOptions[idx] || [];
@@ -50,13 +50,22 @@ export default function RecapPage({
                     );
                 })}
             </div>
-            <div className={styles.actions}>
-                {!timerExpired && (
-                    <Button variant="ghost" onClick={onBackToAssessment}>&larr; Torna al test</Button>
-                )}
-                <Button variant="primary" onClick={onFinalSubmit}>
-                    {timerExpired ? 'Scarica risposte' : 'Conferma e consegna'}
-                </Button>
+
+            {/* Sticky submit bar */}
+            <div className={styles.submitBar}>
+                <span className={styles.submitBarCounter}>
+                    {answeredCount} / {totalQuestions} risposte date
+                </span>
+                <div className={styles.submitBarActions}>
+                    {!timerExpired && (
+                        <button className="ts-btn ts-btn--secondary" onClick={onBackToAssessment}>
+                            Torna al test
+                        </button>
+                    )}
+                    <button className="ts-btn ts-btn--dark" onClick={onFinalSubmit}>
+                        {timerExpired ? 'Scarica risposte' : 'Conferma e consegna'}
+                    </button>
+                </div>
             </div>
         </div>
     );

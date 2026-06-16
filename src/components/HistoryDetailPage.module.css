@@ -112,9 +112,8 @@
 
 .actions {
     display: flex;
-    gap: var(--m-space-3);
-    justify-content: center;
-    margin-top: var(--m-space-6);
+    gap: 11px;
+    margin-top: 28px;
 }
 
 .errorText {

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TSubmissionSummary, TSubmissionReview } from '../context/AssessmentContext';
 import { fetchSubmissionReview } from '../lib/api';
-import { Button } from './ui';
 import ReviewQuestionCard from './ReviewQuestionCard';
 import styles from './HistoryDetailPage.module.css';
 
@@ -100,9 +99,12 @@ export default function HistoryDetailPage({ submission, onBack, token }: History
 
             {!review && (
                 <div className={styles.actions}>
-                    <Button variant="accent" onClick={loadReview} loading={reviewLoading}>
-                        Rivedi le risposte
-                    </Button>
+                    <button className="ts-btn ts-btn--dark" onClick={loadReview} disabled={reviewLoading}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                        </svg>
+                        {reviewLoading ? 'Caricamento...' : 'Rivedi le risposte'}
+                    </button>
                 </div>
             )}
 
@@ -132,7 +134,7 @@ export default function HistoryDetailPage({ submission, onBack, token }: History
             )}
 
             <div className={styles.actions}>
-                <Button variant="accent" onClick={onBack}>Torna ai risultati</Button>
+                <button className="ts-btn ts-btn--secondary" onClick={onBack}>Torna ai risultati</button>
             </div>
         </div>
     );
