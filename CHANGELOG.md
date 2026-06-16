@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.2](https://github.com/testero-app/testero-web/compare/v2.0.1...v2.0.2) (2026-06-16)
+
+
+### Bug Fixes
+
+* login info box styling ([#69](https://github.com/testero-app/testero-web/issues/69)) ([de9a215](https://github.com/testero-app/testero-web/commit/de9a2156ddac2115c7097eece50183acc413eb35))
+
 ## [2.0.1](https://github.com/testero-app/testero-web/compare/v2.0.0...v2.0.1) (2026-06-16)
 
 
