@@ -315,6 +315,7 @@ function ResultsView() {
     const {
         shuffledQuestions, shuffledOptions, answers,
         submissionResult, zipInfo, doSubmit, resetAssessment,
+        assessmentConfig,
     } = useAssessment();
     const navigate = useNavigate();
     const [alertModal, setAlertModal] = useState({ visible: false, title: '', message: '' });
@@ -353,6 +354,7 @@ function ResultsView() {
                 shuffledOptions={shuffledOptions}
                 answers={answers}
                 answerResults={submissionResult.answers}
+                assessmentTitle={assessmentConfig?.title}
                 onBackToAssessments={handleBackToAssessments}
                 onRedownload={handleRedownload}
                 zipName={zipInfo?.zipName}
@@ -370,7 +372,7 @@ function ResultsView() {
 // ─── Profile View ────────────────────────────────────────────────────────────
 
 function ProfileView() {
-    const { user, doLogout } = useAssessment();
+    const { user, token, doLogout } = useAssessment();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -382,9 +384,9 @@ function ProfileView() {
     return (
         <ProfilePage
             user={user}
+            token={token ?? undefined}
             onBack={() => navigate('/select-assessment')}
             onLogout={() => { doLogout(); navigate('/'); }}
-            onChangePassword={() => navigate('/change-password')}
         />
     );
 }
