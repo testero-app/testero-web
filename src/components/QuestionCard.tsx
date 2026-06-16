@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import hljs from '../lib/highlight';
 import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
+import styles from './QuestionCard.module.css';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
@@ -24,19 +25,17 @@ export default function QuestionCard({ question, displayIndex, shuffledOpts, ans
     if (question.type === 'open') {
         const text = answer?.text || '';
         return (
-            <div className="question active" data-type="open" data-question-id={question.id}>
-                <div className="question-header">
-                    <span className="question-number">Domanda {displayIndex + 1}</span>
+            <div className={styles.card}>
+                <div className={styles.header}>
+                    <span className={styles.number}>Domanda {displayIndex + 1}</span>
                 </div>
-                <div className="question-text">{question.text}</div>
-                <div className="open-answer-container">
-                    <textarea
-                        className="open-answer-textarea"
-                        placeholder="Scrivi qui la tua risposta..."
-                        value={text}
-                        onChange={(e) => onAnswer(question.id, { text: e.target.value })}
-                    />
-                </div>
+                <div className={styles.text}>{question.text}</div>
+                <textarea
+                    className={styles.openTextarea}
+                    placeholder="Scrivi qui la tua risposta..."
+                    value={text}
+                    onChange={(e) => onAnswer(question.id, { text: e.target.value })}
+                />
             </div>
         );
     }
@@ -63,55 +62,55 @@ export default function QuestionCard({ question, displayIndex, shuffledOpts, ans
 
         onAnswer(question.id, {
             selectedIds: newSelectedIds,
-            motivation: newHasNessuna ? motivation : ''
+            motivation: newHasNessuna ? motivation : '',
         });
     };
 
     const handleMotivationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onAnswer(question.id, {
             selectedIds,
-            motivation: e.target.value
+            motivation: e.target.value,
         });
     };
 
     return (
-        <div className="question active" data-question-id={question.id}>
-            <div className="question-header">
-                <span className="question-number">Domanda {displayIndex + 1}</span>
+        <div className={styles.card}>
+            <div className={styles.header}>
+                <span className={styles.number}>Domanda {displayIndex + 1}</span>
             </div>
-            <div className="question-text">{question.text}</div>
+            <div className={styles.text}>{question.text}</div>
 
             {question.code && (
-                <div className="code-snippet">
+                <div className={styles.codeSnippet}>
                     <pre><code ref={codeRef} className="language-java">{question.code}</code></pre>
                 </div>
             )}
 
-            <div className="options">
+            <div className={styles.options}>
                 {shuffledOpts.map((opt, idx) => {
                     const isSelected = selectedIds.includes(opt.id);
                     return (
                         <div
                             key={opt.id}
-                            className={`option${isSelected ? ' selected' : ''}`}
+                            className={`${styles.option} ${isSelected ? styles.optionSelected : ''}`}
                             onClick={() => handleOptionClick(opt.id)}
                         >
-                            <input
-                                type="checkbox"
-                                checked={isSelected}
-                                onChange={() => {}}
-                            />
-                            <span className="option-letter">{LETTERS[idx]}</span>
-                            <span className="option-text">{opt.text}</span>
+                            <div className={`${styles.checkbox} ${isSelected ? styles.checkboxSelected : ''}`}>
+                                <svg className={styles.checkmark} viewBox="0 0 12 12" fill="none">
+                                    <path d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </div>
+                            <span className={styles.letter}>{LETTERS[idx]}</span>
+                            <span className={styles.optionText}>{opt.text}</span>
                         </div>
                     );
                 })}
             </div>
 
-            <div className={`motivation-container${hasNessuna ? ' visible' : ''}`}>
+            <div className={`${styles.motivationContainer} ${hasNessuna ? styles.motivationVisible : ''}`}>
                 <input
                     type="text"
-                    className="motivation-input"
+                    className={styles.motivationInput}
                     placeholder="Motiva brevemente..."
                     value={motivation}
                     onChange={handleMotivationChange}

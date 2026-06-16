@@ -1,0 +1,63 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(16, 42, 67, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn var(--m-transition-base);
+    padding: var(--m-space-4);
+}
+
+.modal {
+    background: var(--m-white);
+    border-radius: var(--m-radius-xl);
+    box-shadow: var(--m-shadow-lg);
+    padding: 22px;
+    max-width: 420px;
+    width: 100%;
+    animation: scaleIn var(--m-transition-base);
+}
+
+.title {
+    font-family: var(--m-font-body);
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--m-text-heading);
+    margin-bottom: var(--m-space-3);
+}
+
+.body {
+    font-family: var(--m-font-body);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--m-text-secondary);
+    line-height: 1.5;
+    margin-bottom: var(--m-space-6);
+}
+
+.actions {
+    display: flex;
+    gap: 9px;
+}
+
+.actions > * {
+    flex: 1;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

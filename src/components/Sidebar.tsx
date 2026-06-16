@@ -1,3 +1,6 @@
+import { ProgressBar } from './ui';
+import styles from './Sidebar.module.css';
+
 interface SidebarProps {
     totalQuestions: number;
     currentIndex: number;
@@ -17,68 +20,73 @@ export default function Sidebar({
     onGoTo,
     onPrev,
     onNext,
-    onSubmit
+    onSubmit,
 }: SidebarProps) {
     const pct = totalQuestions > 0 ? Math.round((answeredCount / totalQuestions) * 100) : 0;
-    const remaining = totalQuestions - answeredCount;
 
     return (
-        <aside className="a-sidebar">
+        <aside className={styles.sidebar}>
             {/* Progress */}
             <div>
-                <div className="a-progress-block">
+                <div className={styles.progressBlock}>
                     <div>
-                        <div className="a-progress-num">
-                            {answeredCount}<span className="a-progress-total"> / {totalQuestions}</span>
+                        <div className={styles.progressNum}>
+                            {answeredCount}<span className={styles.progressTotal}> / {totalQuestions}</span>
                         </div>
-                        <div className="a-progress-label" style={{ marginTop: 4 }}>Risposte date</div>
+                        <div className={styles.progressLabel}>Risposte date</div>
                     </div>
-                    <div className="a-progress-label" style={{ textAlign: 'right' }}>{pct}%</div>
+                    <span className={styles.progressPct}>{pct}%</span>
                 </div>
-                <div className="a-progress-bar">
-                    <div className="a-progress-fill" style={{ width: `${pct}%` }}></div>
-                </div>
+                <ProgressBar value={pct} />
             </div>
 
             {/* Grid */}
-            <div className="a-grid-section">
-                <div className="a-grid-label">
+            <div className={styles.gridSection}>
+                <div className={styles.gridLabel}>
                     <span>Domande</span>
-                    <span style={{ color: 'var(--ink-soft, #3a3c37)' }}>{totalQuestions}</span>
+                    <span>{totalQuestions}</span>
                 </div>
-                <div className="a-grid">
+                <div className={styles.grid}>
                     {Array.from({ length: totalQuestions }, (_, i) => {
-                        let cls = 'a-cell';
-                        if (i === currentIndex) cls += ' current';
-                        else if (answeredSet.has(i)) cls += ' answered';
+                        let cellClass = styles.cell;
+                        if (i === currentIndex) cellClass += ` ${styles.cellCurrent}`;
+                        else if (answeredSet.has(i)) cellClass += ` ${styles.cellAnswered}`;
                         return (
-                            <div key={i} className={cls} onClick={() => onGoTo(i)}>
+                            <div key={i} className={cellClass} onClick={() => onGoTo(i)}>
                                 {i + 1}
                             </div>
                         );
                     })}
                 </div>
-                <div className="a-legend">
-                    <span className="a-legend-item"><span className="a-lg a-lg-current"></span>Corrente</span>
-                    <span className="a-legend-item"><span className="a-lg a-lg-answered"></span>Risposta</span>
-                    <span className="a-legend-item"><span className="a-lg a-lg-empty"></span>Vuota</span>
+                <div className={styles.legend}>
+                    <span className={styles.legendItem}><span className={`${styles.legendDot} ${styles.legendCurrent}`} />Corrente</span>
+                    <span className={styles.legendItem}><span className={`${styles.legendDot} ${styles.legendAnswered}`} />Risposta</span>
+                    <span className={styles.legendItem}><span className={`${styles.legendDot} ${styles.legendEmpty}`} />Vuota</span>
                 </div>
             </div>
 
             {/* Nav */}
-            <div className="a-nav-row">
-                <button className="a-nav-btn" disabled={currentIndex === 0} onClick={onPrev}>
-                    <span className="a-arrow">&#8592;</span> Precedente
-                </button>
-                <button className="a-nav-btn" disabled={currentIndex === totalQuestions - 1} onClick={onNext}>
-                    Successiva <span className="a-arrow">&#8594;</span>
-                </button>
+            <div className={styles.navRow}>
+                <span
+                    className={styles.navLink}
+                    style={{ color: currentIndex === 0 ? '#b0bcc8' : '#0e7c7b', cursor: currentIndex === 0 ? 'default' : 'pointer' }}
+                    onClick={currentIndex === 0 ? undefined : onPrev}
+                >
+                    &larr; Precedente
+                </span>
+                <span
+                    className={styles.navLink}
+                    style={{ color: currentIndex === totalQuestions - 1 ? '#b0bcc8' : '#0e7c7b', cursor: currentIndex === totalQuestions - 1 ? 'default' : 'pointer' }}
+                    onClick={currentIndex === totalQuestions - 1 ? undefined : onNext}
+                >
+                    Successiva &rarr;
+                </span>
             </div>
 
             {/* Submit */}
-            <div className="a-submit-block">
-                <button className="a-submit" onClick={onSubmit}>
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M3 8l3.5 3.5L13 5"/></svg>
+            <div className={styles.submitBlock}>
+                <button className="ts-btn ts-btn--dark ts-btn--block" onClick={onSubmit}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="2.6"><path d="M5 12l5 5L20 6" /></svg>
                     Consegna test
                 </button>
             </div>

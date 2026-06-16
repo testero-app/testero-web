@@ -1,3 +1,5 @@
+import { Modal, Button } from './ui';
+
 interface StartModalProps {
     visible: boolean;
     onConfirm: () => void;
@@ -6,15 +8,18 @@ interface StartModalProps {
 
 export default function StartModal({ visible, onConfirm, onCancel }: StartModalProps) {
     return (
-        <div className={`modal-overlay${visible ? ' visible' : ''}`}>
-            <div className="modal">
-                <h3>Conferma inizio test</h3>
-                <p>Sei sicuro di voler iniziare il test?</p>
-                <div className="modal-actions">
-                    <button className="btn-cancel" onClick={onCancel}>Annulla</button>
-                    <button className="btn-confirm" onClick={onConfirm}>Inizia</button>
-                </div>
-            </div>
-        </div>
+        <Modal
+            open={visible}
+            onClose={onCancel}
+            title="Conferma inizio test"
+            actions={
+                <>
+                    <Button variant="ghost" onClick={onCancel}>Annulla</Button>
+                    <Button variant="primary" onClick={onConfirm}>Inizia</Button>
+                </>
+            }
+        >
+            <p>Sei sicuro di voler iniziare il test? Il tempo partirà immediatamente.</p>
+        </Modal>
     );
 }

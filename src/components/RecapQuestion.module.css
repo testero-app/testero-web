@@ -1,0 +1,106 @@
+.question {
+    background: var(--m-white);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-lg);
+    padding: var(--m-space-5);
+    margin-bottom: var(--m-space-4);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--m-space-3);
+}
+
+.number {
+    font-family: var(--m-font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--m-teal-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--m-text-heading);
+    line-height: 1.5;
+    margin-bottom: var(--m-space-4);
+}
+
+.codeSnippet {
+    background: #1B2838;
+    border-radius: var(--m-radius-sm);
+    padding: var(--m-space-3);
+    margin-bottom: var(--m-space-4);
+    overflow-x: auto;
+}
+
+.codeSnippet pre { margin: 0; }
+.codeSnippet code {
+    font-family: var(--m-font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    color: #E0E0E0;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-sm);
+    font-size: 13px;
+    color: var(--m-text-primary);
+}
+
+.optionSelected {
+    background: var(--m-success-light);
+    border-color: var(--m-teal);
+    color: var(--m-text-heading);
+    font-weight: 500;
+}
+
+.letter {
+    font-weight: 700;
+    color: var(--m-text-label);
+    min-width: 20px;
+}
+
+.optionSelected .letter {
+    color: var(--m-teal-dark);
+}
+
+.openAnswer {
+    padding: var(--m-space-3);
+    background: var(--m-surface);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-sm);
+    font-size: 13px;
+    color: var(--m-text-heading);
+    line-height: 1.5;
+}
+
+.openAnswerEmpty {
+    color: var(--m-text-label);
+    font-style: italic;
+}
+
+.motivation {
+    margin-top: var(--m-space-3);
+    padding: var(--m-space-3);
+    background: var(--m-surface);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-sm);
+    font-size: 13px;
+    color: var(--m-text-secondary);
+}

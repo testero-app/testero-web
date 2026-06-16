@@ -1,0 +1,168 @@
+.sidebar {
+    position: sticky;
+    top: 24px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 24px;
+    background: #fff;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-xl);
+}
+
+/* ── Progress ───────────────────────────────────────────────────────────── */
+
+.progressBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--m-space-2);
+}
+
+.progressNum {
+    font-family: var(--m-font-mono);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--m-text-heading);
+}
+
+.progressTotal {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--m-text-label);
+}
+
+.progressLabel {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--m-text-label);
+}
+
+.progressPct {
+    font-family: var(--m-font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--m-text-secondary);
+}
+
+/* ── Question Grid ──────────────────────────────────────────────────────── */
+
+.gridSection {
+    border-top: 1px solid var(--m-border);
+    padding-top: var(--m-space-4);
+}
+
+.gridLabel {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--m-text-label);
+    margin-bottom: var(--m-space-3);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.cell {
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--ts-border);
+    border-radius: 11px;
+    background: #fff;
+    font-family: var(--ts-font-mono);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ts-text);
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.cell:hover {
+    border-color: #c3ccd6;
+}
+
+.cellCurrent {
+    background: var(--ts-teal);
+    color: var(--ts-teal-ink);
+    border-color: var(--ts-teal);
+}
+
+.cellAnswered {
+    background: var(--ts-navy);
+    color: #fff;
+    border-color: var(--ts-navy);
+}
+
+.cellFlagged {
+    background: var(--m-warning);
+    border-color: var(--m-warning);
+    color: var(--m-warning-text);
+}
+
+/* ── Legend ──────────────────────────────────────────────────────────────── */
+
+.legend {
+    display: flex;
+    gap: var(--m-space-4);
+    margin-top: var(--m-space-3);
+    flex-wrap: wrap;
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--m-text-label);
+}
+
+.legendDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+}
+
+.legendCurrent {
+    background: var(--m-teal);
+}
+
+.legendAnswered {
+    background: var(--m-navy);
+}
+
+.legendEmpty {
+    background: var(--m-white);
+    border: 1px solid var(--m-border);
+}
+
+/* ── Navigation ─────────────────────────────────────────────────────────── */
+
+.navRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--ts-border-soft);
+    padding-top: 20px;
+}
+
+.navLink {
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.submitBlock {
+    border-top: 1px solid var(--m-border);
+    padding-top: var(--m-space-4);
+}

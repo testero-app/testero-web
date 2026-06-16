@@ -41,6 +41,7 @@ export type TAssessmentListItem = {
     date: string;
     timerMinutes: number;
     questionsPerAssessment: number;
+    status?: string;
 };
 
 export type TUser = {

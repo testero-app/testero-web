@@ -1,0 +1,63 @@
+.page {
+    min-height: 100vh;
+    background: var(--m-bg);
+}
+
+.content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: var(--m-space-8) var(--m-space-6);
+}
+
+.heading {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--m-text-heading);
+    margin-bottom: var(--m-space-6);
+}
+
+.card {
+    background: var(--m-white);
+    border: 1px solid var(--m-border);
+    border-radius: var(--m-radius-lg);
+    padding: var(--m-space-6);
+    margin-bottom: var(--m-space-4);
+}
+
+.cardTitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--m-text-heading);
+    margin-bottom: var(--m-space-4);
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: var(--m-space-4);
+}
+
+.field:last-child {
+    margin-bottom: 0;
+}
+
+.fieldLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--m-text-label);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.fieldValue {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--m-text-heading);
+}
+
+.actions {
+    margin-top: var(--m-space-6);
+    display: flex;
+    gap: var(--m-space-3);
+}

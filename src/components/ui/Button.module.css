@@ -1,0 +1,170 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: var(--ts-r-md);
+    font-family: var(--ts-font-ui);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: filter 120ms ease, background 120ms ease, border-color 120ms ease;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.button:focus-visible {
+    outline: none;
+    box-shadow: var(--m-focus-ring);
+}
+
+.button:disabled {
+    cursor: not-allowed;
+}
+
+/* ── Primary (Navy) ─────────────────────────────────────────────────────── */
+
+.primary {
+    background: var(--m-navy);
+    color: var(--m-white);
+}
+
+.primary:hover:not(:disabled) {
+    background: var(--m-navy-hover);
+}
+
+.primary:active:not(:disabled) {
+    background: var(--m-navy-pressed);
+}
+
+.primary:disabled {
+    background: var(--m-btn-disabled-bg);
+    color: var(--m-btn-disabled-text);
+}
+
+/* ── Accent (Teal) ──────────────────────────────────────────────────────── */
+
+.accent {
+    background: var(--ts-teal);
+    color: var(--ts-teal-ink);
+    font-weight: 800;
+}
+
+.accent:hover:not(:disabled) {
+    filter: brightness(1.05);
+}
+
+.accent:active:not(:disabled) {
+    filter: brightness(0.95);
+}
+
+.accent:disabled {
+    background: var(--ts-success-bg);
+    color: var(--ts-text-fainter);
+    filter: none;
+}
+
+/* ── Secondary (Outline) ────────────────────────────────────────────────── */
+
+.secondary {
+    background: var(--m-white);
+    color: var(--m-teal-dark);
+    border: 1.5px solid var(--m-teal);
+}
+
+.secondary:hover:not(:disabled) {
+    background: #F0FDFB;
+}
+
+.secondary:active:not(:disabled) {
+    background: var(--m-success-bg);
+}
+
+.secondary:disabled {
+    border-color: var(--m-border);
+    color: var(--m-text-disabled);
+    background: var(--m-white);
+}
+
+/* ── Ghost ──────────────────────────────────────────────────────────────── */
+
+.ghost {
+    background: transparent;
+    color: var(--m-text-primary);
+    font-weight: 600;
+}
+
+.ghost:hover:not(:disabled) {
+    background: var(--m-surface-alt);
+}
+
+.ghost:active:not(:disabled) {
+    background: #E6EAEF;
+}
+
+.ghost:disabled {
+    color: var(--m-text-disabled);
+}
+
+/* ── Danger ─────────────────────────────────────────────────────────────── */
+
+.danger {
+    background: var(--m-error);
+    color: var(--m-white);
+}
+
+.danger:hover:not(:disabled) {
+    background: var(--m-error-hover);
+}
+
+.danger:active:not(:disabled) {
+    background: var(--m-error-pressed);
+}
+
+.danger:disabled {
+    background: var(--m-btn-disabled-bg);
+    color: var(--m-btn-disabled-text);
+}
+
+/* ── Sizes ──────────────────────────────────────────────────────────────── */
+
+.sm {
+    padding: 7px 14px;
+    font-size: 13px;
+}
+
+.lg {
+    font-size: 16px;
+    padding: 16px;
+    border-radius: var(--ts-r-md);
+}
+
+/* ── Full Width ─────────────────────────────────────────────────────────── */
+
+.fullWidth {
+    width: 100%;
+}
+
+/* ── Loading ────────────────────────────────────────────────────────────── */
+
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
