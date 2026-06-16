@@ -140,12 +140,12 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
                         )}
                     </button>
 
-                    {/* Nota primo accesso — riquadro PIENO #f0f4f8, NO bordo */}
-                    <div className={styles.infoBox}>
+                    {/* Nota primo accesso — riquadro PIENO #f0f4f8 */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 9, background: '#f0f4f8', borderRadius: 10, padding: '11px 14px', marginTop: 20 }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7a89" strokeWidth="2" style={{ flexShrink: 0 }}>
                             <circle cx="12" cy="12" r="9" /><path d="M12 8v5" /><circle cx="12" cy="16.4" r="0.6" fill="#6b7a89" />
                         </svg>
-                        <span className={styles.infoText}>
+                        <span style={{ fontSize: '12.5px', color: '#6b7a89', lineHeight: 1.45 }}>
                             Al primo accesso il sistema può impiegare 1–2 minuti per avviarsi.
                         </span>
                     </div>
