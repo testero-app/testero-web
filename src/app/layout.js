@@ -1,9 +1,10 @@
-import { DM_Sans, JetBrains_Mono } from 'next/font/google';
+import { Sora, JetBrains_Mono } from 'next/font/google';
+import '../styles/tokens.css';
 import './globals.css';
 
-const dmSans = DM_Sans({
+const sora = Sora({
     subsets: ['latin'],
-    weight: ['400', '500', '600', '700'],
+    weight: ['400', '500', '600', '700', '800'],
     display: 'swap',
     variable: '--font-body',
 });
@@ -26,7 +27,7 @@ export default function RootLayout({ children }) {
             <head>
                 <script dangerouslySetInnerHTML={{ __html: `console.log("Testero FE v${process.env.NEXT_PUBLIC_APP_VERSION}")` }} />
             </head>
-            <body className={`${dmSans.variable} ${jetbrainsMono.variable} ${dmSans.className}`}>{children}</body>
+            <body className={`${sora.variable} ${jetbrainsMono.variable} ${sora.className}`}>{children}</body>
         </html>
     );
 }

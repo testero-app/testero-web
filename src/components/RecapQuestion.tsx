@@ -1,17 +1,10 @@
 import { useEffect, useRef } from 'react';
 import hljs from '../lib/highlight';
 import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
+import { Badge } from './ui';
+import styles from './RecapQuestion.module.css';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-
-function escapeHtml(text: string): string {
-    return text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
 
 interface RecapQuestionProps {
     question: TQuestion;
@@ -33,17 +26,16 @@ export default function RecapQuestion({ question, displayIndex, shuffledOpts, an
     if (question.type === 'open') {
         const answerText = answer?.text || '';
         const hasAnswer = answerText.trim().length > 0;
-
         return (
-            <div className="recap-question">
-                <div className="recap-question-header">
-                    <span className="recap-question-number">Domanda {displayIndex + 1} (Bonus)</span>
-                    <span className={`recap-badge ${hasAnswer ? 'answered' : 'unanswered'}`}>
+            <div className={styles.question}>
+                <div className={styles.header}>
+                    <span className={styles.number}>Domanda {displayIndex + 1} (Bonus)</span>
+                    <Badge variant={hasAnswer ? 'avvia' : 'scaduto'}>
                         {hasAnswer ? 'Risposta data' : 'Non data'}
-                    </span>
+                    </Badge>
                 </div>
-                <div className="recap-question-text">{question.text}</div>
-                <div className={`recap-open-answer${hasAnswer ? '' : ' empty'}`}>
+                <div className={styles.text}>{question.text}</div>
+                <div className={`${styles.openAnswer} ${!hasAnswer ? styles.openAnswerEmpty : ''}`}>
                     {hasAnswer ? answerText : 'Nessuna risposta'}
                 </div>
             </div>
@@ -52,30 +44,30 @@ export default function RecapQuestion({ question, displayIndex, shuffledOpts, an
 
     const selectedIds = answer?.selectedIds || [];
     const motivation = answer?.motivation || '';
-    const hasNessuna = selectedIds.some((id: string) => id.endsWith('_e'));    
-    
+    const hasNessuna = selectedIds.some((id: string) => id.endsWith('_e'));
+
     return (
-        <div className="recap-question">
-            <div className="recap-question-header">
-                <span className="recap-question-number">Domanda {displayIndex + 1}</span>
-                <span className={`recap-badge ${isAnswered ? 'answered' : 'unanswered'}`}>
+        <div className={styles.question}>
+            <div className={styles.header}>
+                <span className={styles.number}>Domanda {displayIndex + 1}</span>
+                <Badge variant={isAnswered ? 'avvia' : 'scaduto'}>
                     {isAnswered ? 'Risposta data' : 'Non data'}
-                </span>
+                </Badge>
             </div>
-            <div className="recap-question-text">{question.text}</div>
+            <div className={styles.text}>{question.text}</div>
 
             {question.code && (
-                <div className="code-snippet">
+                <div className={styles.codeSnippet}>
                     <pre><code ref={codeRef} className="language-java">{question.code}</code></pre>
                 </div>
             )}
 
-            <div className="recap-options">
+            <div className={styles.options}>
                 {shuffledOpts.map((opt, idx) => {
                     const isSelected = selectedIds.includes(opt.id);
                     return (
-                        <div key={opt.id} className={`recap-option${isSelected ? ' selected' : ''}`}>
-                            <span className="recap-option-letter">{LETTERS[idx]})</span>
+                        <div key={opt.id} className={`${styles.option} ${isSelected ? styles.optionSelected : ''}`}>
+                            <span className={styles.letter}>{LETTERS[idx]})</span>
                             <span>{opt.text}</span>
                         </div>
                     );
@@ -83,7 +75,7 @@ export default function RecapQuestion({ question, displayIndex, shuffledOpts, an
             </div>
 
             {hasNessuna && motivation && (
-                <div className="recap-motivation">
+                <div className={styles.motivation}>
                     <strong>Motivazione:</strong> {motivation}
                 </div>
             )}

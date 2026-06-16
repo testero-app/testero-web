@@ -1,0 +1,54 @@
+.page {
+    min-height: 100vh;
+    background: var(--m-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--m-space-6);
+}
+
+.card {
+    text-align: center;
+    max-width: 400px;
+}
+
+.code {
+    font-family: var(--m-font-mono);
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--m-text-label);
+    margin-bottom: var(--m-space-4);
+}
+
+.icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto var(--m-space-5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--m-surface);
+    border-radius: var(--m-radius-lg);
+    color: var(--m-text-label);
+}
+
+.title {
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--m-text-heading);
+    margin-bottom: var(--m-space-2);
+}
+
+.message {
+    font-size: 14px;
+    color: var(--m-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--m-space-6);
+}
+
+.refCode {
+    font-family: var(--m-font-mono);
+    font-size: 12px;
+    color: var(--m-text-label);
+    margin-top: var(--m-space-4);
+}

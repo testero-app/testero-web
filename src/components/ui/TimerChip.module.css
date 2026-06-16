@@ -1,0 +1,39 @@
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 13px;
+    border-radius: var(--m-radius-sm);
+    font-family: var(--m-font-mono);
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1;
+    transition: background var(--m-transition-base), color var(--m-transition-base);
+}
+
+.icon {
+    display: flex;
+    width: 14px;
+    height: 14px;
+}
+
+.normal {
+    background: var(--m-teal);
+    color: var(--m-teal-darkest);
+}
+
+.warning {
+    background: var(--m-warning);
+    color: var(--m-warning-text);
+}
+
+.critical {
+    background: var(--m-error);
+    color: var(--m-white);
+    animation: m-pulse 1s ease-in-out infinite;
+}
+
+@keyframes m-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}

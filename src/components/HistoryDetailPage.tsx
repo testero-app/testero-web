@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { TSubmissionSummary, TSubmissionReview } from '../context/AssessmentContext';
 import { fetchSubmissionReview } from '../lib/api';
 import ReviewQuestionCard from './ReviewQuestionCard';
+import styles from './HistoryDetailPage.module.css';
 
 interface HistoryDetailPageProps {
     submission: TSubmissionSummary;
@@ -37,8 +38,8 @@ export default function HistoryDetailPage({ submission, onBack, token }: History
         try {
             const data = await fetchSubmissionReview(submission.id, token);
             setReview(data);
-        } catch (e: any) {
-            setReviewError(e.message || 'Errore nel caricamento');
+        } catch (e: unknown) {
+            setReviewError(e instanceof Error ? e.message : 'Errore nel caricamento');
         } finally {
             setReviewLoading(false);
         }
@@ -53,76 +54,61 @@ export default function HistoryDetailPage({ submission, onBack, token }: History
     const pctUnanswered = total > 0 ? 100 - pctCorrect - pctWrong : 0;
 
     return (
-        <div className="recap-page visible">
-            <button className="detail-back" onClick={onBack}>
+        <div className={styles.page}>
+            <button className={styles.backBtn} onClick={onBack}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M10 12L6 8l4-4"/>
+                    <path d="M10 12L6 8l4-4" />
                 </svg>
                 Torna ai risultati
             </button>
 
-            <div className="detail-header">
-                <h1 className="detail-title">{submission.assessment_title}</h1>
-                <span className="detail-date">{formatFullDate(submission.submitted_at)}</span>
+            <div className={styles.header}>
+                <h1 className={styles.title}>{submission.assessment_title}</h1>
+                <span className={styles.date}>{formatFullDate(submission.submitted_at)}</span>
             </div>
 
-            <div className="results-summary">
-                <div className="results-stats">
-                    <div className="results-stat results-stat-correct">
-                        <span className="results-stat-num">{correct}</span>
-                        <span className="results-stat-label">Corrette</span>
-                        <span className="results-stat-pct">{pctCorrect}%</span>
+            <div className={styles.summary}>
+                <div className={styles.stats}>
+                    <div className={`${styles.stat} ${styles.statCorrect}`}>
+                        <span className={styles.statNum}>{correct}</span>
+                        <span className={styles.statLabel}>Corrette</span>
                     </div>
-                    <div className="results-stat results-stat-wrong">
-                        <span className="results-stat-num">{wrong}</span>
-                        <span className="results-stat-label">Sbagliate</span>
-                        <span className="results-stat-pct">{pctWrong}%</span>
+                    <div className={`${styles.stat} ${styles.statWrong}`}>
+                        <span className={styles.statNum}>{wrong}</span>
+                        <span className={styles.statLabel}>Sbagliate</span>
                     </div>
-                    <div className="results-stat results-stat-unanswered">
-                        <span className="results-stat-num">{unanswered}</span>
-                        <span className="results-stat-label">Non date</span>
-                        <span className="results-stat-pct">{pctUnanswered}%</span>
+                    <div className={`${styles.stat} ${styles.statUnanswered}`}>
+                        <span className={styles.statNum}>{unanswered}</span>
+                        <span className={styles.statLabel}>Non date</span>
                     </div>
                 </div>
-                <div className="results-bar">
-                    {pctCorrect > 0 && (
-                        <div className="results-bar-segment results-bar-correct" style={{ width: `${pctCorrect}%` }} />
-                    )}
-                    {pctWrong > 0 && (
-                        <div className="results-bar-segment results-bar-wrong" style={{ width: `${pctWrong}%` }} />
-                    )}
-                    {pctUnanswered > 0 && (
-                        <div className="results-bar-segment results-bar-unanswered" style={{ width: `${pctUnanswered}%` }} />
-                    )}
+
+                <div className={styles.bar}>
+                    {pctCorrect > 0 && <div className={styles.barCorrect} style={{ width: `${pctCorrect}%` }} />}
+                    {pctWrong > 0 && <div className={styles.barWrong} style={{ width: `${pctWrong}%` }} />}
+                    {pctUnanswered > 0 && <div className={styles.barUnanswered} style={{ width: `${pctUnanswered}%` }} />}
                 </div>
-                <p className="results-score-line">
-                    {correct} / {total} domande a risposta multipla
-                </p>
+                <p className={styles.scoreLine}>{correct} / {total} domande a risposta multipla</p>
+
                 {submission.started_at && (
-                    <p className="results-time">
+                    <p className={styles.timeLine}>
                         Completato in {formatDuration(submission.started_at, submission.submitted_at)}
                     </p>
                 )}
             </div>
 
             {!review && (
-                <div className="recap-actions">
-                    <button
-                        className="btn-final-submit"
-                        onClick={loadReview}
-                        disabled={reviewLoading}
-                        style={{ background: 'var(--accent)' }}
-                    >
+                <div className={styles.actions}>
+                    <button className="ts-btn ts-btn--dark" onClick={loadReview} disabled={reviewLoading}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M1 4v6h6" /><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                        </svg>
                         {reviewLoading ? 'Caricamento...' : 'Rivedi le risposte'}
                     </button>
                 </div>
             )}
 
-            {reviewError && (
-                <p style={{ color: 'var(--wrong)', textAlign: 'center', margin: '1rem 0' }}>
-                    {reviewError}
-                </p>
-            )}
+            {reviewError && <p className={styles.errorText}>{reviewError}</p>}
 
             {review && (
                 <div>
@@ -147,14 +133,8 @@ export default function HistoryDetailPage({ submission, onBack, token }: History
                 </div>
             )}
 
-            <div className="recap-actions">
-                <button
-                    className="btn-final-submit"
-                    onClick={onBack}
-                    style={{ background: 'var(--accent)' }}
-                >
-                    Torna ai risultati
-                </button>
+            <div className={styles.actions}>
+                <button className="ts-btn ts-btn--secondary" onClick={onBack}>Torna ai risultati</button>
             </div>
         </div>
     );

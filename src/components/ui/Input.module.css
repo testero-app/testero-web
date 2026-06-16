@@ -1,0 +1,123 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.label {
+    font-family: var(--ts-font-ui);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ts-text-fainter);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.inputWrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    position: absolute;
+    left: 15px;
+    display: flex;
+    color: var(--ts-text-fainter);
+    pointer-events: none;
+    transition: color 120ms ease;
+}
+
+.input {
+    width: 100%;
+    padding: 14px 15px;
+    border: 1px solid var(--ts-border-input);
+    border-radius: 11px;
+    background: var(--ts-surface);
+    font-family: var(--ts-font-ui);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ts-ink);
+    line-height: 1.4;
+    outline: none;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.input::placeholder {
+    color: var(--ts-text-placeholder);
+    font-weight: 400;
+}
+
+.hasIcon {
+    padding-left: 44px;
+}
+
+.hasTrailing {
+    padding-right: 46px;
+}
+
+/* Focus — teal border + glow ring */
+.input:focus {
+    border-color: var(--ts-teal);
+    box-shadow: var(--ts-focus-ring);
+}
+
+/* ── Password Toggle ────────────────────────────────────────────────────── */
+
+.toggle {
+    position: absolute;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    background: none;
+    color: var(--ts-text-fainter);
+    cursor: pointer;
+    transition: color 120ms ease;
+}
+
+.toggle:hover {
+    color: var(--ts-text-soft);
+}
+
+/* ── Error ──────────────────────────────────────────────────────────────── */
+
+.error .input {
+    border-color: var(--ts-danger);
+    background: var(--ts-danger-bg);
+}
+
+.error .input:focus {
+    border-color: var(--ts-danger);
+    box-shadow: 0 0 0 3px rgba(229, 72, 77, 0.12);
+}
+
+.error .icon {
+    color: var(--ts-danger-700);
+}
+
+.helperText {
+    font-family: var(--ts-font-ui);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ts-danger-700);
+    line-height: 1.4;
+}
+
+/* ── Disabled ───────────────────────────────────────────────────────────── */
+
+.disabled .input {
+    border-color: var(--ts-border-soft);
+    background: #f3f5f8;
+    color: var(--ts-text-faint);
+    cursor: not-allowed;
+}
+
+.disabled .icon {
+    color: var(--ts-text-placeholder);
+}
