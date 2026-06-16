@@ -1,74 +1,117 @@
+/* Stesse righe orizzontali della tab Verifiche */
+
 .list {
     display: flex;
     flex-direction: column;
-    gap: var(--m-space-3);
+    gap: 12px;
 }
 
-.card {
+/* Riga risultato — identica a .test-row */
+.row {
     display: flex;
     align-items: center;
-    gap: var(--m-space-4);
-    padding: var(--m-space-4) var(--m-space-5);
-    background: var(--m-white);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius-lg);
+    gap: 18px;
+    background: var(--ts-surface);
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    padding: 18px 20px;
+    box-shadow: var(--ts-shadow-card);
     cursor: pointer;
-    transition: box-shadow var(--m-transition-fast), border-color var(--m-transition-fast);
-    text-align: left;
     width: 100%;
-    font-family: var(--m-font-body);
+    text-align: left;
+    font-family: var(--ts-font-ui);
+    border-left: none;
+    transition: border-color 0.12s;
 }
 
-.card:hover {
-    border-color: var(--m-border-input);
-    box-shadow: var(--m-shadow-sm);
+.row:hover {
+    border-color: #c3ccd6;
 }
 
-.body {
+/* Bordo-sinistra per esito */
+.rowPass {
+    border-left: 3px solid var(--ts-teal);
+}
+
+.rowFail {
+    border-left: 3px solid var(--ts-danger);
+}
+
+/* Icona quadrata 46px (sigla) */
+.rowIcon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ts-font-mono);
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.rowIconPass {
+    background: var(--ts-success-bg);
+    color: var(--ts-teal-700);
+}
+
+.rowIconFail {
+    background: var(--ts-danger-bg);
+    color: var(--ts-danger-700);
+}
+
+/* Titolo + meta */
+.rowBody {
     flex: 1;
     min-width: 0;
 }
 
-.title {
-    font-size: 14px;
+.rowTitle {
+    font-size: 16px;
     font-weight: 700;
-    color: var(--m-text-heading);
-    margin-bottom: var(--m-space-1);
+    color: var(--ts-ink);
 }
 
-.meta {
+.rowMeta {
+    font-size: 12.5px;
+    color: var(--ts-text-faint);
+    font-family: var(--ts-font-mono);
+    margin-top: 4px;
     display: flex;
     align-items: center;
-    gap: var(--m-space-2);
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--m-text-label);
-    flex-wrap: wrap;
+    gap: 6px;
 }
 
-.sep {
-    color: var(--m-border);
+.metaSep {
+    opacity: 0.5;
 }
 
-.arrow {
+/* Badge esito */
+.badge {
     flex-shrink: 0;
-    color: var(--m-text-label);
-    transition: color var(--m-transition-fast), transform var(--m-transition-fast);
 }
 
-.card:hover .arrow {
-    color: var(--m-teal);
+/* Chevron destra */
+.chevron {
+    flex-shrink: 0;
+    color: var(--ts-text-fainter);
+    transition: color 0.12s, transform 0.12s;
+}
+
+.row:hover .chevron {
+    color: var(--ts-text-soft);
     transform: translateX(2px);
 }
 
-/* ── Empty State ────────────────────────────────────────────────────────── */
+/* ── Empty State ────────────────────────────────────────────────────── */
 
 .empty {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: var(--m-space-16) var(--m-space-6);
+    padding: 64px 24px;
 }
 
 .emptyIcon {
@@ -77,22 +120,34 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--m-surface);
-    border-radius: var(--m-radius-lg);
-    color: var(--m-text-label);
-    margin-bottom: var(--m-space-5);
+    background: var(--ts-surface-subtle);
+    border-radius: var(--ts-r-lg);
+    color: var(--ts-text-fainter);
+    margin-bottom: 20px;
 }
 
 .emptyTitle {
     font-size: 17px;
     font-weight: 700;
-    color: var(--m-text-heading);
-    margin-bottom: var(--m-space-2);
+    color: var(--ts-ink);
+    margin-bottom: 8px;
 }
 
 .emptyText {
     font-size: 13px;
-    color: var(--m-text-secondary);
+    color: var(--ts-text-soft);
     line-height: 1.6;
     max-width: 320px;
+}
+
+/* ── Loading ────────────────────────────────────────────────────────── */
+
+.loadingRow {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: var(--ts-surface);
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    padding: 18px 20px;
 }

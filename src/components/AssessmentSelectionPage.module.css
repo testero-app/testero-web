@@ -1,111 +1,149 @@
-.main {
-    max-width: 960px;
+/* Home — identica a riferimento-home.html */
+
+.page {
+    min-height: 100vh;
+    background: var(--ts-app-bg);
+}
+
+.body {
+    padding: 44px 40px 60px;
+}
+
+.inner {
+    max-width: 920px;
     margin: 0 auto;
-    padding: var(--m-space-8) var(--m-space-6);
 }
 
-.pageHead {
-    margin-bottom: var(--m-space-6);
-}
+/* ── Titolo + sottotitolo ───────────────────────────────────────────── */
 
-.heading {
-    font-family: var(--m-font-body);
-    font-size: 28px;
+.title {
+    font-size: 30px;
     font-weight: 800;
-    color: var(--m-text-heading);
-    margin-bottom: var(--m-space-2);
+    letter-spacing: -0.02em;
+    color: var(--ts-ink);
 }
 
-.desc {
-    font-size: 14px;
-    font-weight: 400;
-    color: var(--m-text-secondary);
-    line-height: 1.5;
+.sub {
+    font-size: 14.5px;
+    color: var(--ts-text-soft);
+    margin-top: 5px;
+    margin-bottom: 26px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
 }
+
+/* ── Segmented control ──────────────────────────────────────────────── */
 
 .tabs {
-    margin-bottom: var(--m-space-6);
+    display: inline-flex;
+    gap: 5px;
+    background: #fff;
+    border: 1px solid var(--ts-border);
+    border-radius: 11px;
+    padding: 5px;
+    margin-bottom: 22px;
 }
 
-/* ── Assessment Cards Grid ──────────────────────────────────────────────── */
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--m-space-4);
+.tabItem {
+    font-family: var(--ts-font-ui);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ts-text-soft);
+    padding: 9px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    transition: background 0.12s, color 0.12s;
 }
 
-.card {
+.tabItem:hover:not(.tabActive) {
+    color: var(--ts-text);
+}
+
+.tabActive {
+    background: var(--ts-navy);
+    color: #fff;
+    font-weight: 700;
+}
+
+/* ── Lista verifiche (righe orizzontali) ────────────────────────────── */
+
+.list {
     display: flex;
     flex-direction: column;
-    padding: var(--m-space-5) var(--m-space-5) var(--m-space-4);
-    background: var(--m-white);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius-lg);
-    cursor: pointer;
-    transition: box-shadow var(--m-transition-fast), border-color var(--m-transition-fast);
-    text-align: left;
-    font-family: var(--m-font-body);
-    width: 100%;
+    gap: 12px;
 }
 
-.card:hover {
-    border-color: var(--m-border-input);
-    box-shadow: var(--m-shadow-sm);
-}
-
-.cardTop {
+/* Riga verifica */
+.row {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: var(--m-space-3);
+    align-items: center;
+    gap: 18px;
+    background: var(--ts-surface);
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    padding: 18px 20px;
+    box-shadow: var(--ts-shadow-card);
 }
 
-.cardTitle {
-    font-size: 15px;
+.rowNew {
+    border-left: 3px solid var(--ts-teal);
+}
+
+/* Icona quadrata (sigla linguaggio) */
+.rowIcon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: var(--ts-success-bg);
+    color: var(--ts-teal-700);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ts-font-mono);
     font-weight: 700;
-    color: var(--m-text-heading);
-    line-height: 1.3;
+    font-size: 14px;
+}
+
+.rowIconCompleted {
+    background: var(--ts-app-bg);
+    color: var(--ts-text-muted);
+}
+
+.rowBody {
     flex: 1;
-    margin-right: var(--m-space-3);
+    min-width: 0;
 }
 
-.cardMeta {
-    display: flex;
-    align-items: center;
-    gap: var(--m-space-2);
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--m-text-label);
-    margin-top: auto;
-    padding-top: var(--m-space-3);
-    border-top: 1px solid var(--m-border);
+.rowTitle {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ts-ink);
 }
 
-.metaSep {
-    color: var(--m-border);
+.rowMeta {
+    font-size: 12.5px;
+    color: var(--ts-text-faint);
+    font-family: var(--ts-font-mono);
+    margin-top: 4px;
 }
 
-.cardArrow {
-    display: flex;
-    align-items: center;
-    color: var(--m-text-label);
-    transition: color var(--m-transition-fast), transform var(--m-transition-fast);
+/* Bottone azione nella riga */
+.rowAction {
+    flex-shrink: 0;
 }
 
-.card:hover .cardArrow {
-    color: var(--m-teal);
-    transform: translateX(2px);
-}
-
-/* ── Empty State ────────────────────────────────────────────────────────── */
+/* ── Empty State ────────────────────────────────────────────────────── */
 
 .empty {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: var(--m-space-16) var(--m-space-6);
+    padding: 64px 24px;
 }
 
 .emptyIcon {
@@ -114,35 +152,39 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--m-surface);
-    border-radius: var(--m-radius-lg);
-    color: var(--m-text-label);
-    margin-bottom: var(--m-space-5);
+    background: var(--ts-surface-subtle);
+    border-radius: var(--ts-r-lg);
+    color: var(--ts-text-fainter);
+    margin-bottom: 20px;
 }
 
 .emptyTitle {
     font-size: 17px;
     font-weight: 700;
-    color: var(--m-text-heading);
-    margin-bottom: var(--m-space-2);
+    color: var(--ts-ink);
+    margin-bottom: 8px;
 }
 
 .emptyText {
     font-size: 13px;
-    color: var(--m-text-secondary);
+    color: var(--ts-text-soft);
     line-height: 1.6;
     max-width: 320px;
 }
 
-.loadingText {
-    text-align: center;
-    padding: var(--m-space-10);
-    font-size: 14px;
-    color: var(--m-text-label);
+/* ── Loading skeleton ───────────────────────────────────────────────── */
+
+.loadingRow {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: var(--ts-surface);
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    padding: 18px 20px;
 }
 
 @media (max-width: 600px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
+    .body { padding: 24px 16px 40px; }
+    .row { flex-wrap: wrap; gap: 12px; }
 }

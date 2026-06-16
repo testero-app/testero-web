@@ -21,6 +21,12 @@ function formatDuration(startedAt: string | null, submittedAt: string): string {
     return `${minutes} min`;
 }
 
+function getAbbrev(title: string): string {
+    const words = title.split(/[\s—–-]+/).filter(w => w.length > 1);
+    if (words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase();
+    return title.slice(0, 2).toUpperCase();
+}
+
 export default function SubmissionHistoryPage({
     submissions,
     loading,
@@ -29,11 +35,12 @@ export default function SubmissionHistoryPage({
     if (loading) {
         return (
             <div className={styles.list}>
-                {[1, 2, 3].map((i) => (
-                    <div key={i} className={styles.card} style={{ cursor: 'default' }}>
-                        <div className={styles.body}>
-                            <Skeleton width="50%" height={14} variant="text" />
-                            <div style={{ marginTop: 8 }}><Skeleton width="30%" height={12} variant="text" /></div>
+                {[1, 2].map((i) => (
+                    <div key={i} className={styles.loadingRow}>
+                        <Skeleton width={46} height={46} variant="rect" />
+                        <div style={{ flex: 1 }}>
+                            <Skeleton width="50%" height={16} variant="text" />
+                            <div style={{ marginTop: 6 }}><Skeleton width="30%" height={12} variant="text" /></div>
                         </div>
                     </div>
                 ))}
@@ -67,29 +74,32 @@ export default function SubmissionHistoryPage({
                 return (
                     <button
                         key={sub.id}
-                        className={styles.card}
+                        className={`${styles.row} ${pass ? styles.rowPass : styles.rowFail}`}
                         onClick={() => onSelectSubmission(sub.id)}
                     >
-                        <div className={styles.body}>
-                            <h3 className={styles.title}>{sub.assessment_title}</h3>
-                            <div className={styles.meta}>
+                        <div className={`${styles.rowIcon} ${pass ? styles.rowIconPass : styles.rowIconFail}`}>
+                            {getAbbrev(sub.assessment_title)}
+                        </div>
+                        <div className={styles.rowBody}>
+                            <div className={styles.rowTitle}>{sub.assessment_title}</div>
+                            <div className={styles.rowMeta}>
                                 <Badge variant={pass ? 'superato' : 'nonSuperato'}>
                                     {pass ? 'Superato' : 'Non superato'}
                                 </Badge>
-                                <span className={styles.sep}>&middot;</span>
+                                <span className={styles.metaSep}>&middot;</span>
                                 <span>{sub.correct_count}/{sub.total_questions} corrette</span>
                                 {sub.started_at && (
                                     <>
-                                        <span className={styles.sep}>&middot;</span>
+                                        <span className={styles.metaSep}>&middot;</span>
                                         <span>{formatDuration(sub.started_at, sub.submitted_at)}</span>
                                     </>
                                 )}
-                                <span className={styles.sep}>&middot;</span>
+                                <span className={styles.metaSep}>&middot;</span>
                                 <span>{formatDate(sub.submitted_at)}</span>
                             </div>
                         </div>
-                        <svg className={styles.arrow} width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M6 4l5 5-5 5" />
+                        <svg className={styles.chevron} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M9 18l6-6-6-6" />
                         </svg>
                     </button>
                 );

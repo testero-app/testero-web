@@ -138,6 +138,62 @@
   --m-space-12: 48px; --m-space-14: 56px; --m-space-16: 64px;
 }
 
+/* ─── Global utility classes from testero-theme.css ───────────────────── */
+
+/* Buttons */
+.ts-btn {
+  font-family: var(--ts-font-ui);
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border: none; border-radius: var(--ts-r-md);
+  font-weight: 700; font-size: 14px; padding: 12px 20px;
+  cursor: pointer; transition: filter .12s, background .12s, border-color .12s;
+}
+.ts-btn--primary  { background: var(--ts-teal); color: var(--ts-teal-ink); font-weight: 800; }
+.ts-btn--primary:hover  { filter: brightness(1.05); }
+.ts-btn--dark     { background: var(--ts-navy); color: #fff; }
+.ts-btn--dark:hover     { background: #173a5c; }
+.ts-btn--secondary{ background: #fff; color: var(--ts-teal-700); border: 1.5px solid var(--ts-teal); }
+.ts-btn--secondary:hover{ background: var(--ts-success-bg); }
+.ts-btn--ghost    { background: #fff; color: var(--ts-text); border: 1px solid var(--ts-border-input); }
+.ts-btn--ghost:hover    { background: var(--ts-surface-subtle); }
+.ts-btn--block { width: 100%; }
+.ts-btn--lg    { font-size: 16px; padding: 16px; }
+
+/* Badges */
+.ts-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: .03em;
+  padding: 6px 11px; border-radius: var(--ts-r-sm);
+}
+.ts-badge--success { color: var(--ts-success-700); background: var(--ts-success-bg); }
+.ts-badge--warning { color: var(--ts-warning-700); background: var(--ts-warning-bg); }
+.ts-badge--danger  { color: var(--ts-danger-700);  background: var(--ts-danger-bg); }
+
+/* Field */
+.ts-field {
+  display: flex; align-items: center; gap: 11px;
+  border: 1px solid var(--ts-border-input);
+  border-radius: 11px; padding: 14px 15px;
+  background: #fff;
+}
+.ts-field--subtle  { background: var(--ts-surface-subtle); }
+.ts-field--focus   { border-color: var(--ts-teal); box-shadow: var(--ts-focus-ring); }
+.ts-field--error   { border-color: var(--ts-danger); box-shadow: 0 0 0 4px rgba(229,72,77,.12); }
+.ts-field input {
+  border: none; outline: none; background: transparent; flex: 1;
+  font-family: var(--ts-font-ui); font-size: 14px; color: var(--ts-ink);
+}
+.ts-field input::placeholder { color: var(--ts-text-placeholder); }
+
+/* Alert */
+.ts-alert {
+  display: flex; align-items: center; gap: 9px;
+  border-radius: var(--ts-r-md); padding: 12px 15px;
+  font-size: 13.5px; font-weight: 600; line-height: 1.4;
+}
+.ts-alert--danger { background: var(--ts-danger-bg); color: var(--ts-danger-700); }
+.ts-alert--danger svg { stroke: var(--ts-danger-700); flex: none; }
+
 /* ─── Animations ──────────────────────────────────────────────────────── */
 
 @keyframes m-pulse {
