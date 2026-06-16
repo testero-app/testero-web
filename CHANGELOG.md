@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0](https://github.com/testero-app/testero-web/compare/v2.0.2...v2.1.0) (2026-06-16)
+
+
+### Features
+
+* rebuild Profile and Results pages ([#72](https://github.com/testero-app/testero-web/issues/72)) ([4f58c4d](https://github.com/testero-app/testero-web/commit/4f58c4d13ad523284a3e12da8259b3238f1d49b4))
+
+
+### Bug Fixes
+
+* make profile personal data fields all read-only ([#74](https://github.com/testero-app/testero-web/issues/74)) ([036b567](https://github.com/testero-app/testero-web/commit/036b56714d2fc659f8c47ef580f48ec3b791f137))
+
 ## [2.0.2](https://github.com/testero-app/testero-web/compare/v2.0.1...v2.0.2) (2026-06-16)
 
 
