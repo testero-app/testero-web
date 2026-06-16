@@ -49,12 +49,12 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
                 <div className={styles.brandBottom}>
                     <div className={styles.brandHeadline}>Challenge<br />your knowledge.</div>
                     <div className={styles.brandSub}>
-                        Accedi per sostenere le tue verifiche di certificazione in Python, JavaScript, Java e altro. Tempo reale, correzione immediata.
+                        La piattaforma per verifiche e test di coding. Risposte in tempo reale, correzione immediata, esiti per argomento.
                     </div>
                     <div className={styles.brandChips}>
-                        <span className={styles.chip}>certificazioni</span>
+                        <span className={styles.chip}>verifiche</span>
                         <span className={styles.chip}>simulazioni</span>
-                        <span className={styles.chip}>esiti per argomento</span>
+                        <span className={styles.chip}>esiti dettagliati</span>
                     </div>
                 </div>
             </div>
@@ -160,8 +160,6 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
                         >
                             Lascia un feedback
                         </a>
-                        <span className={styles.footerDot} />
-                        <span className={styles.footerMuted}>Serve aiuto?</span>
                     </div>
                 </form>
               </div>
