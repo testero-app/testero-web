@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0](https://github.com/testero-app/testero-web/compare/v1.3.0...v2.0.0) (2026-06-16)
+
+
+### Features
+
+* Meridian design system restyling ([#64](https://github.com/testero-app/testero-web/issues/64)) ([7f1bf20](https://github.com/testero-app/testero-web/commit/7f1bf203ac735dab1b5bf7dd844db1d1440bb0aa))
+
 ## [1.3.0](https://github.com/testero-app/testero-web/compare/v1.2.0...v1.3.0) (2026-06-12)
 
 
