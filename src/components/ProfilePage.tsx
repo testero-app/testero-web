@@ -127,18 +127,17 @@ export default function ProfilePage({ user, token, onBack, onLogout }: ProfilePa
                                     Contattare il docente per la modifica
                                 </span>
                             </div>
-                            {/* Name row */}
+                            {/* Name row (read-only) */}
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 18 }}>
-                                <div><div style={labelStyle}>Nome</div><div style={fieldBase}><input value={user.name.split(' ')[0] || ''} readOnly style={{ border: 'none', outline: 'none', font: 'inherit', color: 'inherit', background: 'transparent', width: '100%' }} /></div></div>
-                                <div><div style={labelStyle}>Cognome</div><div style={fieldBase}><input value={user.name.split(' ').slice(1).join(' ') || ''} readOnly style={{ border: 'none', outline: 'none', font: 'inherit', color: 'inherit', background: 'transparent', width: '100%' }} /></div></div>
+                                <div><div style={labelStyle}>Nome</div><div style={fieldRo}>{user.name.split(' ')[0] || ''}</div></div>
+                                <div><div style={labelStyle}>Cognome</div><div style={fieldRo}>{user.name.split(' ').slice(1).join(' ') || ''}</div></div>
                             </div>
                             {/* Username (read-only) */}
-                            <div style={{ marginBottom: 18 }}>
+                            <div>
                                 <div style={labelStyle}>Username</div>
                                 <div style={fieldRo}>
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b0bcc8" strokeWidth="2"><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
                                     {user.username}
-                                    <span style={{ marginLeft: 'auto', fontSize: 11, color: '#9aa6b2', fontWeight: 600 }}>non modificabile</span>
                                 </div>
                             </div>
                         </div>
