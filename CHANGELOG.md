@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.2](https://github.com/testero-app/testero-web/compare/v2.1.1...v2.1.2) (2026-06-18)
+
+
+### Bug Fixes
+
+* downgrade eslint to 9.x for eslint-config-next compatibility ([#90](https://github.com/testero-app/testero-web/issues/90)) ([d3728ce](https://github.com/testero-app/testero-web/commit/d3728ce659fbf357ab77b35dd0910b65971fa425))
+
 ## [2.1.1](https://github.com/testero-app/testero-web/compare/v2.1.0...v2.1.1) (2026-06-17)
 
 
