@@ -1,0 +1,199 @@
+/* SubmitModal — delivery confirmation modal */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn var(--m-transition-base);
+    padding: var(--m-space-4);
+}
+
+.card {
+    background: var(--ts-surface);
+    border-radius: 20px;
+    box-shadow: var(--ts-shadow-modal);
+    max-width: 440px;
+    width: 100%;
+    padding: 32px 28px 28px;
+    text-align: center;
+    animation: scaleIn var(--m-transition-base);
+}
+
+/* Warning icon */
+.iconWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.iconCircle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--ts-warning-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iconCircle svg {
+    width: 28px;
+    height: 28px;
+    color: var(--ts-warning);
+}
+
+/* Title & subtitle */
+.title {
+    font-family: var(--ts-font-ui);
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--ts-navy);
+    margin: 0 0 6px;
+}
+
+.subtitle {
+    font-family: var(--ts-font-ui);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ts-text-soft);
+    margin: 0 0 22px;
+    line-height: 1.45;
+}
+
+/* Stat boxes row */
+.statsRow {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.statBox {
+    flex: 1;
+    border: 1.5px solid;
+    border-radius: var(--ts-r-lg);
+    padding: 16px 12px 14px;
+    background: var(--ts-surface);
+}
+
+.statBoxAnswered {
+    border-color: var(--ts-teal);
+}
+
+.statBoxUnanswered {
+    border-color: var(--ts-warning);
+}
+
+.statNumber {
+    font-family: var(--ts-font-mono);
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.statNumberAnswered {
+    color: var(--ts-teal);
+}
+
+.statNumberUnanswered {
+    color: var(--ts-warning);
+}
+
+.statLabel {
+    font-family: var(--ts-font-ui);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ts-text-soft);
+    letter-spacing: 0.02em;
+}
+
+/* Warning note */
+.warningNote {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--ts-warning-bg);
+    color: var(--ts-warning-600);
+    border-radius: var(--ts-r-md);
+    padding: 11px 16px;
+    margin-bottom: 22px;
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.warningNote svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: var(--ts-warning-600);
+}
+
+/* Buttons */
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.actions > button {
+    flex: 1;
+}
+
+.btnContinue {
+    font-family: var(--ts-font-ui);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 13px 18px;
+    border-radius: var(--ts-r-md);
+    border: 1px solid var(--ts-border);
+    background: var(--ts-surface);
+    color: var(--ts-navy);
+    cursor: pointer;
+    transition: background var(--m-transition-fast), border-color var(--m-transition-fast);
+}
+
+.btnContinue:hover {
+    background: var(--ts-surface-subtle);
+    border-color: var(--ts-border-input);
+}
+
+.btnSubmit {
+    font-family: var(--ts-font-ui);
+    font-size: 14px;
+    font-weight: 800;
+    padding: 13px 18px;
+    border-radius: var(--ts-r-md);
+    border: none;
+    background: var(--ts-navy);
+    color: #fff;
+    cursor: pointer;
+    transition: background var(--m-transition-fast);
+}
+
+.btnSubmit:hover {
+    background: var(--ts-navy-hover);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

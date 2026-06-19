@@ -1,0 +1,93 @@
+/* ── StudentHub: 3-tab container (Allenamento, Certificazioni, Risultati) ── */
+
+.page {
+    min-height: 100vh;
+    background: var(--ts-app-bg);
+    font-family: var(--ts-font-ui);
+    color: var(--ts-ink);
+}
+
+.body {
+    padding: 44px 40px 60px;
+}
+
+.inner {
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ts-ink);
+}
+
+.subtitle {
+    font-size: 14.5px;
+    color: var(--ts-text-soft);
+    margin-top: 5px;
+    margin-bottom: 26px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+/* ── Segmented Control ──────────────────────────────────────────── */
+
+.tabs {
+    display: inline-flex;
+    gap: 5px;
+    background: #fff;
+    border: 1px solid var(--ts-border);
+    border-radius: 11px;
+    padding: 5px;
+    margin-bottom: 22px;
+}
+
+.tab {
+    font-family: var(--ts-font-ui);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ts-text-soft);
+    padding: 9px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.12s, color 0.12s;
+}
+
+.tab:hover {
+    background: var(--ts-surface-subtle);
+}
+
+.tabActive {
+    background: var(--ts-navy);
+    color: #fff;
+    font-weight: 700;
+}
+
+.tabActive:hover {
+    background: var(--ts-navy);
+}
+
+/* ── Page transition ─────────────────────────────────────────── */
+
+.tabContent {
+    animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
