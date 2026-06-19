@@ -11,9 +11,14 @@
   --ts-navy:            #102a43;
   --ts-navy-900:        #0d2236;
   --ts-navy-950:        #0d1f33;
+  --ts-navy-hover:      #173a5c;
+  --ts-editor:          #0a1a2b;
   --ts-teal:            #14b8a6;
   --ts-teal-700:        #0e7c7b;
   --ts-teal-ink:        #06302c;
+  --ts-teal-bright:     #5eead4;
+  --ts-teal-bg:         #e6fcfa;
+  --ts-teal-selected:   #effdfb;
 
   /* — Stati — */
   --ts-success:         #14b8a6;
@@ -59,10 +64,12 @@
   --ts-r-pill: 99px;
 
   /* — Ombre — */
-  --ts-shadow-card:  0 1px 2px rgba(16,42,67,.05);
-  --ts-shadow-pop:   0 16px 40px rgba(16,42,67,.12);
-  --ts-shadow-modal: 0 24px 60px rgba(0,0,0,.40);
-  --ts-focus-ring:   0 0 0 3px rgba(20,184,166,.12);
+  --ts-shadow-card:    0 1px 2px rgba(16,42,67,.04);
+  --ts-shadow-card-el: 0 12px 30px rgba(16,42,67,.10);
+  --ts-shadow-pop:     0 24px 60px rgba(16,42,67,.22);
+  --ts-shadow-modal:   0 24px 60px rgba(0,0,0,.40);
+  --ts-focus-ring:     0 0 0 3px rgba(20,184,166,.13);
+  --ts-option-ring:    0 0 0 4px rgba(20,184,166,.10);
 
   /* — Tipografia — */
   --ts-font-ui:   'Sora', system-ui, sans-serif;

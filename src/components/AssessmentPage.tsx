@@ -10,13 +10,38 @@ interface AssessmentPageProps {
     shuffledOptions: TOption[][];
     currentIndex: number;
     answers: Record<string, TAnswer>;
+    flagged: Record<string, boolean>;
     answeredSet: Set<number>;
     answeredCount: number;
     onGoTo: (index: number) => void;
     onPrev: () => void;
     onNext: () => void;
     onAnswer: (questionId: string, answer: TAnswer) => void;
+    onToggleFlag: (questionId: string) => void;
     onSubmit: () => void;
+}
+
+/* ── Flag toggle ("Segna da rivedere") ────────────────────────────── */
+
+function FlagToggle({ active, onToggle }: { active: boolean; onToggle: () => void }) {
+    if (active) {
+        return (
+            <button className={styles.flagPill} onClick={onToggle}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c47308" strokeWidth="2">
+                    <path d="M5 21V4h11l-1.5 4L16 12H5" />
+                </svg>
+                Da rivedere
+            </button>
+        );
+    }
+    return (
+        <button className={styles.flag} onClick={onToggle}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8696a6" strokeWidth="2">
+                <path d="M5 21V4h11l-1.5 4L16 12H5" />
+            </svg>
+            Segna da rivedere
+        </button>
+    );
 }
 
 /* ── Shared options renderer (radio style) ─────────────────────────── */
@@ -108,48 +133,28 @@ function NavFooter({
     const isLast = currentIndex === total - 1;
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className={styles.navFooter}>
             <button
                 onClick={onPrev}
                 disabled={isFirst}
-                style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 9,
-                    padding: '14px 22px', borderRadius: 13,
-                    border: '1.5px solid #e1e6ec', background: '#fff',
-                    fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 15,
-                    color: isFirst ? '#c3ccd6' : '#102a43',
-                    cursor: isFirst ? 'default' : 'pointer',
-                }}
+                className={`${styles.btnGhost} ${isFirst ? styles.btnDisabled : ''}`}
             >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M15 18l-6-6 6-6" /></svg>
                 Precedente
             </button>
 
+            <span className={styles.autosave}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="2.6"><path d="M5 12l5 5L20 6" /></svg>
+                Risposta salvata automaticamente
+            </span>
+
             {isLast ? (
-                <button
-                    onClick={onSubmit}
-                    style={{
-                        display: 'inline-flex', alignItems: 'center', gap: 9,
-                        padding: '15px 24px', borderRadius: 13,
-                        border: 'none', background: '#102a43', color: '#fff',
-                        fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 15,
-                        cursor: 'pointer',
-                    }}
-                >
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="2.6"><path d="M5 12l5 5L20 6" /></svg>
-                    Consegna test
+                <button onClick={onSubmit} className={styles.btnNavy}>
+                    Consegna
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2"><path d="M9 6l6 6-6 6" /></svg>
                 </button>
             ) : (
-                <button
-                    onClick={onNext}
-                    style={{
-                        display: 'inline-flex', alignItems: 'center', gap: 9,
-                        padding: '15px 24px', borderRadius: 13,
-                        border: 'none', background: '#102a43', color: '#fff',
-                        fontFamily: "'Sora', sans-serif", fontWeight: 700, fontSize: 15,
-                        cursor: 'pointer',
-                    }}
-                >
+                <button onClick={onNext} className={styles.btnNavy}>
                     Successiva
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2"><path d="M9 6l6 6-6 6" /></svg>
                 </button>
@@ -162,11 +167,13 @@ function NavFooter({
 
 function VariantE({
     question, displayIndex, total, shuffledOpts, answer, onAnswer,
+    isFlagged, onToggleFlag,
     onPrev, onNext, onSubmit,
 }: {
     question: TQuestion; displayIndex: number; total: number;
     shuffledOpts: TOption[];
     answer: TAnswer | undefined; onAnswer: (qid: string, a: TAnswer) => void;
+    isFlagged: boolean; onToggleFlag: () => void;
     onPrev: () => void; onNext: () => void; onSubmit: () => void;
 }) {
     return (
@@ -174,12 +181,9 @@ function VariantE({
             {/* Head row */}
             <div className={styles.headE}>
                 <span className={styles.eyebrow}>
-                    Domanda {displayIndex + 1} di {total}
+                    Domanda {displayIndex + 1} · {total}
                 </span>
-                <span className={styles.autosave}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8696a6" strokeWidth="2.2"><path d="M5 12l5 5L20 6" /></svg>
-                    Salvataggio automatico
-                </span>
+                <FlagToggle active={isFlagged} onToggle={onToggleFlag} />
             </div>
 
             {/* Question title */}
@@ -206,11 +210,13 @@ function VariantE({
 
 function VariantF({
     question, displayIndex, total, shuffledOpts, answer, onAnswer,
+    isFlagged, onToggleFlag,
     onPrev, onNext, onSubmit,
 }: {
     question: TQuestion; displayIndex: number; total: number;
     shuffledOpts: TOption[];
     answer: TAnswer | undefined; onAnswer: (qid: string, a: TAnswer) => void;
+    isFlagged: boolean; onToggleFlag: () => void;
     onPrev: () => void; onNext: () => void; onSubmit: () => void;
 }) {
     const codeRef = useRef<HTMLElement>(null);
@@ -232,8 +238,8 @@ function VariantF({
                     <span className={styles.codeDot} style={{ background: '#ff5f57' }} />
                     <span className={styles.codeDot} style={{ background: '#febc2e' }} />
                     <span className={styles.codeDot} style={{ background: '#28c840' }} />
-                    <span className={styles.codeFile}>Main.java</span>
-                    <span className={styles.codeTag}>CODICE</span>
+                    <span className={styles.codeFile}>esercizio.py</span>
+                    <span className={styles.codeTag}>STIMOLO</span>
                 </div>
                 <div className={styles.codePanelBody}>
                     <div style={{ display: 'flex', gap: 18 }}>
@@ -276,10 +282,7 @@ function VariantF({
                     <span className={styles.eyebrow}>
                         Domanda {displayIndex + 1} di {total}
                     </span>
-                    <span className={styles.autosave}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8696a6" strokeWidth="2.2"><path d="M5 12l5 5L20 6" /></svg>
-                        Salvataggio automatico
-                    </span>
+                    <FlagToggle active={isFlagged} onToggle={onToggleFlag} />
                 </div>
 
                 <h2 className={styles.qTitle}>{question.text}</h2>
@@ -305,12 +308,13 @@ function VariantF({
 /* ── Main ───────────────────────────────────────────────────────────── */
 
 export default function AssessmentPage({
-    shuffledQuestions, shuffledOptions, currentIndex, answers,
-    answeredSet, answeredCount, onGoTo, onPrev, onNext, onAnswer, onSubmit,
+    shuffledQuestions, shuffledOptions, currentIndex, answers, flagged,
+    answeredSet, answeredCount, onGoTo, onPrev, onNext, onAnswer, onToggleFlag, onSubmit,
 }: AssessmentPageProps) {
     const question = shuffledQuestions[currentIndex];
     const opts = shuffledOptions[currentIndex] || [];
     const total = shuffledQuestions.length;
+    const isFlagged = !!flagged[question.id];
 
     // Decide variant: has code → ALWAYS split (F), no code → simple (E)
     const useSplit = !!question.code;
@@ -326,6 +330,8 @@ export default function AssessmentPage({
                     shuffledOpts={opts}
                     answer={answers[question.id]}
                     onAnswer={onAnswer}
+                    isFlagged={isFlagged}
+                    onToggleFlag={() => onToggleFlag(question.id)}
                     onPrev={onPrev}
                     onNext={onNext}
                     onSubmit={onSubmit}
@@ -339,6 +345,8 @@ export default function AssessmentPage({
                     shuffledOpts={opts}
                     answer={answers[question.id]}
                     onAnswer={onAnswer}
+                    isFlagged={isFlagged}
+                    onToggleFlag={() => onToggleFlag(question.id)}
                     onPrev={onPrev}
                     onNext={onNext}
                     onSubmit={onSubmit}

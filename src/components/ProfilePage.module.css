@@ -1,63 +1,478 @@
+/* ===================================================================
+   ProfilePage — Restyled to match design mock 12-profilo
+   =================================================================== */
+
 .page {
     min-height: 100vh;
-    background: var(--m-bg);
+    background: var(--ts-canvas);
 }
 
-.content {
-    max-width: 600px;
+.container {
+    max-width: 1080px;
     margin: 0 auto;
-    padding: var(--m-space-8) var(--m-space-6);
+    padding: 34px 40px 60px;
 }
 
-.heading {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--m-text-heading);
-    margin-bottom: var(--m-space-6);
+/* ── Back link ─────────────────────────────────────────────────────── */
+
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ts-teal-700);
+    margin-bottom: 14px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: var(--ts-font-ui);
 }
+
+.backLink:hover {
+    opacity: 0.8;
+}
+
+/* ── Page header ───────────────────────────────────────────────────── */
+
+.title {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ts-ink);
+}
+
+.subtitle {
+    font-size: 15px;
+    color: var(--ts-text-soft);
+    margin-top: 5px;
+    margin-bottom: 28px;
+}
+
+/* ── Two-column grid ───────────────────────────────────────────────── */
+
+.grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/* ── Card (shared) ─────────────────────────────────────────────────── */
 
 .card {
-    background: var(--m-white);
-    border: 1px solid var(--m-border);
-    border-radius: var(--m-radius-lg);
-    padding: var(--m-space-6);
-    margin-bottom: var(--m-space-4);
+    background: var(--ts-surface);
+    border: 1px solid var(--ts-border);
+    border-radius: 16px;
+}
+
+/* ── LEFT: Identity card ───────────────────────────────────────────── */
+
+.identityCard {
+    composes: card;
+    padding: 30px 26px;
+    text-align: center;
+}
+
+.avatar {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: var(--ts-navy);
+    color: #fff;
+    font-weight: 800;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+}
+
+.userName {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--ts-ink);
+}
+
+.roleBadge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ts-teal-700);
+    background: var(--ts-teal-bg);
+    padding: 5px 12px;
+    border-radius: var(--ts-r-pill);
+    margin-top: 10px;
+}
+
+.metaSection {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid var(--ts-border-soft);
+    text-align: left;
+}
+
+.metaRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.metaLabel {
+    font-size: 12.5px;
+    color: var(--ts-text-fainter);
+    font-weight: 600;
+}
+
+.metaValue {
+    font-size: 13px;
+    color: var(--ts-ink);
+    font-weight: 700;
+}
+
+.metaValueMono {
+    composes: metaValue;
+    font-family: var(--ts-font-mono);
+}
+
+/* ── RIGHT: card stack ─────────────────────────────────────────────── */
+
+.cardStack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.contentCard {
+    composes: card;
+    padding: 26px 28px;
+}
+
+/* ── Card headers ──────────────────────────────────────────────────── */
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .cardTitle {
-    font-size: 15px;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ts-ink);
+}
+
+.cardDescription {
+    font-size: 13.5px;
+    color: var(--ts-text-soft);
+    margin-top: 3px;
+    margin-bottom: 20px;
+}
+
+.hintBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: var(--ts-text-soft);
+    background: var(--ts-app-bg);
+    border-radius: 8px;
+    padding: 6px 11px;
+    font-weight: 600;
+}
+
+/* ── Form elements ─────────────────────────────────────────────────── */
+
+.label {
+    font-size: 11px;
     font-weight: 700;
-    color: var(--m-text-heading);
-    margin-bottom: var(--m-space-4);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ts-text-fainter);
+    margin-bottom: 7px;
+}
+
+.fieldRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.fieldGroup {
+    margin-bottom: 18px;
+}
+
+.fieldGroupTight {
+    margin-bottom: 6px;
 }
 
 .field {
     display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-bottom: var(--m-space-4);
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-md);
+    padding: 13px 14px;
+    background: var(--ts-surface);
+    font-size: 14.5px;
+    color: var(--ts-ink);
 }
 
-.field:last-child {
-    margin-bottom: 0;
+.fieldFocus {
+    composes: field;
+    border-color: var(--ts-teal);
+    box-shadow: var(--ts-focus-ring);
 }
 
-.fieldLabel {
+.fieldReadonly {
+    composes: field;
+    background: var(--ts-surface-subtle);
+    border-color: var(--ts-border-soft);
+    color: var(--ts-text-soft);
+}
+
+.fieldInput {
+    border: none;
+    outline: none;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    width: 100%;
+    font-family: var(--ts-font-ui);
+}
+
+.readonlyTag {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ts-text-fainter);
+    background: var(--ts-canvas);
+    padding: 3px 8px;
+    border-radius: var(--ts-r-pill);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.eyeBtn {
+    margin-left: auto;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+/* ── Buttons row ───────────────────────────────────────────────────── */
+
+.buttonRow {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btnPrimary {
+    border: none;
+    background: var(--ts-navy);
+    color: #fff;
+    font-family: var(--ts-font-ui);
+    font-weight: 800;
+    font-size: 14px;
+    padding: 13px 22px;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: background var(--m-transition-fast);
+}
+
+.btnPrimary:hover {
+    background: var(--ts-navy-hover);
+}
+
+.btnGhost {
+    border: 1px solid var(--ts-border-input);
+    background: var(--ts-surface);
+    color: var(--ts-text);
+    font-family: var(--ts-font-ui);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 13px 22px;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: background var(--m-transition-fast);
+}
+
+.btnGhost:hover {
+    background: var(--ts-surface-subtle);
+}
+
+.btnTeal {
+    border: none;
+    background: var(--ts-teal);
+    color: var(--ts-teal-ink);
+    font-family: var(--ts-font-ui);
+    font-weight: 800;
+    font-size: 14px;
+    padding: 13px 22px;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: filter var(--m-transition-fast);
+}
+
+.btnTeal:hover {
+    filter: brightness(1.05);
+}
+
+.btnTeal:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ── Password strength meter ───────────────────────────────────────── */
+
+.strengthMeter {
+    display: flex;
+    gap: 5px;
+    margin: 10px 0 9px;
+}
+
+.strengthBar {
+    flex: 1;
+    height: 5px;
+    border-radius: var(--ts-r-pill);
+    background: var(--ts-border);
+    transition: background var(--m-transition-fast);
+}
+
+.strengthBarActive {
+    composes: strengthBar;
+    background: var(--ts-teal);
+}
+
+.requirements {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.requirement {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 12px;
     font-weight: 600;
-    color: var(--m-text-label);
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
+    color: var(--ts-text-fainter);
 }
 
-.fieldValue {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--m-text-heading);
+.requirementMet {
+    composes: requirement;
+    color: var(--ts-teal-700);
 }
 
-.actions {
-    margin-top: var(--m-space-6);
+/* ── Password message (success / error) ────────────────────────────── */
+
+.pwdMsg {
+    padding: 10px 14px;
+    border-radius: var(--ts-r-md);
+    margin-bottom: 16px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.pwdMsgOk {
+    composes: pwdMsg;
+    background: var(--ts-success-bg);
+    color: var(--ts-teal-700);
+}
+
+.pwdMsgErr {
+    composes: pwdMsg;
+    background: var(--ts-danger-bg);
+    color: var(--ts-danger-700);
+}
+
+/* ── Notification rows ─────────────────────────────────────────────── */
+
+.notifRow {
     display: flex;
-    gap: var(--m-space-3);
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 16px 0;
+}
+
+.notifRow + .notifRow {
+    border-top: 1px solid var(--ts-border-soft);
+}
+
+.notifTitle {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ts-ink);
+}
+
+.notifDesc {
+    font-size: 12.5px;
+    color: var(--ts-text-soft);
+    margin-top: 2px;
+}
+
+/* ── Toggle switch ─────────────────────────────────────────────────── */
+
+.toggle {
+    width: 44px;
+    height: 25px;
+    border-radius: var(--ts-r-pill);
+    background: var(--ts-border-input);
+    position: relative;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background 0.15s;
+    border: none;
+    padding: 0;
+}
+
+.toggleOn {
+    composes: toggle;
+    background: var(--ts-teal);
+}
+
+.toggleKnob {
+    position: absolute;
+    top: 3px;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: #fff;
+    transition: left 0.15s;
+    left: 3px;
+}
+
+.toggleKnobOn {
+    composes: toggleKnob;
+    left: 22px;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .container {
+        padding: 24px 16px 40px;
+    }
+
+    .fieldRow {
+        grid-template-columns: 1fr;
+    }
 }
