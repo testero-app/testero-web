@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { MemoryRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { MemoryRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AssessmentProvider, useAssessment, TSubmissionSummary } from '../context/AssessmentContext';
 import { isQuestionAnswered, DEFAULT_TIMER_MINUTES } from '../lib/questionUtils';
 import { useTimer } from '../hooks/useTimer';
-import { fetchSubmissionFeedback, fetchSubmissionReview } from '../lib/api';
+import { fetchSubmissionFeedback, fetchSubmissionReview, startTrainingSession } from '../lib/api';
 
 import LoginPage from './LoginPage';
 import TopBar from './layout/TopBar';
@@ -157,6 +157,7 @@ function HomeView() {
             >
                 {activeTab === 'allenamento' && (
                     <AllenamentoTab
+                        token={token!}
                         onStartTopic={(topicId) => navigate('/configuratore', { state: { topicId } })}
                     />
                 )}
@@ -187,24 +188,48 @@ function HomeView() {
 // ─── Configuratore View ────────────────────────────────────────────────────
 
 function ConfiguratoreView() {
-    const { user } = useAssessment();
+    const { user, token, selectAssessment } = useAssessment();
     const navigate = useNavigate();
+    const location = useLocation();
+    const topicId = (location.state as { topicId?: string })?.topicId || '';
+    const topicName = (location.state as { topicName?: string })?.topicName || 'Allenamento';
 
     useEffect(() => {
         if (!user) navigate('/');
     }, [user, navigate]);
 
-    if (!user) return null;
+    if (!user || !token) return null;
 
-    // TODO: get topicId from location state and load real topic data
+    const handleStart = async (config: {
+        topicId: string;
+        chapterIds: string[];
+        difficulty: string;
+        questionCount: number;
+        timerEnabled: boolean;
+    }) => {
+        try {
+            const result = await startTrainingSession({
+                topic_id: config.topicId,
+                chapter_ids: config.chapterIds,
+                difficulty: config.difficulty,
+                question_count: config.questionCount,
+                timer_enabled: config.timerEnabled,
+            }, token);
+            // Use selectAssessment flow with the returned snapshot
+            await selectAssessment(result.assessment_snapshot_id);
+            navigate('/assessment');
+        } catch (err) {
+            alert('Errore nell\'avvio dell\'allenamento: ' + (err as Error).message);
+        }
+    };
+
     return (
         <ConfiguratorePage
-            topicName="Fondamenti Python I"
+            topicId={topicId}
+            topicName={topicName}
+            token={token}
             onBack={() => navigate('/home')}
-            onStart={() => {
-                // TODO: start training session via POST /api/training/start, then navigate to /assessment
-                alert('Funzionalità in sviluppo.\n\nL\'endpoint POST /api/training/start non è ancora disponibile. Una volta implementato, questa azione avvierà la sessione di allenamento.');
-            }}
+            onStart={handleStart}
         />
     );
 }
