@@ -1,0 +1,424 @@
+/* ── ConfiguratorePage ────────────────────────────────────────── */
+/* TODO: entire page backed by mock data.
+   Needs GET /api/topics/{id}/chapters and POST /api/training/start endpoints */
+
+.page {
+    min-height: 100vh;
+    background: var(--ts-app-bg);
+    font-family: var(--ts-font-ui);
+    color: var(--ts-ink);
+}
+
+/* ── Header (navy bar with breadcrumb) ─────────────────────── */
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 30px;
+    background: var(--ts-navy);
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.brandName {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.sep {
+    width: 1px;
+    height: 22px;
+    background: #2c4a64;
+}
+
+.crumb {
+    font-size: 14px;
+    font-weight: 600;
+    color: #9fc2cd;
+}
+
+.crumbSep {
+    margin: 0 6px;
+    color: #486581;
+}
+
+.crumbCurrent {
+    color: #cfe0e8;
+}
+
+.backBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    color: #cfe0e8;
+    background: none;
+    border: 1px solid #2c4a64;
+    border-radius: 9px;
+    padding: 9px 16px;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.backBtn:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Body: two columns ───────────────────────────────────────── */
+
+.body {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 36px 32px 60px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    align-items: start;
+}
+
+/* ── Left: Chapters ──────────────────────────────────────────── */
+
+.chaptersHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.chaptersTitle {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--ts-ink);
+}
+
+.selectAll {
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ts-teal-700);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.selectAll:hover {
+    text-decoration: underline;
+}
+
+.chapterList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chapter {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--ts-surface);
+    border: 1.5px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: border-color 0.12s, background 0.12s;
+}
+
+.chapter:hover {
+    border-color: #c3ccd6;
+}
+
+.chapterSelected {
+    border-color: var(--ts-teal);
+    background: var(--ts-teal-selected);
+}
+
+.chapterCheck {
+    width: 24px;
+    height: 24px;
+    flex: none;
+    border-radius: 7px;
+    border: 2px solid #cdd6e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.12s, border-color 0.12s;
+}
+
+.chapterCheckActive {
+    background: var(--ts-teal);
+    border-color: var(--ts-teal);
+}
+
+.chapterName {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ts-ink);
+}
+
+.chapterLevels {
+    display: flex;
+    gap: 6px;
+}
+
+.levelChip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 26px;
+    font-family: var(--ts-font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 7px;
+    padding: 0 6px;
+}
+
+.levelBase {
+    color: var(--ts-teal-700);
+    background: var(--ts-teal-bg);
+}
+
+.levelInter {
+    color: var(--ts-warning-600);
+    background: var(--ts-warning-bg);
+}
+
+.levelAvanz {
+    color: var(--ts-danger-700);
+    background: var(--ts-danger-bg);
+}
+
+/* ── Right: Session config (sticky card) ─────────────────────── */
+
+.sessionCard {
+    background: var(--ts-surface);
+    border: 1px solid var(--ts-border);
+    border-radius: 16px;
+    padding: 26px 24px;
+    position: sticky;
+    top: 24px;
+    box-shadow: var(--ts-shadow-card);
+}
+
+.sessionTitle {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ts-ink);
+    margin-bottom: 22px;
+}
+
+.sectionLabel {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ts-text-fainter);
+    margin-bottom: 10px;
+}
+
+/* ── Difficulty selector (2x2 grid) ──────────────────────────── */
+
+.diffGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.diffBtn {
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ts-text);
+    background: var(--ts-surface);
+    border: 1.5px solid var(--ts-border);
+    border-radius: var(--ts-r-md);
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 0.12s, background 0.12s, color 0.12s;
+}
+
+.diffBtn:hover {
+    border-color: #c3ccd6;
+}
+
+.diffBtnActive {
+    border-color: var(--ts-teal);
+    background: var(--ts-teal-bg);
+    color: var(--ts-teal-700);
+    font-weight: 700;
+}
+
+/* ── Question count stepper ──────────────────────────────────── */
+
+.stepper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 10px;
+}
+
+.stepBtn {
+    width: 44px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ts-surface);
+    border: 1.5px solid var(--ts-border);
+    cursor: pointer;
+    color: var(--ts-text);
+    font-size: 20px;
+    font-weight: 700;
+    transition: background 0.12s;
+}
+
+.stepBtn:first-child {
+    border-radius: var(--ts-r-md) 0 0 var(--ts-r-md);
+}
+
+.stepBtn:last-child {
+    border-radius: 0 var(--ts-r-md) var(--ts-r-md) 0;
+}
+
+.stepBtn:hover {
+    background: var(--ts-surface-subtle);
+}
+
+.stepBtnPlus {
+    background: var(--ts-teal-bg);
+    border-color: var(--ts-teal);
+    color: var(--ts-teal-700);
+}
+
+.stepBtnPlus:hover {
+    background: #d0f5f0;
+}
+
+.stepValue {
+    flex: 1;
+    text-align: center;
+    font-family: var(--ts-font-mono);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--ts-ink);
+    border-top: 1.5px solid var(--ts-border);
+    border-bottom: 1.5px solid var(--ts-border);
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stepNote {
+    font-size: 12px;
+    color: var(--ts-text-faint);
+    font-family: var(--ts-font-mono);
+    margin-bottom: 20px;
+}
+
+/* ── Timer row ───────────────────────────────────────────────── */
+
+.timerRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--ts-surface-subtle);
+    border-radius: var(--ts-r-md);
+    padding: 14px 16px;
+    margin-bottom: 24px;
+}
+
+.timerIcon {
+    flex: none;
+    color: var(--ts-text-faint);
+}
+
+.timerInfo {
+    flex: 1;
+}
+
+.timerLabel {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ts-ink);
+}
+
+.timerMeta {
+    font-size: 12px;
+    color: var(--ts-text-faint);
+    font-family: var(--ts-font-mono);
+    margin-top: 2px;
+}
+
+/* Toggle */
+.toggle {
+    width: 44px;
+    height: 25px;
+    border-radius: 99px;
+    background: #cdd6e0;
+    position: relative;
+    flex: none;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s;
+}
+
+.toggleOn {
+    background: var(--ts-teal);
+}
+
+.toggleKnob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: #fff;
+    transition: left 0.15s;
+}
+
+.toggleOn .toggleKnob {
+    left: 22px;
+}
+
+/* ── Start button ────────────────────────────────────────────── */
+
+.startBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--ts-teal);
+    color: var(--ts-teal-ink);
+    font-family: var(--ts-font-ui);
+    font-size: 16px;
+    font-weight: 800;
+    padding: 16px;
+    border: none;
+    border-radius: var(--ts-r-lg);
+    cursor: pointer;
+    transition: filter 0.12s;
+}
+
+.startBtn:hover {
+    filter: brightness(1.05);
+}

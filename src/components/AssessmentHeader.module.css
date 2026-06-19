@@ -1,54 +1,271 @@
+/* ── AssessmentHeader ─────────────────────────────────────────── */
+
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 28px;
-    background: var(--m-white);
-    border-bottom: 1px solid var(--m-border);
-    box-shadow: var(--m-shadow-sm);
     position: sticky;
     top: 0;
     z-index: 100;
+    background: var(--ts-navy);
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .brand {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 10px;
-    font-family: var(--m-font-body);
-    font-weight: 800;
-    font-size: 16px;
-    letter-spacing: -0.02em;
-    color: var(--m-text-heading);
+    gap: 11px;
 }
 
-.logo {
+.brandMark {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    background: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    height: 30px;
-    background: var(--m-navy);
-    border-radius: 7px;
-    color: var(--m-teal);
-    font-family: var(--m-font-mono);
-    font-size: 12px;
-    font-weight: 700;
+}
+
+.brandName {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.sep {
+    width: 1px;
+    height: 22px;
+    background: #2c4a64;
+}
+
+.crumb {
+    font-size: 14px;
+    font-weight: 600;
+    color: #9fc2cd;
 }
 
 .right {
     display: flex;
     align-items: center;
-    gap: var(--m-space-4);
+    gap: 16px;
+    position: relative;
 }
 
-.userName {
+.counter {
+    font-family: var(--ts-font-mono);
+    font-size: 15px;
+    color: #9fc2cd;
+}
+
+.counter b {
+    color: #fff;
+    font-weight: 700;
+}
+
+/* ── Timer ────────────────────────────────────────────────────── */
+
+.timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--ts-teal);
+    color: var(--ts-teal-ink);
+    font-family: var(--ts-font-mono);
+    font-weight: 700;
+    font-size: 15px;
+    padding: 9px 15px;
+    border-radius: 11px;
+}
+
+.timerWarning {
+    background: var(--ts-warning);
+    color: #3a2a00;
+}
+
+.timerDanger {
+    background: var(--ts-danger);
+    color: #fff;
+}
+
+/* ── Mappa button ─────────────────────────────────────────────── */
+
+.mapBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: #16324a;
+    border: 1px solid #2c4a64;
+    color: #fff;
+    font-family: var(--ts-font-ui);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 16px;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.mapBtn:hover {
+    background: #1c3d5c;
+}
+
+/* ── Progress bar ─────────────────────────────────────────────── */
+
+.progress {
+    height: 4px;
+    background: #1c3a54;
+}
+
+.progressFill {
+    height: 100%;
+    background: var(--ts-teal);
+    transition: width 0.3s;
+}
+
+/* ── Popover ──────────────────────────────────────────────────── */
+
+.pop {
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+    width: 430px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 24px 60px rgba(16, 42, 67, 0.22);
+    padding: 24px;
+    z-index: 300;
+}
+
+.popArrow {
+    position: absolute;
+    top: -9px;
+    right: 40px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    transform: rotate(45deg);
+    border-radius: 3px;
+}
+
+.popHead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.popHead b {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--ts-navy);
+}
+
+.popHead span {
+    font-family: var(--ts-font-mono);
     font-size: 13px;
-    font-weight: 600;
-    color: var(--m-text-secondary);
+    color: #8696a6;
 }
 
-@media (max-width: 600px) {
-    .header { padding: 12px 16px; }
-    .userName { display: none; }
+/* ── Question chip grid ──────────────────────────────────────── */
+
+.popGrid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 11px;
+}
+
+.qchip {
+    aspect-ratio: 1.1 / 1;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ts-font-mono);
+    font-weight: 700;
+    font-size: 17px;
+    border: 1.5px solid var(--ts-border);
+    background: #fff;
+    color: #9aa6b2;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.qchip:hover {
+    transform: scale(1.05);
+}
+
+.qchipAns {
+    background: #e6fcfa;
+    border-color: #bfeee8;
+    color: var(--ts-teal-700);
+}
+
+.qchipCur {
+    background: var(--ts-navy);
+    border-color: var(--ts-navy);
+    color: #fff;
+}
+
+.qchipRev {
+    background: #fef3e2;
+    border-color: #f3cd86;
+    color: #c47308;
+}
+
+/* ── Legend ───────────────────────────────────────────────────── */
+
+.popLegend {
+    display: flex;
+    gap: 18px;
+    margin: 18px 0;
+}
+
+.popLegend span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 14px;
+    color: #334e68;
+    font-weight: 600;
+}
+
+.popLegend i {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* ── Consegna button ─────────────────────────────────────────── */
+
+.popSubmitBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: 100%;
+    background: var(--ts-navy);
+    color: #fff;
+    border: none;
+    font-family: var(--ts-font-ui);
+    font-weight: 700;
+    font-size: 15px;
+    padding: 15px;
+    border-radius: 13px;
+    cursor: pointer;
+    transition: background 0.12s;
+}
+
+.popSubmitBtn:hover {
+    background: #173a5c;
 }

@@ -49,12 +49,12 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
                 <div className={styles.brandBottom}>
                     <div className={styles.brandHeadline}>Challenge<br />your knowledge.</div>
                     <div className={styles.brandSub}>
-                        La piattaforma per verifiche e test di coding. Risposte in tempo reale, correzione immediata, esiti per argomento.
+                        Allenati per argomento e sostieni le verifiche di certificazione esterna della tua scuola. Correzione immediata, esiti per argomento.
                     </div>
                     <div className={styles.brandChips}>
-                        <span className={styles.chip}>verifiche</span>
-                        <span className={styles.chip}>simulazioni</span>
-                        <span className={styles.chip}>esiti dettagliati</span>
+                        <span className={styles.chip}>allenamento</span>
+                        <span className={styles.chip}>certificazioni scuola</span>
+                        <span className={styles.chip}>mappa competenze</span>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,224 @@
+/* ── RisultatiTab ─────────────────────────────────────────────── */
+
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filterLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ts-text-soft);
+    margin-right: 4px;
+}
+
+.filterPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ts-text-soft);
+    background: #fff;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-pill);
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+}
+
+.filterPill:hover {
+    background: var(--ts-surface-subtle);
+}
+
+.filterPillActive {
+    background: var(--ts-navy);
+    color: #fff;
+    border-color: var(--ts-navy);
+    font-weight: 700;
+}
+
+.filterPillActive:hover {
+    background: var(--ts-navy);
+}
+
+.filterCount {
+    font-weight: 700;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ── Result Row ──────────────────────────────────────────────── */
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--ts-surface);
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    padding: 16px 20px;
+    box-shadow: var(--ts-shadow-card);
+    cursor: pointer;
+    transition: box-shadow 0.15s;
+    border-left: 3px solid transparent;
+}
+
+.row:hover {
+    box-shadow: var(--ts-shadow-card-el);
+}
+
+.rowPass {
+    border-left-color: var(--ts-teal);
+}
+
+.rowFail {
+    border-left-color: var(--ts-danger);
+}
+
+.rowIcon {
+    width: 42px;
+    height: 42px;
+    flex: none;
+    border-radius: 10px;
+    background: var(--ts-app-bg);
+    color: var(--ts-text-faint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ts-font-mono);
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.rowBody {
+    flex: 1;
+    min-width: 0;
+}
+
+.rowTitleLine {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.rowTitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ts-ink);
+}
+
+.typeTag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ts-text-faint);
+    background: var(--ts-app-bg);
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-sm);
+    padding: 3px 9px;
+}
+
+/* ── Progress bar inline ─────────────────────────────────────── */
+
+.progressRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.progressBar {
+    width: 120px;
+    height: 6px;
+    background: var(--ts-border-soft);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.3s ease;
+}
+
+.progressFillPass {
+    background: var(--ts-teal);
+}
+
+.progressFillFail {
+    background: var(--ts-danger);
+}
+
+.rowMeta {
+    font-size: 12px;
+    color: var(--ts-text-faint);
+    font-family: var(--ts-font-mono);
+}
+
+/* ── Pass/Fail badge ─────────────────────────────────────────── */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: var(--ts-r-sm);
+    flex: none;
+    white-space: nowrap;
+}
+
+.badgePass {
+    color: var(--ts-teal-700);
+    background: var(--ts-teal-bg);
+}
+
+.badgeFail {
+    color: var(--ts-danger-700);
+    background: var(--ts-danger-bg);
+}
+
+.chevron {
+    flex: none;
+    color: var(--ts-text-faint);
+    transition: transform 0.15s;
+}
+
+.row:hover .chevron {
+    transform: translateX(3px);
+    color: var(--ts-text-soft);
+}
+
+/* ── Empty / Skeleton ────────────────────────────────────────── */
+
+.empty {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--ts-text-faint);
+    font-size: 14px;
+}
+
+.skeleton {
+    height: 78px;
+    background: linear-gradient(90deg, #f0f4f8 25%, #e7eaee 50%, #f0f4f8 75%);
+    background-size: 200% 100%;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}

@@ -1,1 +1,360 @@
-/* Report risultati — Variante A a punti, identica a riferimento-report-punti.html */
+/* ===================================================================
+   ResultsPage · CSS Module
+   Uses tokens from tokens.css
+   =================================================================== */
+
+/* ── Page wrapper ────────────────────────────────────────────────── */
+
+.page {
+  min-height: 100vh;
+  background: var(--ts-app-bg);
+}
+
+/* ── Header ──────────────────────────────────────────────────────── */
+
+.header {
+  background: var(--ts-navy);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 56px;
+  width: 100%;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brandText {
+  font-family: var(--ts-font-ui);
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--ts-font-ui);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #fff;
+  background: transparent;
+  border: 1px solid #2c4a64;
+  border-radius: var(--ts-r-pill);
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: background var(--m-transition-fast);
+}
+
+.backBtn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Body grid ───────────────────────────────────────────────────── */
+
+.body {
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 348px 1fr;
+  gap: 20px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ── Left panel (summary card) ───────────────────────────────────── */
+
+.leftPanel {
+  background: var(--ts-surface);
+  border: 1px solid var(--ts-border);
+  border-radius: 14px;
+  padding: 30px 28px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: start;
+}
+
+/* Donut */
+.donutWrap {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
+}
+
+.donutCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.donutScore {
+  font-family: var(--ts-font-ui);
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ts-ink);
+  line-height: 1;
+}
+
+.donutMax {
+  font-family: var(--ts-font-mono);
+  font-size: 12.5px;
+  color: var(--ts-text-faint);
+  margin-top: 4px;
+}
+
+/* Pass/fail badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ts-font-ui);
+  font-weight: 800;
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: var(--ts-r-pill);
+}
+
+.badgePass {
+  composes: badge;
+  background: var(--ts-teal-bg);
+  color: var(--ts-teal-700);
+}
+
+.badgeFail {
+  composes: badge;
+  background: var(--ts-danger-bg);
+  color: var(--ts-danger-700);
+}
+
+/* Stats row */
+.statsRow {
+  display: flex;
+  gap: 26px;
+  margin-top: 26px;
+  padding-top: 24px;
+  border-top: 1px solid var(--ts-border-soft);
+  width: 100%;
+  justify-content: center;
+}
+
+.statValue {
+  font-family: var(--ts-font-mono);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ts-ink);
+}
+
+.statValueTeal {
+  font-family: var(--ts-font-ui);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ts-teal-700);
+}
+
+.statLabel {
+  font-family: var(--ts-font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ts-text-fainter);
+}
+
+/* ── Right panel (topic detail) ──────────────────────────────────── */
+
+.rightPanel {
+  background: var(--ts-surface);
+  border: 1px solid var(--ts-border);
+  border-radius: 14px;
+  padding: 28px 30px;
+  align-self: start;
+}
+
+.title {
+  font-family: var(--ts-font-ui);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ts-ink);
+  margin-bottom: 22px;
+}
+
+.eyebrowRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.eyebrow {
+  font-family: var(--ts-font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ts-text-fainter);
+}
+
+.eyebrowHint {
+  font-family: var(--ts-font-ui);
+  font-size: 11.5px;
+  color: var(--ts-text-faint);
+}
+
+/* Topic grid */
+.topicGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+/* Topic card — normal */
+.topicCard {
+  border: 1px solid var(--ts-border-soft);
+  border-radius: 11px;
+  padding: 14px 15px;
+  background: var(--ts-surface);
+}
+
+/* Topic card — weak */
+.topicCardWeak {
+  border: 1px solid var(--ts-warning-border);
+  border-radius: 11px;
+  padding: 14px 15px;
+  background: var(--ts-warning-bg-soft);
+}
+
+.topicHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 11px;
+  gap: 8px;
+}
+
+.topicName {
+  font-family: var(--ts-font-ui);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ts-text);
+}
+
+.topicNameWeak {
+  font-family: var(--ts-font-ui);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ts-warning-700);
+}
+
+.topicPoints {
+  font-family: var(--ts-font-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ts-teal-700);
+  white-space: nowrap;
+}
+
+.topicPointsWeak {
+  font-family: var(--ts-font-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ts-warning-600);
+  white-space: nowrap;
+}
+
+.topicPointsSuffix {
+  color: #b3c0cc;
+}
+
+.topicPointsSuffixWeak {
+  color: #d9b07a;
+}
+
+/* Progress bar */
+.progressTrack {
+  height: 6px;
+  border-radius: var(--ts-r-pill);
+  background: var(--ts-border-soft);
+}
+
+.progressTrackWeak {
+  height: 6px;
+  border-radius: var(--ts-r-pill);
+  background: #f3e4cf;
+}
+
+.progressFill {
+  display: block;
+  height: 6px;
+  border-radius: var(--ts-r-pill);
+  background: var(--ts-teal);
+}
+
+.progressFillWeak {
+  display: block;
+  height: 6px;
+  border-radius: var(--ts-r-pill);
+  background: var(--ts-warning);
+}
+
+/* Action buttons */
+.actions {
+  display: flex;
+  gap: 11px;
+}
+
+.btnReview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ts-navy);
+  color: #fff;
+  border: none;
+  font-family: var(--ts-font-ui);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 13px 22px;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: background var(--m-transition-fast);
+}
+
+.btnReview:hover {
+  background: var(--ts-navy-hover);
+}
+
+.btnBack {
+  background: var(--ts-surface);
+  color: var(--ts-teal-700);
+  border: 1.5px solid var(--ts-teal);
+  font-family: var(--ts-font-ui);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 22px;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: background var(--m-transition-fast);
+}
+
+.btnBack:hover {
+  background: var(--ts-teal-bg);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+
+@media (max-width: 860px) {
+  .body {
+    grid-template-columns: 1fr;
+    padding: 20px 16px;
+  }
+}
