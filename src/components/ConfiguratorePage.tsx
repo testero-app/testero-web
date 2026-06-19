@@ -1,41 +1,50 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { fetchTopicChapters } from '../lib/api';
 import TesteroLogo from './ui/TesteroLogo';
 import styles from './ConfiguratorePage.module.css';
 
-// TODO: entire page backed by mock data.
-// Needs GET /api/topics/{id}/chapters and POST /api/training/start endpoints
-
 interface ChapterItem {
     id: string;
-    name: string;
-    base: number;
-    inter: number;
-    avanz: number;
+    label: string;
+    question_counts: { base: number; intermediate: number; advanced: number };
 }
-
-// TODO: replace with API call when GET /api/topics/{id}/chapters is available
-const MOCK_CHAPTERS: ChapterItem[] = [
-    { id: 'ch1', name: 'Variabili e tipi', base: 8, inter: 5, avanz: 1 },
-    { id: 'ch2', name: 'Cicli e condizioni', base: 7, inter: 4, avanz: 2 },
-    { id: 'ch3', name: 'Operatori ed espressioni', base: 5, inter: 3, avanz: 1 },
-    { id: 'ch4', name: 'Stringhe e formattazione', base: 4, inter: 4, avanz: 2 },
-];
 
 type Difficulty = 'base' | 'intermedio' | 'avanzato' | 'mista';
 
 interface ConfiguratorePageProps {
+    topicId: string;
     topicName: string;
+    token: string;
     onBack: () => void;
-    onStart: () => void;
+    onStart: (config: {
+        topicId: string;
+        chapterIds: string[];
+        difficulty: string;
+        questionCount: number;
+        timerEnabled: boolean;
+    }) => void;
 }
 
-export default function ConfiguratorePage({ topicName, onBack, onStart }: ConfiguratorePageProps) {
-    const [selectedChapters, setSelectedChapters] = useState<Set<string>>(new Set(['ch1', 'ch2']));
+export default function ConfiguratorePage({ topicId, topicName, token, onBack, onStart }: ConfiguratorePageProps) {
+    const [chapters, setChapters] = useState<ChapterItem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedChapters, setSelectedChapters] = useState<Set<string>>(new Set());
     const [difficulty, setDifficulty] = useState<Difficulty>('base');
     const [questionCount, setQuestionCount] = useState(15);
     const [timerEnabled, setTimerEnabled] = useState(true);
 
-    const allSelected = selectedChapters.size === MOCK_CHAPTERS.length;
+    useEffect(() => {
+        fetchTopicChapters(topicId, token)
+            .then((data) => {
+                setChapters(data.chapters || []);
+                // Select all chapters by default
+                setSelectedChapters(new Set((data.chapters || []).map((c: ChapterItem) => c.id)));
+            })
+            .catch(() => setChapters([]))
+            .finally(() => setLoading(false));
+    }, [topicId, token]);
+
+    const allSelected = chapters.length > 0 && selectedChapters.size === chapters.length;
 
     function toggleChapter(id: string) {
         setSelectedChapters((prev) => {
@@ -50,17 +59,35 @@ export default function ConfiguratorePage({ topicName, onBack, onStart }: Config
         if (allSelected) {
             setSelectedChapters(new Set());
         } else {
-            setSelectedChapters(new Set(MOCK_CHAPTERS.map((c) => c.id)));
+            setSelectedChapters(new Set(chapters.map((c) => c.id)));
         }
     }
 
-    // TODO: compute from actual chapter question pool
-    const availableCount = selectedChapters.size * 8;
+    // Compute available count from selected chapters and difficulty
+    const availableCount = chapters
+        .filter((c) => selectedChapters.has(c.id))
+        .reduce((sum, c) => {
+            if (difficulty === 'mista') return sum + c.question_counts.base + c.question_counts.intermediate + c.question_counts.advanced;
+            if (difficulty === 'base') return sum + c.question_counts.base;
+            if (difficulty === 'intermedio') return sum + c.question_counts.intermediate;
+            return sum + c.question_counts.advanced;
+        }, 0);
+
     const estimatedMinutes = Math.ceil(questionCount * 1.5);
+
+    const handleStart = () => {
+        onStart({
+            topicId,
+            chapterIds: Array.from(selectedChapters),
+            difficulty,
+            questionCount,
+            timerEnabled,
+        });
+    };
 
     return (
         <div className={styles.page}>
-            {/* ── Header ───────────────────────────────────────── */}
+            {/* Header */}
             <div className={styles.header}>
                 <div className={styles.headerLeft}>
                     <div className={styles.brand}>
@@ -82,7 +109,7 @@ export default function ConfiguratorePage({ topicName, onBack, onStart }: Config
                 </button>
             </div>
 
-            {/* ── Body ─────────────────────────────────────────── */}
+            {/* Body */}
             <div className={styles.body}>
                 {/* Left: Chapters */}
                 <div>
@@ -93,39 +120,46 @@ export default function ConfiguratorePage({ topicName, onBack, onStart }: Config
                         </button>
                     </div>
 
-                    <div className={styles.chapterList}>
-                        {MOCK_CHAPTERS.map((ch) => {
-                            const selected = selectedChapters.has(ch.id);
-                            return (
-                                <div
-                                    key={ch.id}
-                                    className={`${styles.chapter} ${selected ? styles.chapterSelected : ''}`}
-                                    onClick={() => toggleChapter(ch.id)}
-                                >
-                                    <div className={`${styles.chapterCheck} ${selected ? styles.chapterCheckActive : ''}`}>
-                                        {selected && (
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.4">
-                                                <path d="M5 12l5 5L20 6" />
-                                            </svg>
-                                        )}
+                    {loading ? (
+                        <div className={styles.chapterList}>
+                            {[1, 2, 3].map((i) => (
+                                <div key={i} className={styles.chapter} style={{ height: 56, opacity: 0.4 }} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className={styles.chapterList}>
+                            {chapters.map((ch) => {
+                                const selected = selectedChapters.has(ch.id);
+                                return (
+                                    <div
+                                        key={ch.id}
+                                        className={`${styles.chapter} ${selected ? styles.chapterSelected : ''}`}
+                                        onClick={() => toggleChapter(ch.id)}
+                                    >
+                                        <div className={`${styles.chapterCheck} ${selected ? styles.chapterCheckActive : ''}`}>
+                                            {selected && (
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3.4">
+                                                    <path d="M5 12l5 5L20 6" />
+                                                </svg>
+                                            )}
+                                        </div>
+                                        <span className={styles.chapterName}>{ch.label}</span>
+                                        <div className={styles.chapterLevels}>
+                                            <span className={`${styles.levelChip} ${styles.levelBase}`}>{ch.question_counts.base}</span>
+                                            <span className={`${styles.levelChip} ${styles.levelInter}`}>{ch.question_counts.intermediate}</span>
+                                            <span className={`${styles.levelChip} ${styles.levelAvanz}`}>{ch.question_counts.advanced}</span>
+                                        </div>
                                     </div>
-                                    <span className={styles.chapterName}>{ch.name}</span>
-                                    <div className={styles.chapterLevels}>
-                                        <span className={`${styles.levelChip} ${styles.levelBase}`}>{ch.base}</span>
-                                        <span className={`${styles.levelChip} ${styles.levelInter}`}>{ch.inter}</span>
-                                        <span className={`${styles.levelChip} ${styles.levelAvanz}`}>{ch.avanz}</span>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
 
                 {/* Right: Session config */}
                 <div className={styles.sessionCard}>
                     <div className={styles.sessionTitle}>La tua sessione</div>
 
-                    {/* Difficulty */}
                     <div className={styles.sectionLabel}>Difficoltà</div>
                     <div className={styles.diffGrid}>
                         {(['base', 'intermedio', 'avanzato', 'mista'] as Difficulty[]).map((d) => (
@@ -139,7 +173,6 @@ export default function ConfiguratorePage({ topicName, onBack, onStart }: Config
                         ))}
                     </div>
 
-                    {/* Question count */}
                     <div className={styles.sectionLabel}>Numero di domande</div>
                     <div className={styles.stepper}>
                         <button
@@ -151,7 +184,7 @@ export default function ConfiguratorePage({ topicName, onBack, onStart }: Config
                         <div className={styles.stepValue}>{questionCount}</div>
                         <button
                             className={`${styles.stepBtn} ${styles.stepBtnPlus}`}
-                            onClick={() => setQuestionCount((c) => Math.min(50, c + 5))}
+                            onClick={() => setQuestionCount((c) => Math.min(availableCount || 50, c + 5))}
                         >
                             +
                         </button>
@@ -160,7 +193,6 @@ export default function ConfiguratorePage({ topicName, onBack, onStart }: Config
                         {availableCount} disponibili nei {selectedChapters.size} capitoli scelti (livello {difficulty})
                     </div>
 
-                    {/* Timer */}
                     <div className={styles.timerRow}>
                         <span className={styles.timerIcon}>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -180,11 +212,10 @@ export default function ConfiguratorePage({ topicName, onBack, onStart }: Config
                         </button>
                     </div>
 
-                    {/* Start */}
                     <button
                         className={styles.startBtn}
-                        onClick={onStart}
-                        disabled={selectedChapters.size === 0}
+                        onClick={handleStart}
+                        disabled={selectedChapters.size === 0 || availableCount === 0}
                     >
                         Avvia allenamento
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#06302c" strokeWidth="2.6">

@@ -168,6 +168,66 @@ export async function changePassword(currentPassword, newPassword, confirmPasswo
     }
 }
 
+export async function fetchTopics(token) {
+    const res = await fetch(`${API_BASE}/api/topics`, {
+        headers: authHeaders(token),
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || 'Failed to fetch topics');
+    }
+    const data = await res.json();
+    return data.topics;
+}
+
+export async function fetchTopicChapters(topicId, token) {
+    const res = await fetch(`${API_BASE}/api/topics/${topicId}/chapters`, {
+        headers: authHeaders(token),
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || 'Failed to fetch topic chapters');
+    }
+    return res.json();
+}
+
+export async function startTrainingSession(request, token) {
+    const res = await fetch(`${API_BASE}/api/training/start`, {
+        method: 'POST',
+        headers: authHeaders(token),
+        body: JSON.stringify(request),
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.detail || err.message || 'Failed to start training session');
+    }
+    return res.json();
+}
+
+export async function fetchNotificationPreferences(token) {
+    const res = await fetch(`${API_BASE}/api/users/me/notifications`, {
+        headers: authHeaders(token),
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || 'Failed to fetch notification preferences');
+    }
+    return res.json();
+}
+
+export async function updateNotificationPreferences(preferences, token) {
+    const res = await fetch(`${API_BASE}/api/users/me/notifications`, {
+        method: 'PUT',
+        headers: authHeaders(token),
+        body: JSON.stringify({ preferences }),
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || 'Failed to update notification preferences');
+    }
+    return res.json();
+}
+
 export async function fetchSubmissionFeedback(submissionId, token) {
     const res = await fetch(`${API_BASE}/api/submissions/${submissionId}`, {
         headers: authHeaders(token),

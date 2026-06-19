@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { TUser } from '../context/AssessmentContext';
-import { changePassword } from '../lib/api';
+import { changePassword, fetchNotificationPreferences, updateNotificationPreferences } from '../lib/api';
 import styles from './ProfilePage.module.css';
 
 interface ProfilePageProps {
@@ -87,11 +87,28 @@ export default function ProfilePage({ user, token, onBack, onLogout }: ProfilePa
     const [showCurrent, setShowCurrent] = useState(false);
     const [showNew, setShowNew] = useState(false);
 
-    // Notification toggles (local state only)
-    // TODO: implement notification preferences API
+    // Notification preferences from API
     const [notifResults, setNotifResults] = useState(true);
     const [notifReminder, setNotifReminder] = useState(true);
     const [notifProduct, setNotifProduct] = useState(false);
+
+    useEffect(() => {
+        if (!token) return;
+        fetchNotificationPreferences(token)
+            .then((prefs: { type: string; enabled: boolean }[]) => {
+                for (const p of prefs) {
+                    if (p.type === 'EXAM_RESULT') setNotifResults(p.enabled);
+                    if (p.type === 'DEADLINE_REMINDER') setNotifReminder(p.enabled);
+                    if (p.type === 'PRODUCT_NEWS') setNotifProduct(p.enabled);
+                }
+            })
+            .catch(() => {});
+    }, [token]);
+
+    const saveNotification = useCallback((type: string, enabled: boolean) => {
+        if (!token) return;
+        updateNotificationPreferences([{ type, enabled }], token).catch(() => {});
+    }, [token]);
 
     const strength = checkStrength(newPwd);
     const pwdMatch = newPwd.length > 0 && newPwd === confirmPwd;
@@ -135,9 +152,9 @@ export default function ProfilePage({ user, token, onBack, onLogout }: ProfilePa
     ];
 
     const notifications = [
-        { title: 'Esito delle verifiche via email', desc: 'Ricevi un riepilogo quando una verifica viene corretta.', on: notifResults, toggle: () => setNotifResults(v => !v) },
-        { title: 'Promemoria verifiche in scadenza', desc: 'Un avviso il giorno prima della scadenza.', on: notifReminder, toggle: () => setNotifReminder(v => !v) },
-        { title: 'Novità di prodotto', desc: 'Occasionali aggiornamenti su Testero.', on: notifProduct, toggle: () => setNotifProduct(v => !v) },
+        { title: 'Esito delle verifiche via email', desc: 'Ricevi un riepilogo quando una verifica viene corretta.', on: notifResults, toggle: () => { setNotifResults(v => !v); saveNotification('EXAM_RESULT', !notifResults); } },
+        { title: 'Promemoria verifiche in scadenza', desc: 'Un avviso il giorno prima della scadenza.', on: notifReminder, toggle: () => { setNotifReminder(v => !v); saveNotification('DEADLINE_REMINDER', !notifReminder); } },
+        { title: 'Novità di prodotto', desc: 'Occasionali aggiornamenti su Testero.', on: notifProduct, toggle: () => { setNotifProduct(v => !v); saveNotification('PRODUCT_NEWS', !notifProduct); } },
     ];
 
     return (
