@@ -2,24 +2,28 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { MemoryRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import { AssessmentProvider, useAssessment, TQuestion, TOption, TSubmissionSummary } from '../context/AssessmentContext';
+import { AssessmentProvider, useAssessment, TSubmissionSummary } from '../context/AssessmentContext';
 import { isQuestionAnswered, DEFAULT_TIMER_MINUTES } from '../lib/questionUtils';
 import { useTimer } from '../hooks/useTimer';
+import { fetchSubmissionFeedback, fetchSubmissionReview } from '../lib/api';
 
 import LoginPage from './LoginPage';
-import AssessmentSelectionPage from './AssessmentSelectionPage';
+import TopBar from './layout/TopBar';
+import StudentHub, { type TabId } from './StudentHub';
+import AllenamentoTab from './AllenamentoTab';
+import CertificazioniTab from './CertificazioniTab';
+import RisultatiTab from './RisultatiTab';
+import ConfiguratorePage from './ConfiguratorePage';
 import AssessmentHeader from './AssessmentHeader';
 import AssessmentPage from './AssessmentPage';
 import RecapPage from './RecapPage';
 import ResultsPage from './ResultsPage';
-import SubmissionHistoryPage from './SubmissionHistoryPage';
-import HistoryDetailPage from './HistoryDetailPage';
+import RipassoPage from './RipassoPage';
 import StartModal from './StartModal';
 import SubmitModal from './SubmitModal';
 import FinalModal from './FinalModal';
 import AlertModal from './AlertModal';
 import ProfilePage from './ProfilePage';
-import ChangePasswordPage from './ChangePasswordPage';
 import ErrorPage from './ErrorPage';
 
 // ─── Login View ──────────────────────────────────────────────────────────────
@@ -31,7 +35,7 @@ function LoginView() {
     const handleLogin = useCallback(async (username: string, password: string) => {
         try {
             await doLogin(username, password);
-            navigate('/select-assessment');
+            navigate('/home');
         } catch {
             // error is already in state
         }
@@ -40,21 +44,32 @@ function LoginView() {
     return <LoginPage onLogin={handleLogin} loading={loading} error={error} />;
 }
 
-// ─── Assessment Selection View ──────────────────────────────────────────────
+// ─── Home View (3-tab hub: Allenamento, Certificazioni, Risultati) ───────────
 
-function AssessmentSelectionView() {
+function HomeView() {
     const {
         user, token, availableAssessments, submissionHistory, loading,
         loadAvailableAssessments, loadSubmissionHistory,
         selectAssessment, doLogout,
     } = useAssessment();
     const navigate = useNavigate();
+    const [activeTab, setActiveTab] = useState<TabId>('allenamento');
     const [showStartModal, setShowStartModal] = useState(false);
     const [pendingAssessmentId, setPendingAssessmentId] = useState<string | null>(null);
-    const [activeTab, setActiveTab] = useState<'assessments' | 'history'>('assessments');
-    const [selectedSubmission, setSelectedSubmission] = useState<TSubmissionSummary | null>(null);
 
-    const handleSelectAssessment = useCallback((assessmentId: string) => {
+    useEffect(() => {
+        if (!user) { navigate('/'); return; }
+        loadAvailableAssessments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
+
+    const handleTabChange = useCallback((tab: TabId) => {
+        setActiveTab(tab);
+        if (tab === 'certificazioni') loadAvailableAssessments();
+        if (tab === 'risultati') loadSubmissionHistory();
+    }, [loadAvailableAssessments, loadSubmissionHistory]);
+
+    const handleStartCert = useCallback((assessmentId: string) => {
         setPendingAssessmentId(assessmentId);
         setShowStartModal(true);
     }, []);
@@ -75,67 +90,122 @@ function AssessmentSelectionView() {
         navigate('/');
     }, [doLogout, navigate]);
 
-    const handleTabChange = useCallback((tab: 'assessments' | 'history') => {
-        setActiveTab(tab);
-        setSelectedSubmission(null);
-        if (tab === 'history') {
-            loadSubmissionHistory();
+    const handleSelectSubmission = useCallback(async (submissionId: string) => {
+        if (!token) return;
+        try {
+            const feedback = await fetchSubmissionFeedback(submissionId, token);
+            navigate('/results', { state: { feedback } });
+        } catch {
+            // fallback: navigate without data
+            navigate('/results');
         }
-    }, [loadSubmissionHistory]);
+    }, [token, navigate]);
 
-    const handleSelectSubmission = useCallback((submissionId: string) => {
-        const sub = submissionHistory.find(s => s.id === submissionId);
-        if (sub) setSelectedSubmission(sub);
-    }, [submissionHistory]);
+    if (!user) return null;
 
-    useEffect(() => {
-        if (!user) {
-            navigate('/');
-        }
-    }, [user, navigate]);
+    // Tab config
+    const tabTitles: Record<TabId, { title: string; subtitle: string }> = {
+        allenamento: {
+            title: 'Allenati per argomento',
+            subtitle: 'Nessun timer, nessun esito. Scegli un argomento, costruisci la sessione e fai pratica mirata.',
+        },
+        certificazioni: {
+            title: 'Certificazione esterna della scuola',
+            subtitle: 'Verifiche di certificazione predisposte dalla tua scuola. Esame a tempo: parte al primo click.',
+        },
+        risultati: {
+            title: 'I miei risultati',
+            subtitle: 'Certificazioni e allenamento in un unico posto. Tocca una riga per il dettaglio.',
+        },
+    };
 
-    if (!user) {
-        return null;
-    }
+    const tabs: { id: TabId; label: string; icon?: React.ReactNode }[] = [
+        {
+            id: 'allenamento',
+            label: 'Allenamento',
+            icon: activeTab === 'allenamento' ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                </svg>
+            ) : undefined,
+        },
+        { id: 'certificazioni', label: 'Certificazioni' },
+        { id: 'risultati', label: 'I miei risultati' },
+    ];
 
-    if (selectedSubmission) {
-        return (
-            <HistoryDetailPage
-                submission={selectedSubmission}
-                onBack={() => setSelectedSubmission(null)}
-                token={token!}
-            />
-        );
-    }
+    const subtitleIcon = activeTab === 'certificazioni' ? (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9a6a08" strokeWidth="2">
+            <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" />
+        </svg>
+    ) : undefined;
 
     return (
-        <>
-            <AssessmentSelectionPage
-                user={user}
-                assessments={availableAssessments}
-                loading={loading}
-                onLoadAssessments={loadAvailableAssessments}
-                onSelectAssessment={handleSelectAssessment}
+        <div style={{ minHeight: '100vh', background: 'var(--ts-app-bg)' }}>
+            <TopBar
+                userName={user.name}
+                userClass={user.class_name}
                 onLogout={handleLogout}
                 onProfile={() => navigate('/profile')}
-                activeTab={activeTab}
-                onTabChange={handleTabChange}
-                historyContent={
-                    activeTab === 'history' ? (
-                        <SubmissionHistoryPage
-                            submissions={submissionHistory}
-                            loading={loading}
-                            onSelectSubmission={handleSelectSubmission}
-                        />
-                    ) : undefined
-                }
             />
+            <StudentHub
+                activeTab={activeTab}
+                title={tabTitles[activeTab].title}
+                subtitle={tabTitles[activeTab].subtitle}
+                subtitleIcon={subtitleIcon}
+                tabs={tabs}
+                onTabChange={handleTabChange}
+            >
+                {activeTab === 'allenamento' && (
+                    <AllenamentoTab
+                        onStartTopic={(topicId) => navigate('/configuratore', { state: { topicId } })}
+                    />
+                )}
+                {activeTab === 'certificazioni' && (
+                    <CertificazioniTab
+                        assessments={availableAssessments}
+                        loading={loading}
+                        onStart={handleStartCert}
+                    />
+                )}
+                {activeTab === 'risultati' && (
+                    <RisultatiTab
+                        submissions={submissionHistory}
+                        loading={loading}
+                        onSelectSubmission={handleSelectSubmission}
+                    />
+                )}
+            </StudentHub>
             <StartModal
                 visible={showStartModal}
                 onConfirm={handleStartConfirm}
                 onCancel={() => setShowStartModal(false)}
             />
-        </>
+        </div>
+    );
+}
+
+// ─── Configuratore View ────────────────────────────────────────────────────
+
+function ConfiguratoreView() {
+    const { user } = useAssessment();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user) navigate('/');
+    }, [user, navigate]);
+
+    if (!user) return null;
+
+    // TODO: get topicId from location state and load real topic data
+    return (
+        <ConfiguratorePage
+            topicName="Fondamenti Python I"
+            onBack={() => navigate('/home')}
+            onStart={() => {
+                // TODO: start training session via POST /api/training/start, then navigate to /assessment
+                alert('Funzionalità in sviluppo.\n\nL\'endpoint POST /api/training/start non è ancora disponibile. Una volta implementato, questa azione avvierà la sessione di allenamento.');
+            }}
+        />
     );
 }
 
@@ -144,8 +214,8 @@ function AssessmentSelectionView() {
 function AssessmentView() {
     const {
         user, assessmentConfig, shuffledQuestions, shuffledOptions,
-        currentIndex, answers, timerExpired,
-        setAnswer, goToQuestion, setTimerExpired, doSubmit,
+        currentIndex, answers, flagged, timerExpired,
+        setAnswer, toggleFlag, goToQuestion, setTimerExpired, doSubmit,
     } = useAssessment();
     const navigate = useNavigate();
     const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -183,6 +253,8 @@ function AssessmentView() {
         return { answeredSet: set, answeredCount: set.size };
     }, [shuffledQuestions, answers]);
 
+    const questionIds = useMemo(() => shuffledQuestions.map(q => q.id), [shuffledQuestions]);
+
     const handleFinalSubmit = useCallback(async () => {
         setShowFinalModal(false);
         timer.stop();
@@ -210,6 +282,8 @@ function AssessmentView() {
                 totalQuestions={shuffledQuestions.length}
                 answeredCount={answeredCount}
                 answeredSet={answeredSet}
+                flagged={flagged}
+                questionIds={questionIds}
                 onGoTo={goToQuestion}
                 onSubmit={() => setShowSubmitModal(true)}
             />
@@ -218,18 +292,22 @@ function AssessmentView() {
                 shuffledOptions={shuffledOptions}
                 currentIndex={currentIndex}
                 answers={answers}
+                flagged={flagged}
                 answeredSet={answeredSet}
                 answeredCount={answeredCount}
                 onGoTo={goToQuestion}
                 onPrev={() => goToQuestion(Math.max(0, currentIndex - 1))}
                 onNext={() => goToQuestion(Math.min(shuffledQuestions.length - 1, currentIndex + 1))}
                 onAnswer={setAnswer}
+                onToggleFlag={toggleFlag}
                 onSubmit={() => setShowSubmitModal(true)}
             />
             <SubmitModal
-                visible={showSubmitModal}
-                onReview={() => { setShowSubmitModal(false); navigate('/recap'); }}
-                onCancel={() => setShowSubmitModal(false)}
+                open={showSubmitModal}
+                onClose={() => setShowSubmitModal(false)}
+                onConfirm={() => { setShowSubmitModal(false); handleFinalSubmit(); }}
+                answeredCount={answeredCount}
+                totalQuestions={shuffledQuestions.length}
             />
             <FinalModal
                 visible={showFinalModal}
@@ -315,14 +393,14 @@ function ResultsView() {
     const {
         shuffledQuestions, shuffledOptions, answers,
         submissionResult, zipInfo, doSubmit, resetAssessment,
-        assessmentConfig,
+        assessmentConfig, token,
     } = useAssessment();
     const navigate = useNavigate();
     const [alertModal, setAlertModal] = useState({ visible: false, title: '', message: '' });
 
     useEffect(() => {
         if (!submissionResult) {
-            navigate('/select-assessment');
+            navigate('/home');
         }
     }, [submissionResult, navigate]);
 
@@ -340,8 +418,22 @@ function ResultsView() {
 
     const handleBackToAssessments = () => {
         resetAssessment();
-        navigate('/select-assessment');
+        navigate('/home');
     };
+
+    const handleReviewErrors = useCallback(async () => {
+        if (!submissionResult || !token) return;
+        try {
+            const review = await fetchSubmissionReview(submissionResult.id, token);
+            navigate('/ripasso', { state: { review } });
+        } catch {
+            setAlertModal({
+                visible: true,
+                title: 'Errore',
+                message: 'Impossibile caricare il ripasso. Riprova.',
+            });
+        }
+    }, [submissionResult, token, navigate]);
 
     if (!submissionResult) {
         return null;
@@ -357,6 +449,7 @@ function ResultsView() {
                 assessmentTitle={assessmentConfig?.title}
                 onBackToAssessments={handleBackToAssessments}
                 onRedownload={handleRedownload}
+                onReviewErrors={handleReviewErrors}
                 zipName={zipInfo?.zipName}
             />
             <AlertModal
@@ -366,6 +459,33 @@ function ResultsView() {
                 onClose={() => setAlertModal({ visible: false, title: '', message: '' })}
             />
         </>
+    );
+}
+
+// ─── Ripasso View ────────────────────────────────────────────────────────────
+
+function RipassoView() {
+    const { user } = useAssessment();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user) navigate('/');
+    }, [user, navigate]);
+
+    // TODO: get review from location state or load from API
+    // For now, show placeholder if no review data available
+    return (
+        <RipassoPage
+            review={{
+                id: '',
+                assessment_title: 'Verifica',
+                started_at: null,
+                submitted_at: new Date().toISOString(),
+                score: null,
+                questions: [],
+            }}
+            onBackToReport={() => navigate('/results')}
+        />
     );
 }
 
@@ -382,34 +502,20 @@ function ProfileView() {
     if (!user) return null;
 
     return (
-        <ProfilePage
-            user={user}
-            token={token ?? undefined}
-            onBack={() => navigate('/select-assessment')}
-            onLogout={() => { doLogout(); navigate('/'); }}
-        />
-    );
-}
-
-// ─── Change Password View ────────────────────────────────────────────────────
-
-function ChangePasswordView() {
-    const { user, token, doLogout } = useAssessment();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!user) navigate('/');
-    }, [user, navigate]);
-
-    if (!user || !token) return null;
-
-    return (
-        <ChangePasswordPage
-            user={user}
-            token={token}
-            onBack={() => navigate('/profile')}
-            onLogout={() => { doLogout(); navigate('/'); }}
-        />
+        <>
+            <TopBar
+                userName={user.name}
+                userClass={user.class_name}
+                onLogout={() => { doLogout(); navigate('/'); }}
+                onProfile={() => {}}
+            />
+            <ProfilePage
+                user={user}
+                token={token ?? undefined}
+                onBack={() => navigate('/home')}
+                onLogout={() => { doLogout(); navigate('/'); }}
+            />
+        </>
     );
 }
 
@@ -435,12 +541,13 @@ export default function AppRouter() {
             <MemoryRouter initialEntries={['/']}>
                 <Routes>
                     <Route path="/" element={<LoginView />} />
-                    <Route path="/select-assessment" element={<AssessmentSelectionView />} />
+                    <Route path="/home" element={<HomeView />} />
+                    <Route path="/configuratore" element={<ConfiguratoreView />} />
                     <Route path="/assessment" element={<AssessmentView />} />
                     <Route path="/recap" element={<RecapView />} />
                     <Route path="/results" element={<ResultsView />} />
+                    <Route path="/ripasso" element={<RipassoView />} />
                     <Route path="/profile" element={<ProfileView />} />
-                    <Route path="/change-password" element={<ChangePasswordView />} />
                     <Route path="*" element={<NotFoundView />} />
                 </Routes>
             </MemoryRouter>

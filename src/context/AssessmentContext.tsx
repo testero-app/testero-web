@@ -41,6 +41,8 @@ export type TAssessmentListItem = {
     date: string;
     timerMinutes: number;
     questionsPerAssessment: number;
+    difficulty?: string;
+    type?: string;
     status?: string;
 };
 
@@ -91,6 +93,7 @@ export type TReviewQuestion = {
     type: string;
     text: string;
     code: string | null;
+    explanation: string | null;
     position: number;
     is_correct: boolean | null;
     selected_option_ids: string[];
@@ -136,6 +139,7 @@ type TState = {
     shuffledOptions: TOption[][];
     currentIndex: number;
     answers: Record<string, TAnswer>;
+    flagged: Record<string, boolean>;
     timerExpired: boolean;
     zipInfo: TZipInfo | null;
     submissionResult: TSubmissionResult | null;
@@ -161,7 +165,8 @@ type TAction =
     | { type: 'SET_LOADING'; payload: boolean }
     | { type: 'SET_ERROR'; payload: string | null }
     | { type: 'RESET_ASSESSMENT' }
-    | { type: 'SET_SUBMISSION_HISTORY'; payload: TSubmissionSummary[] };
+    | { type: 'SET_SUBMISSION_HISTORY'; payload: TSubmissionSummary[] }
+    | { type: 'TOGGLE_FLAG'; payload: string };
 
 const initialState: TState = {
     token: null,
@@ -173,6 +178,7 @@ const initialState: TState = {
     shuffledOptions: [],
     currentIndex: 0,
     answers: {},
+    flagged: {},
     timerExpired: false,
     zipInfo: null,
     submissionResult: null,
@@ -200,6 +206,7 @@ function reducer(state: TState, action: TAction): TState {
                 shuffledOptions: action.payload.options,
                 currentIndex: 0,
                 answers: {},
+                flagged: {},
                 timerExpired: false,
             };
         case 'SET_ANSWER':
@@ -230,10 +237,21 @@ function reducer(state: TState, action: TAction): TState {
                 shuffledOptions: [],
                 currentIndex: 0,
                 answers: {},
+                flagged: {},
                 timerExpired: false,
                 zipInfo: null,
                 submissionResult: null,
             };
+        case 'TOGGLE_FLAG': {
+            const qId = action.payload;
+            const next = { ...state.flagged };
+            if (next[qId]) {
+                delete next[qId];
+            } else {
+                next[qId] = true;
+            }
+            return { ...state, flagged: next };
+        }
         default:
             return state;
     }
@@ -251,6 +269,7 @@ export interface AssessmentContextType {
     shuffledOptions: TOption[][];
     currentIndex: number;
     answers: Record<string, TAnswer>;
+    flagged: Record<string, boolean>;
     timerExpired: boolean;
     zipInfo: TZipInfo | null;
     submissionResult: TSubmissionResult | null;
@@ -264,6 +283,7 @@ export interface AssessmentContextType {
     loadSubmissionHistory: () => Promise<void>;
     selectAssessment: (assessmentId: string) => Promise<void>;
     setAnswer: (questionId: string, answer: TAnswer) => void;
+    toggleFlag: (questionId: string) => void;
     goToQuestion: (index: number) => void;
     setTimerExpired: () => void;
     doSubmit: () => Promise<TZipInfo>;
@@ -360,6 +380,10 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
         dispatch({ type: 'SET_ANSWER', payload: { questionId, answer } });
     }, []);
 
+    const toggleFlag = useCallback((questionId: string) => {
+        dispatch({ type: 'TOGGLE_FLAG', payload: questionId });
+    }, []);
+
     const goToQuestion = useCallback((index: number) => {
         // Save the current question's answer before navigating
         if (state.submissionId && state.token && state.shuffledQuestions.length > 0) {
@@ -416,6 +440,7 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
             loadSubmissionHistory,
             selectAssessment,
             setAnswer,
+            toggleFlag,
             goToQuestion,
             setTimerExpired,
             doSubmit,
