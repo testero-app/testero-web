@@ -168,6 +168,17 @@ export async function changePassword(currentPassword, newPassword, confirmPasswo
     }
 }
 
+export async function fetchSubmissionFeedback(submissionId, token) {
+    const res = await fetch(`${API_BASE}/api/submissions/${submissionId}`, {
+        headers: authHeaders(token),
+    });
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || 'Failed to fetch submission feedback');
+    }
+    return res.json();
+}
+
 export async function fetchSubmissionReview(submissionId, token) {
     const res = await fetch(`${API_BASE}/api/submissions/${submissionId}/review`, {
         headers: authHeaders(token),
