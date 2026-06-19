@@ -1,0 +1,402 @@
+/* ===================================================================
+   RipassoPage — review answers after submission
+   =================================================================== */
+
+/* ── Header (navy bar) ─────────────────────────────────────────────── */
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 40px;
+    background: var(--ts-navy);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.brandText {
+    font-family: var(--ts-font-ui);
+    font-weight: 800;
+    font-size: 17px;
+    color: #fff;
+    letter-spacing: -0.01em;
+}
+
+.separator {
+    width: 1px;
+    height: 24px;
+    background: #2c4a64;
+    margin: 0 6px;
+}
+
+.breadcrumb {
+    font-family: var(--ts-font-ui);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ts-on-dark-muted);
+}
+
+.backBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 1px solid #2c4a64;
+    border-radius: var(--ts-r-md);
+    padding: 8px 16px;
+    color: #fff;
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--m-transition-fast);
+}
+
+.backBtn:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Title bar ─────────────────────────────────────────────────────── */
+
+.titleBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background: var(--ts-surface);
+    border-bottom: 1px solid var(--ts-border);
+}
+
+.titleText {
+    font-family: var(--ts-font-ui);
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--ts-ink);
+}
+
+/* ── Segmented toggle ──────────────────────────────────────────────── */
+
+.toggle {
+    display: flex;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-md);
+    overflow: hidden;
+}
+
+.toggleBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: none;
+    background: var(--ts-surface);
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ts-text-muted);
+    cursor: pointer;
+    transition: background var(--m-transition-fast), color var(--m-transition-fast);
+}
+
+.toggleBtn:first-child {
+    border-right: 1px solid var(--ts-border);
+}
+
+.toggleBtn:hover:not(.toggleBtnActive):not(.toggleBtnDanger) {
+    background: var(--ts-surface-subtle);
+}
+
+.toggleBtnActive {
+    background: var(--ts-teal);
+    color: #fff;
+}
+
+.toggleBtnDanger {
+    background: var(--ts-danger);
+    color: #fff;
+}
+
+/* ── Questions list container ──────────────────────────────────────── */
+
+.questionsList {
+    padding: 28px 40px 60px;
+    background: var(--ts-app-bg);
+    min-height: calc(100vh - 140px);
+}
+
+/* ── Question card ─────────────────────────────────────────────────── */
+
+.card {
+    background: var(--ts-surface);
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    padding: 0;
+    margin-bottom: 20px;
+    box-shadow: var(--ts-shadow-card);
+    overflow: hidden;
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--ts-border-soft);
+}
+
+.cardHeaderLeft {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.numberBadge {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--ts-r-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ts-font-ui);
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.numberBadgeCorrect {
+    background: var(--ts-teal);
+}
+
+.numberBadgeWrong {
+    background: var(--ts-danger);
+}
+
+.cardLabel {
+    font-family: var(--ts-font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ts-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Status badge (right side of card header) */
+.statusBadge {
+    font-family: var(--ts-font-ui);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: var(--ts-r-sm);
+    letter-spacing: 0.03em;
+}
+
+.statusCorrect {
+    background: var(--ts-success-bg);
+    color: var(--ts-success-700);
+}
+
+.statusWrong {
+    background: var(--ts-danger-bg);
+    color: var(--ts-danger-700);
+}
+
+.statusUnanswered {
+    background: var(--ts-surface-subtle);
+    color: var(--ts-text-faint);
+}
+
+/* ── Card body ─────────────────────────────────────────────────────── */
+
+.cardBody {
+    padding: 24px;
+}
+
+.questionText {
+    font-family: var(--ts-font-ui);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ts-ink);
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+/* ── Code snippet ──────────────────────────────────────────────────── */
+
+.codeSnippet {
+    background: #0d2236;
+    border-radius: var(--ts-r-md);
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.codeSnippet pre {
+    margin: 0;
+}
+
+.codeSnippet code {
+    font-family: var(--ts-font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: #e0e0e0;
+    white-space: pre;
+}
+
+/* ── Options list ──────────────────────────────────────────────────── */
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-sm);
+    font-size: 14px;
+    color: var(--ts-text);
+    border-left: 3px solid transparent;
+}
+
+.optionCorrectAnswer {
+    background: var(--ts-success-bg);
+    border-left: 3px solid var(--ts-teal);
+    border-color: var(--ts-teal);
+}
+
+.optionWrongAnswer {
+    background: var(--ts-danger-bg);
+    border-left: 3px solid var(--ts-danger);
+    border-color: var(--ts-danger);
+}
+
+.optionLetter {
+    font-family: var(--ts-font-ui);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ts-text-muted);
+    min-width: 20px;
+}
+
+.optionText {
+    flex: 1;
+    font-family: var(--ts-font-ui);
+    font-size: 14px;
+    color: var(--ts-text);
+}
+
+.optionTextCode {
+    font-family: var(--ts-font-mono);
+}
+
+.optionTag {
+    font-family: var(--ts-font-ui);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: var(--ts-r-sm);
+    white-space: nowrap;
+}
+
+.tagCorrect {
+    background: var(--ts-success-bg);
+    color: var(--ts-success-700);
+}
+
+.tagWrong {
+    background: var(--ts-danger-bg);
+    color: var(--ts-danger-700);
+}
+
+/* ── Open answer (for open questions) ──────────────────────────────── */
+
+.openAnswer {
+    padding: 14px 16px;
+    background: var(--ts-surface-subtle);
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-sm);
+    font-size: 14px;
+    color: var(--ts-ink);
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.openAnswerEmpty {
+    color: var(--ts-text-faint);
+    font-style: italic;
+}
+
+/* ── Explanation box ───────────────────────────────────────────────── */
+
+.explanation {
+    background: var(--ts-success-bg);
+    border-radius: var(--ts-r-md);
+    padding: 16px 20px;
+}
+
+.explanationTitle {
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ts-success-700);
+    margin-bottom: 6px;
+}
+
+.explanationText {
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ts-teal-ink);
+    line-height: 1.6;
+}
+
+/* ── Empty state ───────────────────────────────────────────────────── */
+
+.emptyState {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ts-text-muted);
+    font-family: var(--ts-font-ui);
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .header {
+        padding: 12px 16px;
+    }
+
+    .titleBar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .questionsList {
+        padding: 16px;
+    }
+
+    .cardBody {
+        padding: 16px;
+    }
+
+    .cardHeader {
+        padding: 12px 16px;
+    }
+}
