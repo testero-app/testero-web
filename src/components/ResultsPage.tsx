@@ -2,14 +2,25 @@ import { useEffect } from 'react';
 import { TQuestion, TOption, TAnswer, TAnswerResult } from '../context/AssessmentContext';
 import styles from './ResultsPage.module.css';
 
+export interface ResultsSummary {
+    score: number;
+    maxScore: number;
+    correctCount: number;
+    totalQuestions: number;
+    passed: boolean;
+    duration: string;
+    subjectScores?: { subject_id: string; label: string; points_earned: number; points_available: number }[];
+}
+
 interface ResultsPageProps {
-    shuffledQuestions: TQuestion[];
-    shuffledOptions: TOption[][];
-    answers: Record<string, TAnswer>;
-    answerResults: TAnswerResult[];
+    shuffledQuestions?: TQuestion[];
+    shuffledOptions?: TOption[][];
+    answers?: Record<string, TAnswer>;
+    answerResults?: TAnswerResult[];
+    summary?: ResultsSummary;
     assessmentTitle?: string;
     onBackToAssessments: () => void;
-    onRedownload: () => void;
+    onRedownload?: () => void;
     onReviewErrors?: () => void;
     zipName?: string;
 }
@@ -76,6 +87,7 @@ export default function ResultsPage({
     shuffledQuestions,
     answers,
     answerResults,
+    summary,
     assessmentTitle,
     onBackToAssessments,
     onRedownload,
@@ -85,37 +97,52 @@ export default function ResultsPage({
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
-    const resultMap = new Map(answerResults.map(r => [r.question_snapshot_id, r]));
+    let correctCount: number;
+    let totalQ: number;
+    let score: number;
+    let maxScore: number;
+    let subjectScores: { subject_id: string; label: string; points_earned: number; points_available: number }[] | undefined;
+    let duration: string;
+    let passed: boolean;
 
-    // Stats
-    const mcQuestions = shuffledQuestions.filter(q => q.type === 'multiple');
-    const correctCount = mcQuestions.filter(q => resultMap.get(q.id)?.is_correct === true).length;
-    const totalQ = mcQuestions.length;
+    if (summary) {
+        // History mode: use pre-computed summary
+        correctCount = summary.correctCount;
+        totalQ = summary.totalQuestions;
+        score = summary.score;
+        maxScore = summary.maxScore;
+        passed = summary.passed;
+        duration = summary.duration;
+        subjectScores = summary.subjectScores;
+    } else {
+        // Fresh submission mode: compute from raw answers
+        const resultMap = new Map((answerResults ?? []).map(r => [r.question_snapshot_id, r]));
+        const mcQuestions = (shuffledQuestions ?? []).filter(q => q.type === 'multiple');
+        correctCount = mcQuestions.filter(q => resultMap.get(q.id)?.is_correct === true).length;
+        totalQ = mcQuestions.length;
 
-    // Points: use points_awarded if available, else 1pt per correct
-    const score = answerResults.reduce((sum, r) => {
-        const pts = (r as Record<string, unknown>).points_awarded;
-        if (typeof pts === 'number') return sum + pts;
-        return sum + (r.is_correct ? 1 : 0);
-    }, 0);
-    const maxScore = totalQ; // simplified — ideally from BE max_score
+        score = (answerResults ?? []).reduce((sum, r) => {
+            const pts = (r as Record<string, unknown>).points_awarded;
+            if (typeof pts === 'number') return sum + pts;
+            return sum + (r.is_correct ? 1 : 0);
+        }, 0);
+        maxScore = totalQ;
 
-    // Subject scores from BE (if available)
-    const subjectScores = ((answerResults as unknown as Record<string, unknown>[])?.[0] as Record<string, unknown>)?.subject_scores as
-        { subject_id: string; label: string; points_earned: number; points_available: number }[] | undefined;
+        subjectScores = ((answerResults as unknown as Record<string, unknown>[])?.[0] as Record<string, unknown>)?.subject_scores as
+            { subject_id: string; label: string; points_earned: number; points_available: number }[] | undefined;
 
-    // Duration
-    const startedAt = (answerResults as unknown as Record<string, unknown>)?.started_at as string | undefined;
-    const submittedAt = (answerResults as unknown as Record<string, unknown>)?.submitted_at as string | undefined;
-    let duration = '--:--';
-    if (startedAt && submittedAt) {
-        const diff = Math.round((new Date(submittedAt).getTime() - new Date(startedAt).getTime()) / 1000);
-        const m = Math.floor(diff / 60).toString().padStart(2, '0');
-        const s = (diff % 60).toString().padStart(2, '0');
-        duration = `${m}:${s}`;
+        const startedAt = (answerResults as unknown as Record<string, unknown>)?.started_at as string | undefined;
+        const submittedAt = (answerResults as unknown as Record<string, unknown>)?.submitted_at as string | undefined;
+        duration = '--:--';
+        if (startedAt && submittedAt) {
+            const diff = Math.round((new Date(submittedAt).getTime() - new Date(startedAt).getTime()) / 1000);
+            const m = Math.floor(diff / 60).toString().padStart(2, '0');
+            const s = (diff % 60).toString().padStart(2, '0');
+            duration = `${m}:${s}`;
+        }
+
+        passed = totalQ > 0 ? correctCount / totalQ >= 0.6 : false;
     }
-
-    const passed = correctCount / totalQ >= 0.6;
 
     return (
         <div className={styles.page}>
