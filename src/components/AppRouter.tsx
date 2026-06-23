@@ -2,10 +2,10 @@
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { MemoryRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { AssessmentProvider, useAssessment, TSubmissionSummary } from '../context/AssessmentContext';
+import { AssessmentProvider, useAssessment, TSubmissionSummary, TSubmissionReview } from '../context/AssessmentContext';
 import { isQuestionAnswered, DEFAULT_TIMER_MINUTES } from '../lib/questionUtils';
 import { useTimer } from '../hooks/useTimer';
-import { fetchSubmissionFeedback, fetchSubmissionReview, startTrainingSession } from '../lib/api';
+import { fetchSubmissionReview, startTrainingSession } from '../lib/api';
 
 import LoginPage from './LoginPage';
 import TopBar from './layout/TopBar';
@@ -90,16 +90,12 @@ function HomeView() {
         navigate('/');
     }, [doLogout, navigate]);
 
-    const handleSelectSubmission = useCallback(async (submissionId: string) => {
-        if (!token) return;
-        try {
-            const feedback = await fetchSubmissionFeedback(submissionId, token);
-            navigate('/results', { state: { feedback } });
-        } catch {
-            // fallback: navigate without data
-            navigate('/results');
+    const handleSelectSubmission = useCallback((submissionId: string) => {
+        const submission = submissionHistory.find(s => s.id === submissionId);
+        if (submission) {
+            navigate('/results', { state: { historySubmission: submission } });
         }
-    }, [token, navigate]);
+    }, [submissionHistory, navigate]);
 
     if (!user) return null;
 
@@ -421,13 +417,17 @@ function ResultsView() {
         assessmentConfig, token,
     } = useAssessment();
     const navigate = useNavigate();
+    const location = useLocation();
     const [alertModal, setAlertModal] = useState({ visible: false, title: '', message: '' });
 
+    const historySubmission = (location.state as { historySubmission?: TSubmissionSummary })?.historySubmission;
+    const isHistoryMode = !submissionResult && !!historySubmission;
+
     useEffect(() => {
-        if (!submissionResult) {
+        if (!submissionResult && !historySubmission) {
             navigate('/home');
         }
-    }, [submissionResult, navigate]);
+    }, [submissionResult, historySubmission, navigate]);
 
     const handleRedownload = async () => {
         try {
@@ -447,9 +447,10 @@ function ResultsView() {
     };
 
     const handleReviewErrors = useCallback(async () => {
-        if (!submissionResult || !token) return;
+        const submissionId = submissionResult?.id ?? historySubmission?.id;
+        if (!submissionId || !token) return;
         try {
-            const review = await fetchSubmissionReview(submissionResult.id, token);
+            const review = await fetchSubmissionReview(submissionId, token);
             navigate('/ripasso', { state: { review } });
         } catch {
             setAlertModal({
@@ -458,24 +459,53 @@ function ResultsView() {
                 message: 'Impossibile caricare il ripasso. Riprova.',
             });
         }
-    }, [submissionResult, token, navigate]);
+    }, [submissionResult, historySubmission, token, navigate]);
 
-    if (!submissionResult) {
+    if (!submissionResult && !historySubmission) {
         return null;
     }
+
+    // Build summary from history submission
+    const historySummary = isHistoryMode && historySubmission ? (() => {
+        const total = historySubmission.total_questions;
+        const correct = historySubmission.correct_count;
+        const scoreVal = historySubmission.score ?? correct;
+        const pctPassed = total > 0 ? correct / total >= 0.6 : false;
+
+        let dur = '--:--';
+        if (historySubmission.started_at && historySubmission.submitted_at) {
+            const diff = Math.round(
+                (new Date(historySubmission.submitted_at).getTime() -
+                 new Date(historySubmission.started_at).getTime()) / 1000
+            );
+            const m = Math.floor(diff / 60).toString().padStart(2, '0');
+            const s = (diff % 60).toString().padStart(2, '0');
+            dur = `${m}:${s}`;
+        }
+
+        return {
+            score: Math.round(scoreVal),
+            maxScore: total,
+            correctCount: correct,
+            totalQuestions: total,
+            passed: pctPassed,
+            duration: dur,
+        };
+    })() : undefined;
 
     return (
         <>
             <ResultsPage
-                shuffledQuestions={shuffledQuestions}
-                shuffledOptions={shuffledOptions}
-                answers={answers}
-                answerResults={submissionResult.answers}
-                assessmentTitle={assessmentConfig?.title}
+                shuffledQuestions={isHistoryMode ? undefined : shuffledQuestions}
+                shuffledOptions={isHistoryMode ? undefined : shuffledOptions}
+                answers={isHistoryMode ? undefined : answers}
+                answerResults={isHistoryMode ? undefined : submissionResult?.answers}
+                summary={historySummary}
+                assessmentTitle={isHistoryMode ? historySubmission?.assessment_title : assessmentConfig?.title}
                 onBackToAssessments={handleBackToAssessments}
-                onRedownload={handleRedownload}
+                onRedownload={isHistoryMode ? undefined : handleRedownload}
                 onReviewErrors={handleReviewErrors}
-                zipName={zipInfo?.zipName}
+                zipName={isHistoryMode ? undefined : zipInfo?.zipName}
             />
             <AlertModal
                 visible={alertModal.visible}
@@ -492,24 +522,21 @@ function ResultsView() {
 function RipassoView() {
     const { user } = useAssessment();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const review = (location.state as { review?: TSubmissionReview })?.review;
 
     useEffect(() => {
         if (!user) navigate('/');
-    }, [user, navigate]);
+        else if (!review) navigate('/home');
+    }, [user, review, navigate]);
 
-    // TODO: get review from location state or load from API
-    // For now, show placeholder if no review data available
+    if (!review) return null;
+
     return (
         <RipassoPage
-            review={{
-                id: '',
-                assessment_title: 'Verifica',
-                started_at: null,
-                submitted_at: new Date().toISOString(),
-                score: null,
-                questions: [],
-            }}
-            onBackToReport={() => navigate('/results')}
+            review={review}
+            onBackToReport={() => navigate(-1)}
         />
     );
 }
