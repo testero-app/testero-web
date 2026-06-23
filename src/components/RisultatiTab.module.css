@@ -72,7 +72,7 @@
 }
 
 .row:hover {
-    box-shadow: var(--ts-shadow-card-el);
+    box-shadow: var(--ts-shadow-pop);
 }
 
 .rowPass {
