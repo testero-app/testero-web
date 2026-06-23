@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0](https://github.com/testero-app/testero-web/compare/v2.1.3...v2.2.0) (2026-06-23)
+
+
+### Features
+
+* wire mock components to real BE endpoints ([#97](https://github.com/testero-app/testero-web/issues/97)) ([9ac85a4](https://github.com/testero-app/testero-web/commit/9ac85a4c8d5814b4eba587cc18471a13a32d9171)), closes [#96](https://github.com/testero-app/testero-web/issues/96)
+
+
+### Bug Fixes
+
+* wire mock FE components to real BE endpoints ([#101](https://github.com/testero-app/testero-web/issues/101)) ([f9be79a](https://github.com/testero-app/testero-web/commit/f9be79a06f6c296188c3f9cfbe2a2e84f55aba77))
+
 ## [2.1.3](https://github.com/testero-app/testero-web/compare/v2.1.2...v2.1.3) (2026-06-19)
 
 
