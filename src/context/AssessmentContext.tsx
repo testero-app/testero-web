@@ -100,6 +100,7 @@ export type TReviewQuestion = {
     answer_text: string;
     motivation: string;
     options: TReviewOption[];
+    subjects?: { id: string; label: string }[];
 };
 
 export type TSubmissionReview = {
