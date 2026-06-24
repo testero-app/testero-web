@@ -106,8 +106,9 @@ function QuestionCard({ question, displayIndex }: QuestionCardProps) {
         question.options.filter((o) => o.is_correct).map((o) => o.id),
     );
 
-    // Derive a topic label from the question position (fallback)
-    const topicLabel = question.type === 'open' ? 'BONUS' : `Q${displayIndex + 1}`;
+    // Derive a topic label from subjects (from BE) or fallback
+    const topicLabel = question.subjects?.[0]?.label?.toUpperCase()
+        ?? (question.type === 'open' ? 'BONUS' : `Q${displayIndex + 1}`);
 
     // Status badge
     let statusClass = styles.statusUnanswered;

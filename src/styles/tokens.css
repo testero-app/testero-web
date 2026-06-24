@@ -16,7 +16,6 @@
   --ts-teal:            #14b8a6;
   --ts-teal-700:        #0e7c7b;
   --ts-teal-ink:        #06302c;
-  --ts-teal-bright:     #5eead4;
   --ts-teal-bg:         #e6fcfa;
   --ts-teal-selected:   #effdfb;
 
@@ -62,14 +61,13 @@
   --ts-r-lg:   13px;
   --ts-r-xl:   18px;
   --ts-r-pill: 99px;
+  --ts-r-phone:34px;
 
   /* — Ombre — */
-  --ts-shadow-card:    0 1px 2px rgba(16,42,67,.04);
-  --ts-shadow-card-el: 0 12px 30px rgba(16,42,67,.10);
-  --ts-shadow-pop:     0 24px 60px rgba(16,42,67,.22);
+  --ts-shadow-card:    0 1px 2px rgba(16,42,67,.05);
+  --ts-shadow-pop:     0 16px 40px rgba(16,42,67,.12);
   --ts-shadow-modal:   0 24px 60px rgba(0,0,0,.40);
-  --ts-focus-ring:     0 0 0 3px rgba(20,184,166,.13);
-  --ts-option-ring:    0 0 0 4px rgba(20,184,166,.10);
+  --ts-focus-ring:     0 0 0 3px rgba(20,184,166,.12);
 
   /* — Tipografia — */
   --ts-font-ui:   'Sora', system-ui, sans-serif;
@@ -127,7 +125,6 @@
   --m-radius-full: var(--ts-r-pill);
 
   --m-shadow-sm:   var(--ts-shadow-card);
-  --m-shadow-md:   0 8px 16px rgba(16,42,67,.10);
   --m-shadow-lg:   var(--ts-shadow-pop);
   --m-shadow-xl:   var(--ts-shadow-modal);
   --m-focus-ring:  var(--ts-focus-ring);
