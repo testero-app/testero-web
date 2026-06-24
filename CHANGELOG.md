@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.1](https://github.com/testero-app/testero-web/compare/v2.2.0...v2.2.1) (2026-06-24)
+
+
+### Bug Fixes
+
+* align UI to definitive design (T0-1 through T0-7) ([#102](https://github.com/testero-app/testero-web/issues/102)) ([cdb513c](https://github.com/testero-app/testero-web/commit/cdb513cca63b548439d9d8dc273a25467c9ae2d1))
+
 ## [2.2.0](https://github.com/testero-app/testero-web/compare/v2.1.3...v2.2.0) (2026-06-23)
 
 
