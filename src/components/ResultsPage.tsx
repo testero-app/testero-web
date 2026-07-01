@@ -20,9 +20,7 @@ interface ResultsPageProps {
     summary?: ResultsSummary;
     assessmentTitle?: string;
     onBackToAssessments: () => void;
-    onRedownload?: () => void;
     onReviewErrors?: () => void;
-    zipName?: string;
 }
 
 /* ── Logo SVG (same mark used in TopBar) ─────────────────────────── */
@@ -90,7 +88,6 @@ export default function ResultsPage({
     summary,
     assessmentTitle,
     onBackToAssessments,
-    onRedownload,
     onReviewErrors,
 }: ResultsPageProps) {
     useEffect(() => {
@@ -223,7 +220,7 @@ export default function ResultsPage({
 
                     {/* Action buttons */}
                     <div className={styles.actions}>
-                        <button className={styles.btnReview} onClick={onReviewErrors ?? onRedownload}>
+                        <button className={styles.btnReview} onClick={onReviewErrors}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-7 3.3" /><path d="M3 4v4h4" />
                             </svg>
