@@ -8,9 +8,9 @@ import { useTimer } from '../hooks/useTimer';
 import { fetchSubmissionReview, startTrainingSession } from '../lib/api';
 
 import LoginPage from './LoginPage';
-import TopBar from './layout/TopBar';
-import StudentHub, { type TabId } from './StudentHub';
+import AppShell from './layout/AppShell';
 import AllenamentoTab from './AllenamentoTab';
+import CompetenzeTab from './CompetenzeTab';
 import CertificazioniTab from './CertificazioniTab';
 import RisultatiTab from './RisultatiTab';
 import ConfiguratorePage from './ConfiguratorePage';
@@ -24,6 +24,7 @@ import SubmitModal from './SubmitModal';
 import FinalModal from './FinalModal';
 import AlertModal from './AlertModal';
 import ProfilePage from './ProfilePage';
+import SettingsPage from './SettingsPage';
 import ErrorPage from './ErrorPage';
 
 // ─── Login View ──────────────────────────────────────────────────────────────
@@ -35,7 +36,7 @@ function LoginView() {
     const handleLogin = useCallback(async (username: string, password: string) => {
         try {
             await doLogin(username, password);
-            navigate('/home');
+            navigate('/allenamento');
         } catch {
             // error is already in state
         }
@@ -44,16 +45,70 @@ function LoginView() {
     return <LoginPage onLogin={handleLogin} loading={loading} error={error} />;
 }
 
-// ─── Home View (3-tab hub: Allenamento, Certificazioni, Risultati) ───────────
+// ─── Allenamento View ────────────────────────────────────────────────────────
 
-function HomeView() {
+function AllenamentoView() {
+    const { user, token, doLogout } = useAssessment();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user) navigate('/');
+    }, [user, navigate]);
+
+    if (!user || !token) return null;
+
+    return (
+        <AppShell
+            activePage="allenamento"
+            userName={user.name}
+            userClass={user.class_name}
+            onNavigate={(page) => navigate(`/${page}`)}
+            onLogout={() => { doLogout(); navigate('/'); }}
+        >
+            <AllenamentoTab
+                token={token}
+                onStartTopic={(topicId) => navigate('/configuratore', { state: { topicId } })}
+            />
+        </AppShell>
+    );
+}
+
+// ─── Competenze View ─────────────────────────────────────────────────────────
+
+function CompetenzeView() {
+    const { user, token, doLogout } = useAssessment();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user) navigate('/');
+    }, [user, navigate]);
+
+    if (!user || !token) return null;
+
+    return (
+        <AppShell
+            activePage="competenze"
+            userName={user.name}
+            userClass={user.class_name}
+            onNavigate={(page) => navigate(`/${page}`)}
+            onLogout={() => { doLogout(); navigate('/'); }}
+        >
+            <CompetenzeTab
+                token={token}
+                onStartTraining={(topicId) => navigate('/configuratore', { state: { topicId } })}
+            />
+        </AppShell>
+    );
+}
+
+// ─── Certificazioni View ────────────────────────────────────────────────────
+
+function CertificazioniView() {
     const {
-        user, token, availableAssessments, submissionHistory, loading,
-        loadAvailableAssessments, loadSubmissionHistory,
-        selectAssessment, doLogout,
+        user, availableAssessments, loading,
+        loadAvailableAssessments, selectAssessment, doLogout,
     } = useAssessment();
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<TabId>('allenamento');
     const [showStartModal, setShowStartModal] = useState(false);
     const [pendingAssessmentId, setPendingAssessmentId] = useState<string | null>(null);
 
@@ -62,12 +117,6 @@ function HomeView() {
         loadAvailableAssessments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
-
-    const handleTabChange = useCallback((tab: TabId) => {
-        setActiveTab(tab);
-        if (tab === 'certificazioni') loadAvailableAssessments();
-        if (tab === 'risultati') loadSubmissionHistory();
-    }, [loadAvailableAssessments, loadSubmissionHistory]);
 
     const handleStartCert = useCallback((assessmentId: string) => {
         setPendingAssessmentId(assessmentId);
@@ -85,10 +134,44 @@ function HomeView() {
         }
     }, [pendingAssessmentId, selectAssessment, navigate]);
 
-    const handleLogout = useCallback(() => {
-        doLogout();
-        navigate('/');
-    }, [doLogout, navigate]);
+    if (!user) return null;
+
+    return (
+        <AppShell
+            activePage="certificazioni"
+            userName={user.name}
+            userClass={user.class_name}
+            onNavigate={(page) => navigate(`/${page}`)}
+            onLogout={() => { doLogout(); navigate('/'); }}
+        >
+            <CertificazioniTab
+                assessments={availableAssessments}
+                loading={loading}
+                onStart={handleStartCert}
+            />
+            <StartModal
+                visible={showStartModal}
+                onConfirm={handleStartConfirm}
+                onCancel={() => setShowStartModal(false)}
+            />
+        </AppShell>
+    );
+}
+
+// ─── Risultati Hub View ─────────────────────────────────────────────────────
+
+function RisultatiHubView() {
+    const {
+        user, submissionHistory, loading,
+        loadSubmissionHistory, doLogout,
+    } = useAssessment();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user) { navigate('/'); return; }
+        loadSubmissionHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
 
     const handleSelectSubmission = useCallback((submissionId: string) => {
         const submission = submissionHistory.find(s => s.id === submissionId);
@@ -99,85 +182,74 @@ function HomeView() {
 
     if (!user) return null;
 
-    // Tab config
-    const tabTitles: Record<TabId, { title: string; subtitle: string }> = {
-        allenamento: {
-            title: 'Allenati per argomento',
-            subtitle: 'Nessun timer, nessun esito. Scegli un argomento, costruisci la sessione e fai pratica mirata.',
-        },
-        certificazioni: {
-            title: 'Certificazione esterna della scuola',
-            subtitle: 'Verifiche di certificazione predisposte dalla tua scuola. Esame a tempo: parte al primo click.',
-        },
-        risultati: {
-            title: 'I miei risultati',
-            subtitle: 'Certificazioni e allenamento in un unico posto. Tocca una riga per il dettaglio.',
-        },
-    };
+    return (
+        <AppShell
+            activePage="risultati"
+            userName={user.name}
+            userClass={user.class_name}
+            onNavigate={(page) => navigate(`/${page}`)}
+            onLogout={() => { doLogout(); navigate('/'); }}
+        >
+            <RisultatiTab
+                submissions={submissionHistory}
+                loading={loading}
+                onSelectSubmission={handleSelectSubmission}
+            />
+        </AppShell>
+    );
+}
 
-    const tabs: { id: TabId; label: string; icon?: React.ReactNode }[] = [
-        {
-            id: 'allenamento',
-            label: 'Allenamento',
-            icon: activeTab === 'allenamento' ? (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-                </svg>
-            ) : undefined,
-        },
-        { id: 'certificazioni', label: 'Certificazioni' },
-        { id: 'risultati', label: 'I miei risultati' },
-    ];
+// ─── Profile View ───────────────────────────────────────────────────────────
 
-    const subtitleIcon = activeTab === 'certificazioni' ? (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9a6a08" strokeWidth="2">
-            <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" />
-        </svg>
-    ) : undefined;
+function ProfileView() {
+    const { user, token, doLogout } = useAssessment();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user) navigate('/');
+    }, [user, navigate]);
+
+    if (!user) return null;
 
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--ts-app-bg)' }}>
-            <TopBar
-                userName={user.name}
-                userClass={user.class_name}
-                onLogout={handleLogout}
-                onProfile={() => navigate('/profile')}
+        <AppShell
+            activePage="profilo"
+            userName={user.name}
+            userClass={user.class_name}
+            onNavigate={(page) => navigate(`/${page}`)}
+            onLogout={() => { doLogout(); navigate('/'); }}
+        >
+            <ProfilePage
+                user={user}
+                token={token ?? undefined}
+                onLogout={() => { doLogout(); navigate('/'); }}
             />
-            <StudentHub
-                activeTab={activeTab}
-                title={tabTitles[activeTab].title}
-                subtitle={tabTitles[activeTab].subtitle}
-                subtitleIcon={subtitleIcon}
-                tabs={tabs}
-                onTabChange={handleTabChange}
-            >
-                {activeTab === 'allenamento' && (
-                    <AllenamentoTab
-                        token={token!}
-                        onStartTopic={(topicId) => navigate('/configuratore', { state: { topicId } })}
-                    />
-                )}
-                {activeTab === 'certificazioni' && (
-                    <CertificazioniTab
-                        assessments={availableAssessments}
-                        loading={loading}
-                        onStart={handleStartCert}
-                    />
-                )}
-                {activeTab === 'risultati' && (
-                    <RisultatiTab
-                        submissions={submissionHistory}
-                        loading={loading}
-                        onSelectSubmission={handleSelectSubmission}
-                    />
-                )}
-            </StudentHub>
-            <StartModal
-                visible={showStartModal}
-                onConfirm={handleStartConfirm}
-                onCancel={() => setShowStartModal(false)}
-            />
-        </div>
+        </AppShell>
+    );
+}
+
+// ─── Settings View ──────────────────────────────────────────────────────────
+
+function SettingsView() {
+    const { user, token, doLogout } = useAssessment();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!user) navigate('/');
+    }, [user, navigate]);
+
+    if (!user) return null;
+
+    return (
+        <AppShell
+            activePage="impostazioni"
+            userName={user.name}
+            userClass={user.class_name}
+            onNavigate={(page) => navigate(`/${page}`)}
+            onLogout={() => { doLogout(); navigate('/'); }}
+        >
+            <SettingsPage token={token ?? undefined} />
+        </AppShell>
     );
 }
 
@@ -211,7 +283,6 @@ function ConfiguratoreView() {
                 question_count: config.questionCount,
                 timer_enabled: config.timerEnabled,
             }, token);
-            // Use selectAssessment flow with the returned snapshot
             await selectAssessment(result.assessment_snapshot_id);
             navigate('/assessment');
         } catch (err) {
@@ -224,7 +295,7 @@ function ConfiguratoreView() {
             topicId={topicId}
             topicName={topicName}
             token={token}
-            onBack={() => navigate('/home')}
+            onBack={() => navigate('/allenamento')}
             onStart={handleStart}
         />
     );
@@ -255,7 +326,6 @@ function AssessmentView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Keyboard navigation
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
             if ((e.target as HTMLElement).tagName === 'INPUT' || (e.target as HTMLElement).tagName === 'TEXTAREA') return;
@@ -425,7 +495,7 @@ function ResultsView() {
 
     useEffect(() => {
         if (!submissionResult && !historySubmission) {
-            navigate('/home');
+            navigate('/allenamento');
         }
     }, [submissionResult, historySubmission, navigate]);
 
@@ -443,7 +513,7 @@ function ResultsView() {
 
     const handleBackToAssessments = () => {
         resetAssessment();
-        navigate('/home');
+        navigate('/allenamento');
     };
 
     const handleReviewErrors = useCallback(async () => {
@@ -465,7 +535,6 @@ function ResultsView() {
         return null;
     }
 
-    // Build summary from history submission
     const historySummary = isHistoryMode && historySubmission ? (() => {
         const total = historySubmission.total_questions;
         const correct = historySubmission.correct_count;
@@ -528,7 +597,7 @@ function RipassoView() {
 
     useEffect(() => {
         if (!user) navigate('/');
-        else if (!review) navigate('/home');
+        else if (!review) navigate('/allenamento');
     }, [user, review, navigate]);
 
     if (!review) return null;
@@ -538,36 +607,6 @@ function RipassoView() {
             review={review}
             onBackToReport={() => navigate(-1)}
         />
-    );
-}
-
-// ─── Profile View ────────────────────────────────────────────────────────────
-
-function ProfileView() {
-    const { user, token, doLogout } = useAssessment();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!user) navigate('/');
-    }, [user, navigate]);
-
-    if (!user) return null;
-
-    return (
-        <>
-            <TopBar
-                userName={user.name}
-                userClass={user.class_name}
-                onLogout={() => { doLogout(); navigate('/'); }}
-                onProfile={() => {}}
-            />
-            <ProfilePage
-                user={user}
-                token={token ?? undefined}
-                onBack={() => navigate('/home')}
-                onLogout={() => { doLogout(); navigate('/'); }}
-            />
-        </>
     );
 }
 
@@ -593,13 +632,17 @@ export default function AppRouter() {
             <MemoryRouter initialEntries={['/']}>
                 <Routes>
                     <Route path="/" element={<LoginView />} />
-                    <Route path="/home" element={<HomeView />} />
+                    <Route path="/allenamento" element={<AllenamentoView />} />
+                    <Route path="/competenze" element={<CompetenzeView />} />
+                    <Route path="/certificazioni" element={<CertificazioniView />} />
+                    <Route path="/risultati" element={<RisultatiHubView />} />
+                    <Route path="/profilo" element={<ProfileView />} />
+                    <Route path="/impostazioni" element={<SettingsView />} />
                     <Route path="/configuratore" element={<ConfiguratoreView />} />
                     <Route path="/assessment" element={<AssessmentView />} />
                     <Route path="/recap" element={<RecapView />} />
                     <Route path="/results" element={<ResultsView />} />
                     <Route path="/ripasso" element={<RipassoView />} />
-                    <Route path="/profile" element={<ProfileView />} />
                     <Route path="*" element={<NotFoundView />} />
                 </Routes>
             </MemoryRouter>

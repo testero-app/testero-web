@@ -1,0 +1,152 @@
+.container {
+    max-width: 780px;
+}
+
+.title {
+    font-family: var(--ts-font-ui);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--ts-ink);
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    font-family: var(--ts-font-ui);
+    font-size: 14px;
+    color: var(--ts-text-soft);
+    margin: 0 0 28px;
+    line-height: 1.6;
+}
+
+.card {
+    background: var(--ts-surface);
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-xl);
+    padding: 28px 30px;
+    box-shadow: var(--ts-shadow-card);
+}
+
+.topicRow {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--ts-border-soft);
+}
+
+.topicRow:last-of-type {
+    border-bottom: none;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+}
+
+.topicHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: var(--ts-font-ui);
+    margin-bottom: 8px;
+}
+
+.expandIcon {
+    color: var(--ts-text-soft);
+    transition: transform 0.15s;
+    flex-shrink: 0;
+}
+
+.expandIcon.expanded {
+    transform: rotate(90deg);
+}
+
+.topicName {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ts-ink);
+    flex: 1;
+    text-align: left;
+}
+
+.topicPct {
+    font-family: var(--ts-font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.barTrack {
+    height: 8px;
+    background: var(--ts-border-soft);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.barFill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.chapters {
+    margin-top: 14px;
+    padding-left: 20px;
+    border-left: 2px solid var(--ts-border-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chapterRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chapterName {
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    color: var(--ts-text-muted);
+    min-width: 160px;
+    flex-shrink: 0;
+}
+
+.chapterBarTrack {
+    flex: 1;
+    height: 6px;
+    background: var(--ts-border-soft);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chapterPct {
+    font-family: var(--ts-font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 36px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.trainBtn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border: 1.5px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    background: transparent;
+    cursor: pointer;
+    font-family: var(--ts-font-ui);
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ts-ink);
+    transition: background 0.12s, border-color 0.12s;
+}
+
+.trainBtn:hover {
+    background: var(--ts-surface-subtle);
+    border-color: var(--ts-text-soft);
+}
