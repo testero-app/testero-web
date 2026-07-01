@@ -1,0 +1,85 @@
+import TesteroLogo from '../ui/TesteroLogo';
+import styles from './NavSidebar.module.css';
+
+export type NavPage = 'allenamento' | 'competenze' | 'certificazioni' | 'risultati' | 'profilo' | 'impostazioni';
+
+interface NavSidebarProps {
+    activePage: NavPage;
+    onNavigate: (page: string) => void;
+}
+
+const NAV_ITEMS: { id: string; label: string; icon: React.ReactNode }[] = [
+    {
+        id: 'allenamento',
+        label: 'Allenamento',
+        icon: (
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="6" />
+                <circle cx="12" cy="12" r="2" />
+            </svg>
+        ),
+    },
+    {
+        id: 'competenze',
+        label: 'Competenze',
+        icon: (
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="12" width="4" height="9" rx="1" />
+                <rect x="10" y="7" width="4" height="14" rx="1" />
+                <rect x="17" y="3" width="4" height="18" rx="1" />
+            </svg>
+        ),
+    },
+    {
+        id: 'certificazioni',
+        label: 'Certificazioni',
+        icon: (
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="8" r="6" />
+                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+            </svg>
+        ),
+    },
+    {
+        id: 'risultati',
+        label: 'I miei risultati',
+        icon: (
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M7 7h10M7 12h10M7 17h6" />
+            </svg>
+        ),
+    },
+];
+
+export default function NavSidebar({ activePage, onNavigate }: NavSidebarProps) {
+    return (
+        <nav className={styles.sidebar}>
+            <div className={styles.brand}>
+                <TesteroLogo size={30} />
+                <span className={styles.brandText}>Testero</span>
+            </div>
+
+            <div className={styles.sectionLabel}>STUDIO</div>
+
+            <ul className={styles.navList}>
+                {NAV_ITEMS.map((item) => {
+                    const isActive = activePage === item.id;
+                    return (
+                        <li key={item.id}>
+                            <button
+                                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
+                                onClick={() => onNavigate(item.id)}
+                                aria-current={isActive ? 'page' : undefined}
+                            >
+                                <span className={styles.navIcon}>{item.icon}</span>
+                                <span className={styles.navLabel}>{item.label}</span>
+                            </button>
+                        </li>
+                    );
+                })}
+            </ul>
+        </nav>
+    );
+}
