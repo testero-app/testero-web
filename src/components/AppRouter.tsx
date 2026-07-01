@@ -105,7 +105,7 @@ function CompetenzeView() {
 
 function CertificazioniView() {
     const {
-        user, token, availableAssessments, loading,
+        user, availableAssessments, loading,
         loadAvailableAssessments, selectAssessment, doLogout,
     } = useAssessment();
     const navigate = useNavigate();
@@ -162,7 +162,7 @@ function CertificazioniView() {
 
 function RisultatiHubView() {
     const {
-        user, token, submissionHistory, loading,
+        user, submissionHistory, loading,
         loadSubmissionHistory, doLogout,
     } = useAssessment();
     const navigate = useNavigate();
