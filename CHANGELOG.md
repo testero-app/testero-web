@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1](https://github.com/testero-app/testero-web/compare/v2.3.0...v2.3.1) (2026-07-01)
+
+
+### Bug Fixes
+
+* remove ZIP download from results page ([#108](https://github.com/testero-app/testero-web/issues/108)) ([97236f5](https://github.com/testero-app/testero-web/commit/97236f549b06e99f24e3cd19a184c034a8d5b98e))
+
 ## [2.3.0](https://github.com/testero-app/testero-web/compare/v2.2.1...v2.3.0) (2026-07-01)
 
 
