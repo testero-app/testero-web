@@ -483,7 +483,7 @@ function RecapView() {
 function ResultsView() {
     const {
         shuffledQuestions, shuffledOptions, answers,
-        submissionResult, zipInfo, doSubmit, resetAssessment,
+        submissionResult, resetAssessment,
         assessmentConfig, token,
     } = useAssessment();
     const navigate = useNavigate();
@@ -498,18 +498,6 @@ function ResultsView() {
             navigate('/allenamento');
         }
     }, [submissionResult, historySubmission, navigate]);
-
-    const handleRedownload = async () => {
-        try {
-            await doSubmit();
-        } catch {
-            setAlertModal({
-                visible: true,
-                title: 'Errore',
-                message: 'Errore durante il download. Riprova.',
-            });
-        }
-    };
 
     const handleBackToAssessments = () => {
         resetAssessment();
@@ -572,9 +560,7 @@ function ResultsView() {
                 summary={historySummary}
                 assessmentTitle={isHistoryMode ? historySubmission?.assessment_title : assessmentConfig?.title}
                 onBackToAssessments={handleBackToAssessments}
-                onRedownload={isHistoryMode ? undefined : handleRedownload}
                 onReviewErrors={handleReviewErrors}
-                zipName={isHistoryMode ? undefined : zipInfo?.zipName}
             />
             <AlertModal
                 visible={alertModal.visible}
