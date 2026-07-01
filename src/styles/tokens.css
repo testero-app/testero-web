@@ -55,6 +55,14 @@
   --ts-on-dark:         #cfe0e8;
   --ts-on-dark-muted:   #9fc2cd;
 
+  /* — Sidebar / Shell — */
+  --ts-sidebar-w:       262px;
+  --ts-nav-active-bg:   #16324a;
+  --ts-nav-text:        #a9c0cf;
+  --ts-nav-icon:        #6f90a6;
+  --ts-topbar-border:   #e4e9ef;
+  --ts-section-label:   #5e7a8c;
+
   /* — Raggi — */
   --ts-r-sm:   7px;
   --ts-r-md:   10px;
