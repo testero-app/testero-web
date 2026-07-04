@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0](https://github.com/testero-app/testero-web/compare/v2.3.2...v2.4.0) (2026-07-04)
+
+
+### Features
+
+* replace date with availableFrom/availableUntil in types ([#114](https://github.com/testero-app/testero-web/issues/114)) ([3d770d8](https://github.com/testero-app/testero-web/commit/3d770d8c8f52087894a5f90ea40dcf1827f20d60))
+
+
+### Bug Fixes
+
+* align TAssessmentConfig with BE DTO changes ([#112](https://github.com/testero-app/testero-web/issues/112)) ([cae3768](https://github.com/testero-app/testero-web/commit/cae3768049041b92de4a5ebd2fd28bcbdb2c157f))
+
 ## [2.3.2](https://github.com/testero-app/testero-web/compare/v2.3.1...v2.3.2) (2026-07-01)
 
 
