@@ -29,7 +29,8 @@ export type TScoringRules = {
 export type TAssessmentConfig = {
     assessmentId: string;
     title: string;
-    date: string;
+    availableFrom: string | null;
+    availableUntil: string | null;
     timerMinutes: number;
     questionsPerAssessment: number;
     scoring: TScoringRules;
@@ -41,7 +42,8 @@ export type TAssessmentConfig = {
 export type TAssessmentListItem = {
     id: string;
     title: string;
-    date: string;
+    availableFrom: string | null;
+    availableUntil: string | null;
     timerMinutes: number;
     questionsPerAssessment: number;
     difficulty?: string;
