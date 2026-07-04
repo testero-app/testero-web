@@ -23,6 +23,7 @@ export type TQuestion = {
 export type TScoringRules = {
     pointsPerCorrect: number;
     pointsPerWrong: number;
+    pointsPerUnanswered: number;
 };
 
 export type TAssessmentConfig = {
@@ -30,9 +31,11 @@ export type TAssessmentConfig = {
     title: string;
     date: string;
     timerMinutes: number;
-    totalPool: number;
     questionsPerAssessment: number;
     scoring: TScoringRules;
+    shuffleQuestions: boolean;
+    shuffleOptions: boolean;
+    maxAttempts: number | null;
 };
 
 export type TAssessmentListItem = {
