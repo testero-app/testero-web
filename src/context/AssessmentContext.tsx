@@ -1,7 +1,6 @@
 'use client';
 
 import { createContext, useCallback, useContext, useReducer } from "react";
-import { generateEncryptedZip } from "../lib/generateZip";
 import { login as apiLogin, fetchAvailableAssessments, fetchAssessmentConfig, fetchAssessmentQuestions, startAssessment, submitAssessment, fetchSubmissionHistory, saveAnswer } from "../lib/api";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -64,12 +63,6 @@ export type TAnswer = {
     selectedIds?: string[];
     motivation?: string;
     text?: string;
-};
-
-export type TZipInfo = {
-    zipName: string;
-    fileName: string;
-    mdFileName: string;
 };
 
 export type TAnswerResult = {
@@ -149,7 +142,6 @@ type TState = {
     answers: Record<string, TAnswer>;
     flagged: Record<string, boolean>;
     timerExpired: boolean;
-    zipInfo: TZipInfo | null;
     submissionResult: TSubmissionResult | null;
     // History
     submissionHistory: TSubmissionSummary[];
@@ -168,7 +160,6 @@ type TAction =
     | { type: 'SET_ANSWER'; payload: { questionId: string; answer: TAnswer } }
     | { type: 'GO_TO_QUESTION'; payload: number }
     | { type: 'SET_TIMER_EXPIRED' }
-    | { type: 'SET_ZIP_INFO'; payload: TZipInfo }
     | { type: 'SET_SUBMISSION_RESULT'; payload: TSubmissionResult }
     | { type: 'SET_LOADING'; payload: boolean }
     | { type: 'SET_ERROR'; payload: string | null }
@@ -188,7 +179,6 @@ const initialState: TState = {
     answers: {},
     flagged: {},
     timerExpired: false,
-    zipInfo: null,
     submissionResult: null,
     submissionHistory: [],
     loading: false,
@@ -226,8 +216,6 @@ function reducer(state: TState, action: TAction): TState {
             return { ...state, currentIndex: action.payload };
         case 'SET_TIMER_EXPIRED':
             return { ...state, timerExpired: true };
-        case 'SET_ZIP_INFO':
-            return { ...state, zipInfo: action.payload };
         case 'SET_SUBMISSION_RESULT':
             return { ...state, submissionResult: action.payload };
         case 'SET_LOADING':
@@ -247,7 +235,6 @@ function reducer(state: TState, action: TAction): TState {
                 answers: {},
                 flagged: {},
                 timerExpired: false,
-                zipInfo: null,
                 submissionResult: null,
             };
         case 'TOGGLE_FLAG': {
@@ -279,7 +266,6 @@ export interface AssessmentContextType {
     answers: Record<string, TAnswer>;
     flagged: Record<string, boolean>;
     timerExpired: boolean;
-    zipInfo: TZipInfo | null;
     submissionResult: TSubmissionResult | null;
     submissionHistory: TSubmissionSummary[];
     loading: boolean;
@@ -294,7 +280,7 @@ export interface AssessmentContextType {
     toggleFlag: (questionId: string) => void;
     goToQuestion: (index: number) => void;
     setTimerExpired: () => void;
-    doSubmit: () => Promise<TZipInfo>;
+    doSubmit: () => Promise<void>;
     resetAssessment: () => void;
 }
 
@@ -411,7 +397,7 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
         dispatch({ type: 'SET_TIMER_EXPIRED' });
     }, []);
 
-    const doSubmit = useCallback(async (): Promise<TZipInfo> => {
+    const doSubmit = useCallback(async () => {
         if (!state.token || !state.user || !state.assessmentConfig || !state.submissionId) {
             throw new Error("Missing auth or assessment data");
         }
@@ -423,16 +409,6 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
             state.token
         );
         dispatch({ type: 'SET_SUBMISSION_RESULT', payload: submissionResult });
-
-        const zipInfo = await generateEncryptedZip(
-            `${state.user.first_name} ${state.user.last_name}`,
-            state.shuffledQuestions,
-            state.answers,
-            state.assessmentConfig.assessmentId,
-            state.assessmentConfig.title
-        ) as TZipInfo;
-        dispatch({ type: 'SET_ZIP_INFO', payload: zipInfo });
-        return zipInfo;
     }, [state.token, state.user, state.shuffledQuestions, state.answers, state.assessmentConfig, state.submissionId]);
 
     const resetAssessment = useCallback(() => {
