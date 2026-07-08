@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { TUser } from '../context/AssessmentContext';
+import { updateProfile } from '../lib/api';
 import styles from './ProfilePage.module.css';
 
 interface ProfilePageProps {
@@ -28,20 +29,35 @@ const LockIconSmall = (
     </svg>
 );
 
-export default function ProfilePage({ user }: ProfilePageProps) {
-    const initials = getInitials(user.name);
-    const firstName = user.name.split(' ')[0] || '';
-    const lastName = user.name.split(' ').slice(1).join(' ') || '';
+export default function ProfilePage({ user, token }: ProfilePageProps) {
+    const fullName = `${user.first_name} ${user.last_name}`;
+    const initials = getInitials(fullName);
 
-    const [editFirstName, setEditFirstName] = useState(firstName);
-    const [editLastName, setEditLastName] = useState(lastName);
-    const [editEmail, setEditEmail] = useState('');
+    const [editEmail, setEditEmail] = useState(user.email || '');
     const [emailFocused, setEmailFocused] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [successMsg, setSuccessMsg] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
 
     const handlePersonalDataReset = () => {
-        setEditFirstName(firstName);
-        setEditLastName(lastName);
-        setEditEmail('');
+        setEditEmail(user.email || '');
+        setSuccessMsg('');
+        setErrorMsg('');
+    };
+
+    const handleSave = async () => {
+        if (!token) return;
+        setSaving(true);
+        setSuccessMsg('');
+        setErrorMsg('');
+        try {
+            await updateProfile(editEmail, token);
+            setSuccessMsg('Modifiche salvate con successo.');
+        } catch (err) {
+            setErrorMsg((err as Error).message || 'Errore durante il salvataggio.');
+        } finally {
+            setSaving(false);
+        }
     };
 
     return (
@@ -51,7 +67,7 @@ export default function ProfilePage({ user }: ProfilePageProps) {
                     {/* ── LEFT: Identity card ──────────────────────────────── */}
                     <div className={styles.identityCard}>
                         <div className={styles.avatar}>{initials}</div>
-                        <div className={styles.userName}>{user.name}</div>
+                        <div className={styles.userName}>{fullName}</div>
                         <div className={styles.roleBadge}>Studente</div>
 
                         <div className={styles.metaSection}>
@@ -88,22 +104,18 @@ export default function ProfilePage({ user }: ProfilePageProps) {
                             <div className={styles.fieldRow}>
                                 <div>
                                     <div className={styles.label}>Nome</div>
-                                    <div className={styles.field}>
-                                        <input
-                                            className={styles.fieldInput}
-                                            value={editFirstName}
-                                            onChange={e => setEditFirstName(e.target.value)}
-                                        />
+                                    <div className={styles.fieldReadonly}>
+                                        {LockIconSmall}
+                                        {user.first_name}
+                                        <span className={styles.readonlyTag}>assegnato dalla scuola</span>
                                     </div>
                                 </div>
                                 <div>
                                     <div className={styles.label}>Cognome</div>
-                                    <div className={styles.field}>
-                                        <input
-                                            className={styles.fieldInput}
-                                            value={editLastName}
-                                            onChange={e => setEditLastName(e.target.value)}
-                                        />
+                                    <div className={styles.fieldReadonly}>
+                                        {LockIconSmall}
+                                        {user.last_name}
+                                        <span className={styles.readonlyTag}>assegnato dalla scuola</span>
                                     </div>
                                 </div>
                             </div>
@@ -136,8 +148,13 @@ export default function ProfilePage({ user }: ProfilePageProps) {
                                 </div>
                             </div>
 
+                            {successMsg && <div className={styles.successMsg}>{successMsg}</div>}
+                            {errorMsg && <div className={styles.errorMsg}>{errorMsg}</div>}
+
                             <div className={styles.buttonRow}>
-                                <button className={styles.btnPrimary}>Salva modifiche</button>
+                                <button className={styles.btnPrimary} onClick={handleSave} disabled={saving}>
+                                    {saving ? 'Salvataggio...' : 'Salva modifiche'}
+                                </button>
                                 <button className={styles.btnGhost} onClick={handlePersonalDataReset}>Annulla</button>
                             </div>
                         </div>

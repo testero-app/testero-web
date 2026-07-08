@@ -49,7 +49,7 @@ export default function ChangePasswordPage({ user, token, onBack, onLogout }: Ch
 
     return (
         <div className={styles.page}>
-            <TopBar userName={user.name} onLogout={onLogout} />
+            <TopBar userName={`${user.first_name} ${user.last_name}`} onLogout={onLogout} />
             <div className={styles.content}>
                 <h1 className={styles.heading}>Cambia password</h1>
                 <p className={styles.subtitle}>Aggiorna la password del tuo account.</p>
