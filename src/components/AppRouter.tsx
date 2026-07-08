@@ -62,6 +62,7 @@ function AllenamentoView() {
             activePage="allenamento"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
+            token={token}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/'); }}
         >
@@ -90,6 +91,7 @@ function CompetenzeView() {
             activePage="competenze"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
+            token={token}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/'); }}
         >
@@ -105,7 +107,7 @@ function CompetenzeView() {
 
 function CertificazioniView() {
     const {
-        user, availableAssessments, loading,
+        user, token, availableAssessments, loading,
         loadAvailableAssessments, selectAssessment, doLogout,
     } = useAssessment();
     const navigate = useNavigate();
@@ -134,13 +136,14 @@ function CertificazioniView() {
         }
     }, [pendingAssessmentId, selectAssessment, navigate]);
 
-    if (!user) return null;
+    if (!user || !token) return null;
 
     return (
         <AppShell
             activePage="certificazioni"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
+            token={token}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/'); }}
         >
@@ -162,7 +165,7 @@ function CertificazioniView() {
 
 function RisultatiHubView() {
     const {
-        user, submissionHistory, loading,
+        user, token, submissionHistory, loading,
         loadSubmissionHistory, doLogout,
     } = useAssessment();
     const navigate = useNavigate();
@@ -180,13 +183,14 @@ function RisultatiHubView() {
         }
     }, [submissionHistory, navigate]);
 
-    if (!user) return null;
+    if (!user || !token) return null;
 
     return (
         <AppShell
             activePage="risultati"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
+            token={token}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/'); }}
         >
@@ -209,13 +213,14 @@ function ProfileView() {
         if (!user) navigate('/');
     }, [user, navigate]);
 
-    if (!user) return null;
+    if (!user || !token) return null;
 
     return (
         <AppShell
             activePage="profilo"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
+            token={token}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/'); }}
         >
@@ -238,13 +243,14 @@ function SettingsView() {
         if (!user) navigate('/');
     }, [user, navigate]);
 
-    if (!user) return null;
+    if (!user || !token) return null;
 
     return (
         <AppShell
             activePage="impostazioni"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
+            token={token}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/'); }}
         >

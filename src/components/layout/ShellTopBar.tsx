@@ -1,4 +1,5 @@
 import AccountMenu from './AccountMenu';
+import NotificationPanel from './NotificationPanel';
 import styles from './ShellTopBar.module.css';
 
 interface ShellTopBarProps {
@@ -7,6 +8,9 @@ interface ShellTopBarProps {
     pageSubtitle: string;
     userName: string;
     userClass?: string;
+    token: string;
+    notificationCount: number;
+    onNotificationCountChange: () => void;
     onProfile: () => void;
     onSettings: () => void;
     onLogout: () => void;
@@ -14,7 +18,8 @@ interface ShellTopBarProps {
 
 export default function ShellTopBar({
     pageIcon, pageTitle, pageSubtitle,
-    userName, userClass, onProfile, onSettings, onLogout,
+    userName, userClass, token, notificationCount, onNotificationCountChange,
+    onProfile, onSettings, onLogout,
 }: ShellTopBarProps) {
     return (
         <header className={styles.topbar}>
@@ -26,6 +31,7 @@ export default function ShellTopBar({
                 </div>
             </div>
             <div className={styles.right}>
+                <NotificationPanel token={token} count={notificationCount} onCountChange={onNotificationCountChange} />
                 <AccountMenu
                     userName={userName}
                     userClass={userClass}
