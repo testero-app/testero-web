@@ -1,3 +1,5 @@
+import { useState, useEffect, useCallback } from 'react';
+import { fetchNotificationCount } from '../../lib/api';
 import NavSidebar, { type NavPage } from './NavSidebar';
 import ShellTopBar from './ShellTopBar';
 import styles from './AppShell.module.css';
@@ -6,6 +8,7 @@ interface AppShellProps {
     activePage: NavPage;
     userName: string;
     userClass?: string;
+    token: string;
     onNavigate: (page: string) => void;
     onLogout: () => void;
     children: React.ReactNode;
@@ -69,9 +72,23 @@ const PAGE_META: Record<string, { title: string; subtitle: string; icon: React.R
 };
 
 export default function AppShell({
-    activePage, userName, userClass, onNavigate, onLogout, children,
+    activePage, userName, userClass, token, onNavigate, onLogout, children,
 }: AppShellProps) {
     const meta = PAGE_META[activePage] ?? PAGE_META.allenamento;
+    const [notificationCount, setNotificationCount] = useState(0);
+
+    const refreshNotificationCount = useCallback(async () => {
+        try {
+            const data = await fetchNotificationCount(token);
+            setNotificationCount(data.count ?? 0);
+        } catch {
+            setNotificationCount(0);
+        }
+    }, [token]);
+
+    useEffect(() => {
+        refreshNotificationCount();
+    }, [refreshNotificationCount, activePage]);
 
     return (
         <div className={styles.shell}>
@@ -83,6 +100,9 @@ export default function AppShell({
                     pageSubtitle={meta.subtitle}
                     userName={userName}
                     userClass={userClass}
+                    token={token}
+                    notificationCount={notificationCount}
+                    onNotificationCountChange={refreshNotificationCount}
                     onProfile={() => onNavigate('profilo')}
                     onSettings={() => onNavigate('impostazioni')}
                     onLogout={onLogout}

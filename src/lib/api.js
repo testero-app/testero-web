@@ -252,6 +252,36 @@ export async function updateProfile(email, token) {
     return res.json();
 }
 
+export async function fetchNotificationCount(token) {
+    const res = await fetch(`${API_BASE}/api/notifications/count`, {
+        headers: authHeaders(token),
+    });
+    if (!res.ok) return { count: 0 };
+    return res.json();
+}
+
+export async function fetchUnreadNotifications(token) {
+    const res = await fetch(`${API_BASE}/api/notifications/unread`, {
+        headers: authHeaders(token),
+    });
+    if (!res.ok) return [];
+    return res.json();
+}
+
+export async function markNotificationAsRead(id, token) {
+    await fetch(`${API_BASE}/api/notifications/${id}/read`, {
+        method: 'PUT',
+        headers: authHeaders(token),
+    });
+}
+
+export async function markAllNotificationsAsRead(token) {
+    await fetch(`${API_BASE}/api/notifications/read-all`, {
+        method: 'PUT',
+        headers: authHeaders(token),
+    });
+}
+
 export async function fetchSubmissionReview(submissionId, token) {
     const res = await fetch(`${API_BASE}/api/submissions/${submissionId}/review`, {
         headers: authHeaders(token),
