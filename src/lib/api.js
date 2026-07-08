@@ -239,6 +239,19 @@ export async function fetchSubmissionFeedback(submissionId, token) {
     return res.json();
 }
 
+export async function updateProfile(email, token) {
+    const res = await fetch(`${API_BASE}/api/users/me`, {
+        method: 'PUT',
+        headers: authHeaders(token),
+        body: JSON.stringify({ email }),
+    });
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.detail || `Failed to update profile: ${res.status}`);
+    }
+    return res.json();
+}
+
 export async function fetchSubmissionReview(submissionId, token) {
     const res = await fetch(`${API_BASE}/api/submissions/${submissionId}/review`, {
         headers: authHeaders(token),

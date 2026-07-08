@@ -60,7 +60,7 @@ function AllenamentoView() {
     return (
         <AppShell
             activePage="allenamento"
-            userName={user.name}
+            userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/'); }}
@@ -88,7 +88,7 @@ function CompetenzeView() {
     return (
         <AppShell
             activePage="competenze"
-            userName={user.name}
+            userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/'); }}
@@ -139,7 +139,7 @@ function CertificazioniView() {
     return (
         <AppShell
             activePage="certificazioni"
-            userName={user.name}
+            userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/'); }}
@@ -185,7 +185,7 @@ function RisultatiHubView() {
     return (
         <AppShell
             activePage="risultati"
-            userName={user.name}
+            userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/'); }}
@@ -214,7 +214,7 @@ function ProfileView() {
     return (
         <AppShell
             activePage="profilo"
-            userName={user.name}
+            userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/'); }}
@@ -243,7 +243,7 @@ function SettingsView() {
     return (
         <AppShell
             activePage="impostazioni"
-            userName={user.name}
+            userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/'); }}
@@ -364,7 +364,7 @@ function AssessmentView() {
     return (
         <>
             <AssessmentHeader
-                studentName={user?.name ?? ''}
+                studentName={user ? `${user.first_name} ${user.last_name}` : ''}
                 assessmentTitle={assessmentConfig?.title}
                 timerDisplay={timer.display}
                 timerWarning={timer.warning}

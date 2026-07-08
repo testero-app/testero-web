@@ -63,7 +63,7 @@ export default function AssessmentSelectionPage({
 
     return (
         <div className={styles.page}>
-            <TopBar userName={user.name} onLogout={onLogout} onProfile={onProfile} />
+            <TopBar userName={`${user.first_name} ${user.last_name}`} onLogout={onLogout} onProfile={onProfile} />
 
             <div className={styles.body}>
                 <div className={styles.inner} style={{ maxWidth: 920, margin: '0 auto' }}>

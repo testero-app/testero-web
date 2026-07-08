@@ -53,9 +53,11 @@ export type TAssessmentListItem = {
 
 export type TUser = {
     id: string;
-    name: string;
+    first_name: string;
+    last_name: string;
     username: string;
     class_name: string;
+    email?: string;
 };
 
 export type TAnswer = {
@@ -423,7 +425,7 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
         dispatch({ type: 'SET_SUBMISSION_RESULT', payload: submissionResult });
 
         const zipInfo = await generateEncryptedZip(
-            state.user.name,
+            `${state.user.first_name} ${state.user.last_name}`,
             state.shuffledQuestions,
             state.answers,
             state.assessmentConfig.assessmentId,

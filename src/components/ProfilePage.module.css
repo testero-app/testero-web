@@ -399,6 +399,20 @@
     color: var(--ts-danger-700);
 }
 
+/* ── Profile save messages ────────────────────────────────────────── */
+
+.successMsg {
+    composes: pwdMsg;
+    background: var(--ts-success-bg);
+    color: var(--ts-teal-700);
+}
+
+.errorMsg {
+    composes: pwdMsg;
+    background: var(--ts-danger-bg);
+    color: var(--ts-danger-700);
+}
+
 /* ── Notification rows ─────────────────────────────────────────────── */
 
 .notifRow {
