@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0](https://github.com/testero-app/testero-web/compare/v2.4.0...v2.5.0) (2026-07-08)
+
+
+### Features
+
+* wire profile update, split name fields ([#120](https://github.com/testero-app/testero-web/issues/120)) ([b1f04d3](https://github.com/testero-app/testero-web/commit/b1f04d325109526dbc47b5aacb146445898ca011))
+
 ## [2.4.0](https://github.com/testero-app/testero-web/compare/v2.3.2...v2.4.0) (2026-07-04)
 
 
