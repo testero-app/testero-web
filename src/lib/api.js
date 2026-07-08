@@ -292,3 +292,12 @@ export async function fetchSubmissionReview(submissionId, token) {
     }
     return res.json();
 }
+
+
+export async function fetchCompetencies(token) {
+    const res = await fetch(`${API_BASE}/api/competencies`, {
+        headers: authHeaders(token),
+    });
+    if (!res.ok) return { topics: [] };
+    return res.json();
+}
