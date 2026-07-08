@@ -87,8 +87,12 @@ export default function AppShell({
     }, [token]);
 
     useEffect(() => {
-        refreshNotificationCount();
-    }, [refreshNotificationCount, activePage]);
+        let cancelled = false;
+        fetchNotificationCount(token)
+            .then((data) => { if (!cancelled) setNotificationCount(data.count ?? 0); })
+            .catch(() => { if (!cancelled) setNotificationCount(0); });
+        return () => { cancelled = true; };
+    }, [token, activePage]);
 
     return (
         <div className={styles.shell}>
