@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.0](https://github.com/testero-app/testero-web/compare/v2.7.0...v2.8.0) (2026-07-14)
+
+
+### Features
+
+* **competencies:** allow several topics to stay expanded at once ([#130](https://github.com/testero-app/testero-web/issues/130)) ([c93583c](https://github.com/testero-app/testero-web/commit/c93583c2b9f7317fd9df37ec0a42352809887629))
+
 ## [2.7.0](https://github.com/testero-app/testero-web/compare/v2.6.0...v2.7.0) (2026-07-08)
 
 
