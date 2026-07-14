@@ -143,11 +143,6 @@ function NavFooter({
                 Precedente
             </button>
 
-            <span className={styles.autosave}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="2.6"><path d="M5 12l5 5L20 6" /></svg>
-                Risposta salvata automaticamente
-            </span>
-
             {isLast ? (
                 <button onClick={onSubmit} className={styles.btnNavy}>
                     Consegna

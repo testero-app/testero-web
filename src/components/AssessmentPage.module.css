@@ -58,7 +58,6 @@
 .optSelected .optKey { color: #0e7c7b; }
 .optTxt { font-family: var(--ts-font-mono); font-size: 16px; color: #334e68; }
 .optSelected .optTxt { color: #102a43; }
-.autosave { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: #8696a6; }
 
 /* Motivation (for fallback answer) */
 .motivation { margin-top: 16px; }
