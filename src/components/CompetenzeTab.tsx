@@ -27,12 +27,12 @@ function getBarColor(pct: number): string {
     return 'var(--ts-danger)';
 }
 
-function TopicNode({ topic, expandedId, onToggle }: {
+function TopicNode({ topic, expandedIds, onToggle }: {
     topic: TopicMastery;
-    expandedId: string | null;
+    expandedIds: Set<string>;
     onToggle: (id: string) => void;
 }) {
-    const isExpanded = expandedId === topic.id;
+    const isExpanded = expandedIds.has(topic.id);
     const hasContent = topic.subjects.length > 0 || topic.children.length > 0;
 
     return (
@@ -81,7 +81,7 @@ function TopicNode({ topic, expandedId, onToggle }: {
                         <TopicNode
                             key={child.id}
                             topic={child}
-                            expandedId={expandedId}
+                            expandedIds={expandedIds}
                             onToggle={onToggle}
                         />
                     ))}
@@ -114,14 +114,14 @@ function TopicNode({ topic, expandedId, onToggle }: {
 export default function CompetenzeTab({ token, onStartTraining }: CompetenzeTabProps) {
     const [topics, setTopics] = useState<TopicMastery[]>([]);
     const [loading, setLoading] = useState(true);
-    const [expandedId, setExpandedId] = useState<string | null>(null);
+    const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
     useEffect(() => {
         fetchCompetencies(token)
             .then((data: { topics: TopicMastery[] }) => {
                 setTopics(data.topics || []);
                 if (data.topics?.length > 0) {
-                    setExpandedId(data.topics[0].id);
+                    setExpandedIds(new Set([data.topics[0].id]));
                 }
             })
             .catch(() => setTopics([]))
@@ -129,7 +129,15 @@ export default function CompetenzeTab({ token, onStartTraining }: CompetenzeTabP
     }, [token]);
 
     const handleToggle = (id: string) => {
-        setExpandedId(expandedId === id ? null : id);
+        setExpandedIds((prev) => {
+            const next = new Set(prev);
+            if (next.has(id)) {
+                next.delete(id);
+            } else {
+                next.add(id);
+            }
+            return next;
+        });
     };
 
     if (loading) {
@@ -164,7 +172,7 @@ export default function CompetenzeTab({ token, onStartTraining }: CompetenzeTabP
                     <TopicNode
                         key={topic.id}
                         topic={topic}
-                        expandedId={expandedId}
+                        expandedIds={expandedIds}
                         onToggle={handleToggle}
                     />
                 ))}
