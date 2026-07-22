@@ -16,6 +16,53 @@
     display: flex;
     align-items: center;
     gap: 14px;
+    min-width: 0;
+}
+
+/* Drawer trigger: hidden on desktop, where the sidebar is always visible. */
+.menuButton {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-left: -8px;
+    border: none;
+    border-radius: var(--ts-r-md);
+    background: transparent;
+    color: var(--ts-ink);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.menuButton:hover {
+    background: var(--ts-teal-bg);
+}
+
+@media (max-width: 1024px) {
+    .menuButton {
+        display: inline-flex;
+    }
+
+    .topbar {
+        padding: 12px 20px;
+    }
+}
+
+/* The page subtitle is the first thing to go when width gets tight — the
+   title alone still says where you are. */
+@media (max-width: 600px) {
+    .subtitle {
+        display: none;
+    }
+
+    .iconTile {
+        display: none;
+    }
+
+    .topbar {
+        padding: 10px 14px;
+    }
 }
 
 .iconTile {
