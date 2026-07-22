@@ -178,9 +178,11 @@
 
 /* ── Question chip grid ──────────────────────────────────────── */
 
+/* auto-fill keeps five per row at the popover's normal width but reflows when
+   it is narrower, and the 44px floor doubles as the touch-target minimum. */
 .popGrid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
     gap: 11px;
 }
 

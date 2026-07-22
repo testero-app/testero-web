@@ -121,3 +121,17 @@
 .disabled .icon {
     color: var(--ts-text-placeholder);
 }
+
+/* Touch devices need a 44px target (WCAG 2.5.5). The field itself already
+   clears it via padding; the password toggle does not. */
+@media (pointer: coarse) {
+    .toggle {
+        width: 44px;
+        height: 44px;
+        right: 6px;
+    }
+
+    .hasTrailing {
+        padding-right: 58px;
+    }
+}

@@ -29,6 +29,15 @@ assignees: ''
 - Testero version (commit hash or tag):
 - Browser:
 - Operating system:
+- Device and viewport (desktop / tablet / phone, and the width if known):
+
+## Mobile check
+
+<!-- Students mostly sit assessments on tablets, so this matters for
+     most UI bugs. Delete the section if the bug is not UI-related. -->
+
+- [ ] Reproduced on tablet or phone as well as desktop
+- [ ] Checked for horizontal scroll and for touch targets under 44x44px
 
 ## Additional Context
 

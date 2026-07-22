@@ -11,6 +11,31 @@
     box-sizing: border-box;
 }
 
+/* Tablet and below: the sidebar becomes an off-canvas drawer so the content
+   gets the full viewport width. 1024px is the shared tablet breakpoint. */
+@media (max-width: 1024px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 60;
+        transform: translateX(-100%);
+        transition: transform 200ms ease;
+        box-shadow: 2px 0 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 1024px) and (prefers-reduced-motion: reduce) {
+    .sidebar {
+        transition: none;
+    }
+}
+
 .brand {
     display: flex;
     align-items: center;
@@ -90,4 +115,10 @@
 
 .navLabel {
     white-space: nowrap;
+}
+
+@media (pointer: coarse) {
+    .navItem {
+        min-height: 44px;
+    }
 }

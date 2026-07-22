@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import hljs from '../lib/highlight';
 import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
 import styles from './AssessmentPage.module.css';
@@ -215,18 +215,22 @@ function VariantF({
     onPrev: () => void; onNext: () => void; onSubmit: () => void;
 }) {
     const codeRef = useRef<HTMLElement>(null);
+    // Tablet only: the code panel can be folded away to give the question the
+    // full width. Starts expanded so a student who touches nothing still sees
+    // the stimulus.
+    const [codeCollapsed, setCodeCollapsed] = useState(false);
 
     useEffect(() => {
         if (codeRef.current) {
             codeRef.current.removeAttribute('data-highlighted');
             hljs.highlightElement(codeRef.current);
         }
-    }, [question.code]);
+    }, [question.code, codeCollapsed]);
 
     const codeLines = (question.code || '').split('\n');
 
     return (
-        <div className={styles.splitF}>
+        <div className={`${styles.splitF} ${codeCollapsed ? styles.codeFolded : ''}`}>
             {/* Left — code panel */}
             <div className={styles.codePanel}>
                 <div className={styles.codePanelBar}>
@@ -235,6 +239,14 @@ function VariantF({
                     <span className={styles.codeDot} style={{ background: '#28c840' }} />
                     <span className={styles.codeFile}>esercizio.py</span>
                     <span className={styles.codeTag}>STIMOLO</span>
+                    <button
+                        type="button"
+                        className={styles.codeToggle}
+                        onClick={() => setCodeCollapsed((v) => !v)}
+                        aria-expanded={!codeCollapsed}
+                    >
+                        {codeCollapsed ? 'Mostra codice' : 'Nascondi codice'}
+                    </button>
                 </div>
                 <div className={styles.codePanelBody}>
                     <div style={{ display: 'flex', gap: 18 }}>
