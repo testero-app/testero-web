@@ -349,7 +349,7 @@ export async function updateNotificationPreferences(
     return res.json();
 }
 
-export async function fetchSubmissionFeedback(submissionId: string, token: string): Promise<TSubmissionSummary> {
+export async function fetchSubmissionFeedback(submissionId: string, token: string): Promise<TSubmissionResult> {
     const res = await fetch(`${API_BASE}/api/submissions/${submissionId}`, {
         headers: authHeaders(token),
     });

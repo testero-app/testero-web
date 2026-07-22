@@ -1,6 +1,11 @@
 // ─── Domain types ─────────────────────────────────────────────────────────────
-// Shared shapes exchanged with the backend. Kept out of the context module so
-// that `lib/api` can depend on them without importing from a React component.
+// Shapes exchanged with the backend, kept out of the context module so that
+// `lib/api` can depend on them without importing from a React component.
+//
+// These are still hand-written. Every field below was verified against the
+// backend OpenAPI spec (`/api/v3/api-docs`), but nothing keeps them in sync
+// automatically — see #134, which is blocked on the spec emitting `required`
+// metadata for response DTOs.
 
 export type TOption = {
     id: string;
@@ -14,6 +19,8 @@ export type TQuestion = {
     text: string;
     code?: string;
     options?: TOption[];
+    points?: number;
+    subjects?: { id: string; label: string }[];
 };
 
 export type TScoringRules = {
@@ -33,6 +40,7 @@ export type TAssessmentConfig = {
     shuffleQuestions: boolean;
     shuffleOptions: boolean;
     maxAttempts: number | null;
+    subjects?: { id: string; label: string }[];
 };
 
 export type TAssessmentListItem = {
@@ -45,6 +53,8 @@ export type TAssessmentListItem = {
     difficulty?: string;
     type?: string;
     status?: string;
+    score?: number | null;
+    subjects?: { id: string; label: string }[];
 };
 
 export type TUser = {
@@ -54,8 +64,14 @@ export type TUser = {
     username: string;
     class_name: string;
     email?: string;
+    role?: string;
 };
 
+/**
+ * Frontend-only shape: how an in-progress answer is held in component state
+ * before being mapped onto the backend's answer payload. The backend has no
+ * equivalent DTO.
+ */
 export type TAnswer = {
     selectedIds?: string[];
     motivation?: string;
@@ -69,13 +85,19 @@ export type TAnswerResult = {
     correct_option_snapshot_ids: string[];
 };
 
+/** Mirrors the backend `SubmissionFeedbackResponse`. */
 export type TSubmissionResult = {
     id: string;
     user_id: string;
-    assessment_id: string;
+    assessment_snapshot_id: string;
     started_at: string | null;
     submitted_at: string;
+    score: number | null;
+    max_score?: number | null;
+    passed?: boolean | null;
+    passing_score?: number | null;
     answers: TAnswerResult[];
+    subject_scores?: { id: string; label: string; score: number; max_score: number }[];
 };
 
 export type TReviewOption = {
@@ -109,13 +131,17 @@ export type TSubmissionReview = {
     questions: TReviewQuestion[];
 };
 
+/** Mirrors the backend `SubmissionSummary` (an item of the history list). */
 export type TSubmissionSummary = {
     id: string;
-    assessment_id: string;
+    assessment_snapshot_id: string;
     assessment_title: string;
+    type?: string;
     started_at: string | null;
     submitted_at: string;
     score: number | null;
+    max_score?: number | null;
+    passed?: boolean | null;
     total_questions: number;
     correct_count: number;
     wrong_count: number;
