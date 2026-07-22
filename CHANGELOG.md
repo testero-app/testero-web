@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.1](https://github.com/testero-app/testero-web/compare/v2.8.0...v2.8.1) (2026-07-22)
+
+
+### Bug Fixes
+
+* correct domain types that had drifted from the backend DTOs ([#135](https://github.com/testero-app/testero-web/issues/135)) ([1ec6248](https://github.com/testero-app/testero-web/commit/1ec6248e3f057aa65e2fd450567b829e4f9fae13))
+
 ## [2.8.0](https://github.com/testero-app/testero-web/compare/v2.7.0...v2.8.0) (2026-07-14)
 
 
