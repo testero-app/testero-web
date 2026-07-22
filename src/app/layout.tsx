@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 import { Sora, JetBrains_Mono } from 'next/font/google';
 import '../styles/tokens.css';
 import './globals.css';
@@ -16,12 +18,12 @@ const jetbrainsMono = JetBrains_Mono({
     variable: '--font-mono',
 });
 
-export const metadata = {
+export const metadata: Metadata = {
     title: 'Testero',
     description: 'Sistema open source per la somministrazione di test e verifiche in ambito didattico',
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="it">
             <head>
