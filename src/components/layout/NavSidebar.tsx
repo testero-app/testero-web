@@ -6,6 +6,9 @@ export type NavPage = 'allenamento' | 'competenze' | 'certificazioni' | 'risulta
 interface NavSidebarProps {
     activePage: NavPage;
     onNavigate: (page: string) => void;
+    /** Drawer state. Only has an effect below the tablet breakpoint (1024px). */
+    open?: boolean;
+    onClose?: () => void;
 }
 
 const NAV_ITEMS: { id: string; label: string; icon: React.ReactNode }[] = [
@@ -53,9 +56,16 @@ const NAV_ITEMS: { id: string; label: string; icon: React.ReactNode }[] = [
     },
 ];
 
-export default function NavSidebar({ activePage, onNavigate }: NavSidebarProps) {
+export default function NavSidebar({ activePage, onNavigate, open = false, onClose }: NavSidebarProps) {
+    // On tablet the sidebar is an overlay, so picking a destination must also
+    // dismiss it — otherwise it stays on top of the page just navigated to.
+    const handleNavigate = (page: string) => {
+        onNavigate(page);
+        onClose?.();
+    };
+
     return (
-        <nav className={styles.sidebar}>
+        <nav className={`${styles.sidebar} ${open ? styles.open : ''}`}>
             <div className={styles.brand}>
                 <TesteroLogo size={30} />
                 <span className={styles.brandText}>Testero</span>
@@ -70,7 +80,7 @@ export default function NavSidebar({ activePage, onNavigate }: NavSidebarProps) 
                         <li key={item.id}>
                             <button
                                 className={`${styles.navItem} ${isActive ? styles.active : ''}`}
-                                onClick={() => onNavigate(item.id)}
+                                onClick={() => handleNavigate(item.id)}
                                 aria-current={isActive ? 'page' : undefined}
                             >
                                 <span className={styles.navIcon}>{item.icon}</span>

@@ -3,6 +3,9 @@ import NotificationPanel from './NotificationPanel';
 import styles from './ShellTopBar.module.css';
 
 interface ShellTopBarProps {
+    /** Opens the navigation drawer. The trigger is only visible below 1024px. */
+    onMenuClick: () => void;
+    sidebarOpen: boolean;
     pageIcon: React.ReactNode;
     pageTitle: string;
     pageSubtitle: string;
@@ -17,6 +20,7 @@ interface ShellTopBarProps {
 }
 
 export default function ShellTopBar({
+    onMenuClick, sidebarOpen,
     pageIcon, pageTitle, pageSubtitle,
     userName, userClass, token, notificationCount, onNotificationCountChange,
     onProfile, onSettings, onLogout,
@@ -24,6 +28,17 @@ export default function ShellTopBar({
     return (
         <header className={styles.topbar}>
             <div className={styles.left}>
+                <button
+                    type="button"
+                    className={styles.menuButton}
+                    onClick={onMenuClick}
+                    aria-label="Apri il menu di navigazione"
+                    aria-expanded={sidebarOpen}
+                >
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                        <path d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
                 <div className={styles.iconTile}>{pageIcon}</div>
                 <div className={styles.titleGroup}>
                     <h1 className={styles.title}>{pageTitle}</h1>

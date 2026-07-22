@@ -76,6 +76,19 @@ export default function AppShell({
 }: AppShellProps) {
     const meta = PAGE_META[activePage] ?? PAGE_META.allenamento;
     const [notificationCount, setNotificationCount] = useState(0);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+
+    // Escape closes the drawer, matching the other overlays in the app.
+    useEffect(() => {
+        if (!sidebarOpen) return;
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setSidebarOpen(false);
+        };
+        window.addEventListener('keydown', onKeyDown);
+        return () => window.removeEventListener('keydown', onKeyDown);
+    }, [sidebarOpen]);
 
     const refreshNotificationCount = useCallback(async () => {
         try {
@@ -96,9 +109,23 @@ export default function AppShell({
 
     return (
         <div className={styles.shell}>
-            <NavSidebar activePage={activePage} onNavigate={onNavigate} />
+            <NavSidebar
+                activePage={activePage}
+                onNavigate={onNavigate}
+                open={sidebarOpen}
+                onClose={closeSidebar}
+            />
+            {sidebarOpen && (
+                <div
+                    className={styles.backdrop}
+                    onClick={closeSidebar}
+                    aria-hidden="true"
+                />
+            )}
             <div className={styles.main}>
                 <ShellTopBar
+                    onMenuClick={() => setSidebarOpen(true)}
+                    sidebarOpen={sidebarOpen}
                     pageIcon={meta.icon}
                     pageTitle={meta.title}
                     pageSubtitle={meta.subtitle}

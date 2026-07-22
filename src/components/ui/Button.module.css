@@ -16,6 +16,15 @@
     min-width: 0;
 }
 
+/* Touch devices need a 44px target (WCAG 2.5.5). Scoped to coarse pointers so
+   the desktop proportions are untouched. min-height rather than extra padding,
+   so every size variant lands on 44 without redesigning each one. */
+@media (pointer: coarse) {
+    .button {
+        min-height: 44px;
+    }
+}
+
 .button:focus-visible {
     outline: none;
     box-shadow: var(--m-focus-ring);
