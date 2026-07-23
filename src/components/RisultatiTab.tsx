@@ -10,14 +10,14 @@ function getAbbrev(title: string): string {
     return title.substring(0, 2).toUpperCase();
 }
 
-// TODO: API should return assessment type (certification vs training).
-// For now, guess from title: if it contains "Certification" or "Exam" → certification.
-function guessType(title: string): 'certificazione' | 'allenamento' {
-    const lower = title.toLowerCase();
-    if (lower.includes('certif') || lower.includes('exam') || lower.includes('simulation')) {
-        return 'certificazione';
-    }
-    return 'allenamento';
+// Maps the backend AssessmentType onto the two categories this tab filters by.
+// The enum is TRAINING | EXAM | CERT_SIMULATION, plus "CERTIFICATION" which the
+// server substitutes when a snapshot's type is null. Only TRAINING is
+// "allenamento"; EXAM and CERT_SIMULATION are both formal, graded assessments
+// and belong under certifications. Negating TRAINING (rather than listing the
+// certification values) keeps any future non-training type on the safe side.
+function categoryOf(type: string | undefined): 'certificazione' | 'allenamento' {
+    return type === 'TRAINING' ? 'allenamento' : 'certificazione';
 }
 
 function formatDate(iso: string): string {
@@ -43,14 +43,14 @@ interface RisultatiTabProps {
 export default function RisultatiTab({ submissions, loading, onSelectSubmission }: RisultatiTabProps) {
     const [filter, setFilter] = useState<FilterType>('tutti');
 
-    const certCount = submissions.filter((s) => guessType(s.assessment_title) === 'certificazione').length;
-    const trainCount = submissions.filter((s) => guessType(s.assessment_title) === 'allenamento').length;
+    const certCount = submissions.filter((s) => categoryOf(s.type) === 'certificazione').length;
+    const trainCount = submissions.filter((s) => categoryOf(s.type) === 'allenamento').length;
 
     const filtered = filter === 'tutti'
         ? submissions
         : submissions.filter((s) => {
-            const type = guessType(s.assessment_title);
-            return filter === 'certificazioni' ? type === 'certificazione' : type === 'allenamento';
+            const category = categoryOf(s.type);
+            return filter === 'certificazioni' ? category === 'certificazione' : category === 'allenamento';
         });
 
     if (loading) {
@@ -90,7 +90,7 @@ export default function RisultatiTab({ submissions, loading, onSelectSubmission 
                     {filtered.map((s) => {
                         const passed = s.total_questions > 0 && s.correct_count / s.total_questions >= 0.6;
                         const pct = s.total_questions > 0 ? Math.round((s.correct_count / s.total_questions) * 100) : 0;
-                        const type = guessType(s.assessment_title);
+                        const category = categoryOf(s.type);
 
                         return (
                             <div
@@ -105,7 +105,7 @@ export default function RisultatiTab({ submissions, loading, onSelectSubmission 
                                     <div className={styles.rowTitleLine}>
                                         <span className={styles.rowTitle}>{s.assessment_title}</span>
                                         <span className={styles.typeTag}>
-                                            {type === 'certificazione' ? 'Certificazione' : 'Allenamento'}
+                                            {category === 'certificazione' ? 'Certificazione' : 'Allenamento'}
                                         </span>
                                     </div>
                                     <div className={styles.progressRow}>
