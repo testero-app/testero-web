@@ -1,9 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
-import { changePassword, fetchNotificationPreferences, updateNotificationPreferences } from '../lib/api';
+import { useTranslations, useLocale } from 'next-intl';
+import { changePassword, fetchNotificationPreferences, updateNotificationPreferences, updateLanguage } from '../lib/api';
 import styles from './ProfilePage.module.css';
 
 interface SettingsPageProps {
     token?: string;
+}
+
+/** Persists the language, syncs the cookie the layout reads, and reloads so the app re-renders localised. */
+function setLanguage(lang: 'it' | 'en', token: string | undefined) {
+    document.cookie = `NEXT_LOCALE=${lang}; path=/; max-age=31536000; samesite=lax`;
+    if (token) updateLanguage(lang, token).catch(() => {});
+    window.location.reload();
 }
 
 function checkStrength(pwd: string) {
@@ -35,6 +43,8 @@ const CircleIcon = (
 );
 
 export default function SettingsPage({ token }: SettingsPageProps) {
+    const t = useTranslations('settings');
+    const locale = useLocale();
     // Password state
     const [currentPwd, setCurrentPwd] = useState('');
     const [newPwd, setNewPwd] = useState('');
@@ -73,39 +83,39 @@ export default function SettingsPage({ token }: SettingsPageProps) {
     const handlePasswordSubmit = async () => {
         if (!token || !currentPwd || !newPwd || !confirmPwd) return;
         if (newPwd !== confirmPwd) {
-            setPwdMsg({ type: 'err', text: 'Le password non coincidono.' });
+            setPwdMsg({ type: 'err', text: t('passwordsDontMatch') });
             return;
         }
         if (strength.score < 3) {
-            setPwdMsg({ type: 'err', text: 'La password non soddisfa i requisiti.' });
+            setPwdMsg({ type: 'err', text: t('passwordRequirements') });
             return;
         }
         setPwdLoading(true);
         setPwdMsg(null);
         try {
             await changePassword(currentPwd, newPwd, confirmPwd, token);
-            setPwdMsg({ type: 'ok', text: 'Password aggiornata con successo.' });
+            setPwdMsg({ type: 'ok', text: t('passwordUpdated') });
             setCurrentPwd('');
             setNewPwd('');
             setConfirmPwd('');
         } catch (e: unknown) {
-            setPwdMsg({ type: 'err', text: e instanceof Error ? e.message : 'Errore.' });
+            setPwdMsg({ type: 'err', text: e instanceof Error ? e.message : t('genericError') });
         } finally {
             setPwdLoading(false);
         }
     };
 
     const requirements = [
-        { ok: strength.has8, label: 'Almeno 8 caratteri' },
-        { ok: strength.hasUpper, label: 'Una maiuscola' },
-        { ok: strength.hasNum, label: 'Un numero' },
-        { ok: strength.hasSymbol, label: 'Un simbolo' },
+        { ok: strength.has8, label: t('req8') },
+        { ok: strength.hasUpper, label: t('reqUpper') },
+        { ok: strength.hasNum, label: t('reqNum') },
+        { ok: strength.hasSymbol, label: t('reqSymbol') },
     ];
 
     const notifications = [
-        { title: 'Esito delle verifiche via email', desc: 'Ricevi un riepilogo quando una verifica viene corretta.', on: notifResults, toggle: () => { setNotifResults(v => !v); saveNotification('EXAM_RESULT', !notifResults); } },
-        { title: 'Promemoria verifiche in scadenza', desc: 'Un avviso il giorno prima della scadenza.', on: notifReminder, toggle: () => { setNotifReminder(v => !v); saveNotification('DEADLINE_REMINDER', !notifReminder); } },
-        { title: 'Novità di prodotto', desc: 'Occasionali aggiornamenti su Testero.', on: notifProduct, toggle: () => { setNotifProduct(v => !v); saveNotification('PRODUCT_NEWS', !notifProduct); } },
+        { title: t('notifResultsTitle'), desc: t('notifResultsDesc'), on: notifResults, toggle: () => { setNotifResults(v => !v); saveNotification('EXAM_RESULT', !notifResults); } },
+        { title: t('notifReminderTitle'), desc: t('notifReminderDesc'), on: notifReminder, toggle: () => { setNotifReminder(v => !v); saveNotification('DEADLINE_REMINDER', !notifReminder); } },
+        { title: t('notifProductTitle'), desc: t('notifProductDesc'), on: notifProduct, toggle: () => { setNotifProduct(v => !v); saveNotification('PRODUCT_NEWS', !notifProduct); } },
     ];
 
     return (
@@ -114,8 +124,8 @@ export default function SettingsPage({ token }: SettingsPageProps) {
                 <div className={styles.cardStack}>
                     {/* Sicurezza */}
                     <div className={styles.contentCard}>
-                        <div className={styles.cardTitle}>Sicurezza</div>
-                        <div className={styles.cardDescription}>Aggiorna la password che usi per accedere.</div>
+                        <div className={styles.cardTitle}>{t('securityTitle')}</div>
+                        <div className={styles.cardDescription}>{t('securityDescription')}</div>
 
                         {pwdMsg && (
                             <div className={pwdMsg.type === 'ok' ? styles.pwdMsgOk : styles.pwdMsgErr}>
@@ -124,7 +134,7 @@ export default function SettingsPage({ token }: SettingsPageProps) {
                         )}
 
                         <div className={styles.fieldGroup}>
-                            <div className={styles.label}>Password attuale</div>
+                            <div className={styles.label}>{t('currentPassword')}</div>
                             <div className={styles.field}>
                                 <input
                                     className={styles.fieldInput}
@@ -139,7 +149,7 @@ export default function SettingsPage({ token }: SettingsPageProps) {
                         </div>
 
                         <div className={styles.fieldGroupTight}>
-                            <div className={styles.label}>Nuova password</div>
+                            <div className={styles.label}>{t('newPassword')}</div>
                             <div className={newPwd ? styles.fieldFocus : styles.field}>
                                 <input
                                     className={styles.fieldInput}
@@ -168,7 +178,7 @@ export default function SettingsPage({ token }: SettingsPageProps) {
                         </div>
 
                         <div className={styles.fieldGroup}>
-                            <div className={styles.label}>Conferma nuova password</div>
+                            <div className={styles.label}>{t('confirmPassword')}</div>
                             <div className={styles.field}>
                                 <input
                                     className={styles.fieldInput}
@@ -181,13 +191,30 @@ export default function SettingsPage({ token }: SettingsPageProps) {
                         </div>
 
                         <button className={styles.btnTeal} onClick={handlePasswordSubmit} disabled={pwdLoading}>
-                            {pwdLoading ? 'Aggiornamento...' : 'Aggiorna password'}
+                            {pwdLoading ? t('updatingPassword') : t('updatePassword')}
                         </button>
+                    </div>
+
+                    {/* Lingua */}
+                    <div className={styles.contentCard}>
+                        <div className={styles.cardTitle}>{t('languageTitle')}</div>
+                        <div className={styles.cardDescription}>{t('languageDescription')}</div>
+                        <div className={styles.fieldGroup}>
+                            <select
+                                className={styles.fieldInput}
+                                value={locale}
+                                onChange={(e) => setLanguage(e.target.value as 'it' | 'en', token)}
+                                aria-label={t('languageTitle')}
+                            >
+                                <option value="it">{t('languageItalian')}</option>
+                                <option value="en">{t('languageEnglish')}</option>
+                            </select>
+                        </div>
                     </div>
 
                     {/* Notifiche */}
                     <div className={styles.contentCard}>
-                        <div className={styles.cardTitle}>Notifiche</div>
+                        <div className={styles.cardTitle}>{t('notificationsTitle')}</div>
 
                         {notifications.map(n => (
                             <div key={n.title} className={styles.notifRow}>
