@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.9.0](https://github.com/testero-app/testero-web/compare/v2.8.3...v2.9.0) (2026-07-24)
+
+
+### Features
+
+* **i18n:** interface localisation (IT/EN) + language selector + CI drift guard ([#143](https://github.com/testero-app/testero-web/issues/143)) ([8dc1d23](https://github.com/testero-app/testero-web/commit/8dc1d23ade2e32357945b28f2363a34a31d001cd))
+
 ## [2.8.3](https://github.com/testero-app/testero-web/compare/v2.8.2...v2.8.3) (2026-07-23)
 
 
