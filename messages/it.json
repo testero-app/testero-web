@@ -22,21 +22,6 @@
     "serverTimeout": "Il server non risponde. Riprova tra qualche secondo."
   },
   "settings": {
-    "securityTitle": "Sicurezza",
-    "securityDescription": "Aggiorna la password che usi per accedere.",
-    "currentPassword": "Password attuale",
-    "newPassword": "Nuova password",
-    "confirmPassword": "Conferma nuova password",
-    "updatePassword": "Aggiorna password",
-    "updatingPassword": "Aggiornamento...",
-    "passwordsDontMatch": "Le password non coincidono.",
-    "passwordRequirements": "La password non soddisfa i requisiti.",
-    "passwordUpdated": "Password aggiornata con successo.",
-    "genericError": "Errore.",
-    "req8": "Almeno 8 caratteri",
-    "reqUpper": "Una maiuscola",
-    "reqNum": "Un numero",
-    "reqSymbol": "Un simbolo",
     "notificationsTitle": "Notifiche",
     "notifResultsTitle": "Esito delle verifiche via email",
     "notifResultsDesc": "Ricevi un riepilogo quando una verifica viene corretta.",
@@ -75,11 +60,11 @@
     },
     "profilo": {
       "title": "Profilo",
-      "subtitle": "I tuoi dati personali"
+      "subtitle": "I tuoi dati e la password"
     },
     "impostazioni": {
       "title": "Impostazioni",
-      "subtitle": "Sicurezza, password e notifiche"
+      "subtitle": "Lingua e notifiche"
     },
     "menuLabel": "Apri il menu di navigazione"
   },
@@ -223,6 +208,22 @@
     "notEditable": "non modificabile",
     "saving": "Salvataggio...",
     "save": "Salva modifiche",
-    "cancel": "Annulla"
+    "cancel": "Annulla",
+    "securityTitle": "Sicurezza",
+    "securityDescription": "Aggiorna la password che usi per accedere.",
+    "currentPassword": "Password attuale",
+    "newPassword": "Nuova password",
+    "confirmPassword": "Conferma nuova password",
+    "updatePassword": "Aggiorna password",
+    "updatingPassword": "Aggiornamento...",
+    "passwordsDontMatch": "Le password non coincidono.",
+    "passwordRequirements": "La password non soddisfa i requisiti.",
+    "passwordUpdated": "Password aggiornata con successo.",
+    "genericError": "Errore.",
+    "req8": "Almeno 8 caratteri",
+    "reqUpper": "Una maiuscola",
+    "reqNum": "Un numero",
+    "reqSymbol": "Un simbolo",
+    "fieldsManagedBySchool": "Alcuni campi li gestisce la scuola"
   }
 }
