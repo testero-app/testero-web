@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useState, useRef, useEffect } from 'react';
 import TesteroLogo from './ui/TesteroLogo';
 import styles from './AssessmentHeader.module.css';
@@ -24,6 +25,7 @@ export default function AssessmentHeader({
     answeredSet, flagged = {}, questionIds = [],
     onGoTo, onSubmit,
 }: AssessmentHeaderProps) {
+    const t = useTranslations('assessment');
     const [mapOpen, setMapOpen] = useState(false);
     const popRef = useRef<HTMLDivElement>(null);
     const pct = totalQuestions > 0 ? Math.round(((currentIndex + 1) / totalQuestions) * 100) : 0;
@@ -56,7 +58,7 @@ export default function AssessmentHeader({
                         <b className={styles.brandName}>Testero</b>
                     </div>
                     <div className={styles.sep} />
-                    <span className={styles.crumb}>{assessmentTitle || 'Verifica'}</span>
+                    <span className={styles.crumb}>{assessmentTitle || t('crumbDefault')}</span>
                 </div>
 
                 {/* Right */}
@@ -86,7 +88,7 @@ export default function AssessmentHeader({
                             <div className={styles.popArrow} />
 
                             <div className={styles.popHead}>
-                                <b>Mappa domande</b>
+                                <b>{t('mapQuestions')}</b>
                                 <span>{answeredCount}/{totalQuestions} date</span>
                             </div>
 
@@ -115,9 +117,9 @@ export default function AssessmentHeader({
                             </div>
 
                             <div className={styles.popLegend}>
-                                <span><i style={{ background: '#102a43' }} />Corrente</span>
-                                <span><i style={{ background: '#14b8a6' }} />Risposta</span>
-                                <span><i style={{ background: '#f59e0b' }} />Da rivedere</span>
+                                <span><i style={{ background: '#102a43' }} />{t('legendCurrent')}</span>
+                                <span><i style={{ background: '#14b8a6' }} />{t('legendAnswered')}</span>
+                                <span><i style={{ background: '#f59e0b' }} />{t('legendFlagged')}</span>
                             </div>
 
                             <button

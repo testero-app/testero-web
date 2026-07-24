@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { Modal } from './ui';
 
 interface FinalModalProps {
@@ -7,6 +8,7 @@ interface FinalModalProps {
 }
 
 export default function FinalModal({ visible, onConfirm, onCancel }: FinalModalProps) {
+    const t = useTranslations('modals');
     return (
         <Modal
             open={visible}
@@ -14,12 +16,12 @@ export default function FinalModal({ visible, onConfirm, onCancel }: FinalModalP
             title="Consegnare il test?"
             actions={
                 <>
-                    <button className="ts-btn ts-btn--ghost" onClick={onCancel}>Annulla</button>
-                    <button className="ts-btn ts-btn--dark" onClick={onConfirm}>Consegna</button>
+                    <button className="ts-btn ts-btn--ghost" onClick={onCancel}>{t('cancel')}</button>
+                    <button className="ts-btn ts-btn--dark" onClick={onConfirm}>{t('submit')}</button>
                 </>
             }
         >
-            <p>Stai per consegnare il test. Dopo la consegna non potrai più modificare le risposte.</p>
+            <p>{t('finalConfirm')}</p>
         </Modal>
     );
 }

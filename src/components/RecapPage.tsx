@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
 import { isQuestionAnswered } from '../lib/questionUtils';
 import RecapQuestion from './RecapQuestion';
@@ -24,10 +25,11 @@ export default function RecapPage({
     onBackToAssessment,
     onFinalSubmit,
 }: RecapPageProps) {
+    const t = useTranslations('recap');
     return (
         <div className={styles.page}>
             <div className={styles.header}>
-                <h2 className={styles.title}>Riepilogo risposte</h2>
+                <h2 className={styles.title}>{t('title')}</h2>
                 <p className={styles.counter}>
                     <span className={styles.counterStrong}>{answeredCount}</span> / {totalQuestions} risposte date
                 </p>
@@ -63,7 +65,7 @@ export default function RecapPage({
                         </button>
                     )}
                     <button className="ts-btn ts-btn--dark" onClick={onFinalSubmit}>
-                        {timerExpired ? 'Scarica risposte' : 'Conferma e consegna'}
+                        {timerExpired ? t('download') : t('confirmSubmit')}
                     </button>
                 </div>
             </div>
