@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styles from './AccountMenu.module.css';
 
@@ -16,6 +17,7 @@ function getInitials(name: string): string {
 }
 
 export default function AccountMenu({ userName, userClass, onProfile, onSettings, onLogout }: AccountMenuProps) {
+    const t = useTranslations('accountMenu');
     const [open, setOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -48,7 +50,7 @@ export default function AccountMenu({ userName, userClass, onProfile, onSettings
                 <span className={styles.triggerAvatar}>{getInitials(userName)}</span>
                 <span className={styles.triggerInfo}>
                     <span className={styles.triggerName}>{userName}</span>
-                    <span className={styles.triggerRole}>Studente</span>
+                    <span className={styles.triggerRole}>{t('student')}</span>
                 </span>
                 <svg
                     className={`${styles.chevron} ${open ? styles.chevronOpen : ''}`}
@@ -84,7 +86,7 @@ export default function AccountMenu({ userName, userClass, onProfile, onSettings
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                             <circle cx="12" cy="7" r="4" />
                         </svg>
-                        <span>Profilo</span>
+                        <span>{t('profile')}</span>
                     </button>
 
                     <button className={styles.menuItem} role="menuitem" onClick={() => { close(); onSettings(); }}>
@@ -92,7 +94,7 @@ export default function AccountMenu({ userName, userClass, onProfile, onSettings
                             <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
                             <circle cx="12" cy="12" r="3" />
                         </svg>
-                        <span>Impostazioni</span>
+                        <span>{t('settings')}</span>
                     </button>
 
                     <div className={styles.divider} />
@@ -103,7 +105,7 @@ export default function AccountMenu({ userName, userClass, onProfile, onSettings
                             <polyline points="16 17 21 12 16 7" />
                             <line x1="21" y1="12" x2="9" y2="12" />
                         </svg>
-                        <span>Esci</span>
+                        <span>{t('logout')}</span>
                     </button>
                 </div>
             )}

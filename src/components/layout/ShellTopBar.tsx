@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import AccountMenu from './AccountMenu';
 import NotificationPanel from './NotificationPanel';
 import styles from './ShellTopBar.module.css';
@@ -25,6 +26,7 @@ export default function ShellTopBar({
     userName, userClass, token, notificationCount, onNotificationCountChange,
     onProfile, onSettings, onLogout,
 }: ShellTopBarProps) {
+    const t = useTranslations('shell');
     return (
         <header className={styles.topbar}>
             <div className={styles.left}>
@@ -32,7 +34,7 @@ export default function ShellTopBar({
                     type="button"
                     className={styles.menuButton}
                     onClick={onMenuClick}
-                    aria-label="Apri il menu di navigazione"
+                    aria-label={t('menuLabel')}
                     aria-expanded={sidebarOpen}
                 >
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

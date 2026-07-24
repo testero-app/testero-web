@@ -1,3 +1,4 @@
+import { useTranslations, useLocale } from 'next-intl';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { fetchUnreadNotifications, markNotificationAsRead, markAllNotificationsAsRead } from '../../lib/api';
 import styles from './NotificationPanel.module.css';
@@ -15,23 +16,25 @@ interface NotificationPanelProps {
     onCountChange: () => void;
 }
 
-function formatTime(iso: string): string {
+function formatTime(iso: string, t: (k: string, v?: Record<string, string | number | Date>) => string, locale: string): string {
     const date = new Date(iso);
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
     const diffMin = Math.floor(diffMs / 60000);
 
-    if (diffMin < 1) return 'Adesso';
-    if (diffMin < 60) return `${diffMin} min fa`;
+    if (diffMin < 1) return t('now');
+    if (diffMin < 60) return t('minAgo', { n: diffMin });
     const diffH = Math.floor(diffMin / 60);
-    if (diffH < 24) return `${diffH}h fa`;
+    if (diffH < 24) return t('hoursAgo', { n: diffH });
     const diffD = Math.floor(diffH / 24);
-    if (diffD === 1) return 'Ieri';
-    if (diffD < 7) return `${diffD}g fa`;
-    return date.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
+    if (diffD === 1) return t('yesterday');
+    if (diffD < 7) return t('daysAgo', { n: diffD });
+    return date.toLocaleDateString(locale === 'en' ? 'en-US' : 'it-IT', { day: 'numeric', month: 'short' });
 }
 
 export default function NotificationPanel({ token, count, onCountChange }: NotificationPanelProps) {
+    const t = useTranslations('notifications');
+    const locale = useLocale();
     const [open, setOpen] = useState(false);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [loading, setLoading] = useState(false);
@@ -93,7 +96,7 @@ export default function NotificationPanel({ token, count, onCountChange }: Notif
                 onClick={handleToggle}
                 aria-expanded={open}
                 aria-haspopup="true"
-                aria-label="Notifiche"
+                aria-label={t('title')}
             >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -105,15 +108,15 @@ export default function NotificationPanel({ token, count, onCountChange }: Notif
             {open && (
                 <div className={styles.dropdown} role="menu">
                     <div className={styles.header}>
-                        <span className={styles.headerTitle}>Notifiche</span>
+                        <span className={styles.headerTitle}>{t('title')}</span>
                     </div>
 
                     <div className={styles.list}>
                         {loading && notifications.length === 0 && (
-                            <div className={styles.empty}>Caricamento...</div>
+                            <div className={styles.empty}>{t('loading')}</div>
                         )}
                         {!loading && notifications.length === 0 && (
-                            <div className={styles.empty}>Nessuna notifica</div>
+                            <div className={styles.empty}>{t('empty')}</div>
                         )}
                         {notifications.map((n) => (
                             <button
@@ -124,7 +127,7 @@ export default function NotificationPanel({ token, count, onCountChange }: Notif
                             >
                                 <span className={styles.itemTitle}>{n.title}</span>
                                 <span className={styles.itemMessage}>{n.message}</span>
-                                <span className={styles.itemTime}>{formatTime(n.created_at)}</span>
+                                <span className={styles.itemTime}>{formatTime(n.created_at, t, locale)}</span>
                             </button>
                         ))}
                     </div>

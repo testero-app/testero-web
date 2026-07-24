@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { MemoryRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AssessmentProvider, useAssessment, TSubmissionSummary, TSubmissionReview } from '../context/AssessmentContext';
@@ -262,11 +263,12 @@ function SettingsView() {
 // ─── Configuratore View ────────────────────────────────────────────────────
 
 function ConfiguratoreView() {
+    const t = useTranslations('appRouter');
     const { user, token, selectAssessment } = useAssessment();
     const navigate = useNavigate();
     const location = useLocation();
     const topicId = (location.state as { topicId?: string })?.topicId || '';
-    const topicName = (location.state as { topicName?: string })?.topicName || 'Allenamento';
+    const topicName = (location.state as { topicName?: string })?.topicName || t('trainingFallback');
 
     useEffect(() => {
         if (!user) navigate('/');
@@ -310,6 +312,7 @@ function ConfiguratoreView() {
 // ─── Assessment View ─────────────────────────────────────────────────────────
 
 function AssessmentView() {
+    const t = useTranslations('appRouter');
     const {
         user, assessmentConfig, shuffledQuestions, shuffledOptions,
         currentIndex, answers, flagged, timerExpired,
@@ -361,11 +364,11 @@ function AssessmentView() {
         } catch (err) {
             setAlertModal({
                 visible: true,
-                title: 'Errore',
-                message: 'Errore durante la generazione del file. Riprova.\n\n' + (err as Error).message,
+                title: t('errorTitle'),
+                message: t('fileGenError') + '\n\n' + (err as Error).message,
             });
         }
-    }, [doSubmit, timer, navigate]);
+    }, [doSubmit, timer, navigate, t]);
 
     return (
         <>
@@ -424,6 +427,7 @@ function AssessmentView() {
 // ─── Recap View ───────────────────────────────────────────────────────────────
 
 function RecapView() {
+    const t = useTranslations('appRouter');
     const {
         shuffledQuestions, shuffledOptions, answers, timerExpired, doSubmit,
     } = useAssessment();
@@ -443,11 +447,11 @@ function RecapView() {
         } catch (err) {
             setAlertModal({
                 visible: true,
-                title: 'Errore',
-                message: 'Errore durante la generazione del file. Riprova.\n\n' + (err as Error).message,
+                title: t('errorTitle'),
+                message: t('fileGenError') + '\n\n' + (err as Error).message,
             });
         }
-    }, [doSubmit, navigate]);
+    }, [doSubmit, navigate, t]);
 
     const handleFinalSubmitClick = useCallback(() => {
         if (timerExpired) {
@@ -487,6 +491,7 @@ function RecapView() {
 // ─── Results View ─────────────────────────────────────────────────────────────
 
 function ResultsView() {
+    const t = useTranslations('appRouter');
     const {
         shuffledQuestions, shuffledOptions, answers,
         submissionResult, resetAssessment,
@@ -519,11 +524,11 @@ function ResultsView() {
         } catch {
             setAlertModal({
                 visible: true,
-                title: 'Errore',
-                message: 'Impossibile caricare il ripasso. Riprova.',
+                title: t('errorTitle'),
+                message: t('ripassoLoadError'),
             });
         }
-    }, [submissionResult, historySubmission, token, navigate]);
+    }, [submissionResult, historySubmission, token, navigate, t]);
 
     if (!submissionResult && !historySubmission) {
         return null;
