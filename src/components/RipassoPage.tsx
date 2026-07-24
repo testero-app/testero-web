@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useState, useMemo } from 'react';
 import type { TSubmissionReview, TReviewQuestion } from '../context/AssessmentContext';
 import TesteroLogo from './ui/TesteroLogo';
@@ -17,6 +18,7 @@ interface RipassoPageProps {
  * Replaces the old HistoryDetailPage for post-submission review.
  */
 export default function RipassoPage({ review, onBackToReport }: RipassoPageProps) {
+    const t = useTranslations('ripasso');
     const [showOnlyWrong, setShowOnlyWrong] = useState(false);
 
     const wrongQuestions = useMemo(
@@ -45,26 +47,26 @@ export default function RipassoPage({ review, onBackToReport }: RipassoPageProps
                 </div>
 
                 <button className={styles.backBtn} onClick={onBackToReport}>
-                    &lt; Torna al report
+                    &lt; {t('backToReport')}
                 </button>
             </header>
 
             {/* ── Title bar ──────────────────────────────────────────── */}
             <div className={styles.titleBar}>
-                <h1 className={styles.titleText}>Riepilogo risposte</h1>
+                <h1 className={styles.titleText}>{t('title')}</h1>
 
                 <div className={styles.toggle}>
                     <button
                         className={`${styles.toggleBtn} ${!showOnlyWrong ? styles.toggleBtnActive : ''}`}
                         onClick={() => setShowOnlyWrong(false)}
                     >
-                        Tutte &middot; {totalCount}
+                        {t('filterAll')} &middot; {totalCount}
                     </button>
                     <button
                         className={`${styles.toggleBtn} ${showOnlyWrong ? styles.toggleBtnDanger : ''}`}
                         onClick={() => setShowOnlyWrong(true)}
                     >
-                        Solo errate &middot; {wrongCount}
+                        {t('filterWrong')} &middot; {wrongCount}
                     </button>
                 </div>
             </div>
@@ -97,6 +99,7 @@ interface QuestionCardProps {
 }
 
 function QuestionCard({ question, displayIndex }: QuestionCardProps) {
+    const t = useTranslations('ripasso');
     const isCorrect = question.is_correct === true;
     const isWrong = question.is_correct === false;
     const isUnanswered = question.is_correct === null;
@@ -108,17 +111,17 @@ function QuestionCard({ question, displayIndex }: QuestionCardProps) {
 
     // Derive a topic label from subjects (from BE) or fallback
     const topicLabel = question.subjects?.[0]?.label?.toUpperCase()
-        ?? (question.type === 'open' ? 'BONUS' : `Q${displayIndex + 1}`);
+        ?? (question.type === 'open' ? t('bonus') : `Q${displayIndex + 1}`);
 
     // Status badge
     let statusClass = styles.statusUnanswered;
-    let statusText = 'Non data';
+    let statusText = t('notAnswered');
     if (isCorrect) {
         statusClass = styles.statusCorrect;
-        statusText = 'Corretta';
+        statusText = t('correct');
     } else if (isWrong) {
         statusClass = styles.statusWrong;
-        statusText = 'Errata';
+        statusText = t('wrong');
     }
 
     // Number badge
@@ -133,7 +136,7 @@ function QuestionCard({ question, displayIndex }: QuestionCardProps) {
                 <div className={styles.cardHeaderLeft}>
                     <span className={numberBadgeClass}>{displayIndex + 1}</span>
                     <span className={styles.cardLabel}>
-                        DOMANDA {displayIndex + 1} &middot; {topicLabel}
+                        {t('questionLabel')} {displayIndex + 1} &middot; {topicLabel}
                     </span>
                 </div>
                 <span className={`${styles.statusBadge} ${statusClass}`}>
@@ -165,10 +168,10 @@ function QuestionCard({ question, displayIndex }: QuestionCardProps) {
 
                             if (isCorrectOpt) {
                                 optionClass += ` ${styles.optionCorrectAnswer}`;
-                                tag = { text: 'Risposta corretta', cls: styles.tagCorrect };
+                                tag = { text: t('correctAnswer'), cls: styles.tagCorrect };
                             } else if (isSelected && !isCorrectOpt) {
                                 optionClass += ` ${styles.optionWrongAnswer}`;
-                                tag = { text: 'La tua risposta', cls: styles.tagWrong };
+                                tag = { text: t('yourAnswer'), cls: styles.tagWrong };
                             }
 
                             // Heuristic: treat option text as code if it looks like code
@@ -207,7 +210,7 @@ function QuestionCard({ question, displayIndex }: QuestionCardProps) {
                             !question.answer_text?.trim() ? styles.openAnswerEmpty : ''
                         }`}
                     >
-                        {question.answer_text?.trim() || 'Nessuna risposta'}
+                        {question.answer_text?.trim() || t('noAnswer')}
                     </div>
                 )}
 
@@ -225,6 +228,7 @@ interface ExplanationBoxProps {
 }
 
 function ExplanationBox({ question }: ExplanationBoxProps) {
+    const t = useTranslations('ripasso');
     const explanation =
         question.explanation?.trim() ||
         question.motivation?.trim() ||
@@ -234,7 +238,7 @@ function ExplanationBox({ question }: ExplanationBoxProps) {
 
     return (
         <div className={styles.explanation}>
-            <div className={styles.explanationTitle}>Perché</div>
+            <div className={styles.explanationTitle}>{t('why')}</div>
             <div className={styles.explanationText}>{explanation}</div>
         </div>
     );

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { Modal, Button } from './ui';
 
 interface StartModalProps {
@@ -7,6 +8,7 @@ interface StartModalProps {
 }
 
 export default function StartModal({ visible, onConfirm, onCancel }: StartModalProps) {
+    const t = useTranslations('modals');
     return (
         <Modal
             open={visible}
@@ -14,12 +16,12 @@ export default function StartModal({ visible, onConfirm, onCancel }: StartModalP
             title="Conferma inizio test"
             actions={
                 <>
-                    <Button variant="ghost" onClick={onCancel}>Annulla</Button>
-                    <Button variant="primary" onClick={onConfirm}>Inizia</Button>
+                    <Button variant="ghost" onClick={onCancel}>{t('cancel')}</Button>
+                    <Button variant="primary" onClick={onConfirm}>{t('start')}</Button>
                 </>
             }
         >
-            <p>Sei sicuro di voler iniziare il test? Il tempo partirà immediatamente.</p>
+            <p>{t('startConfirm')}</p>
         </Modal>
     );
 }

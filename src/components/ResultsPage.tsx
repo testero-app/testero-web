@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { TQuestion, TOption, TAnswer, TAnswerResult } from '../context/AssessmentContext';
 import styles from './ResultsPage.module.css';
@@ -90,6 +91,7 @@ export default function ResultsPage({
     onBackToAssessments,
     onReviewErrors,
 }: ResultsPageProps) {
+    const t = useTranslations('results');
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
@@ -175,22 +177,22 @@ export default function ResultsPage({
                                 <path d="M18 6L6 18M6 6l12 12" />
                             </svg>
                         )}
-                        {passed ? 'Superato' : 'Non superato'}
+                        {passed ? t('passed') : t('notPassed')}
                     </div>
 
                     {/* Stats row */}
                     <div className={styles.statsRow}>
                         <div>
                             <div className={styles.statValue}>{correctCount}/{totalQ}</div>
-                            <div className={styles.statLabel}>Domande</div>
+                            <div className={styles.statLabel}>{t('statQuestions')}</div>
                         </div>
                         <div>
                             <div className={styles.statValueTeal}>{Math.round(score)}</div>
-                            <div className={styles.statLabel}>Punti</div>
+                            <div className={styles.statLabel}>{t('statPoints')}</div>
                         </div>
                         <div>
                             <div className={styles.statValue}>{duration}</div>
-                            <div className={styles.statLabel}>Tempo</div>
+                            <div className={styles.statLabel}>{t('statTime')}</div>
                         </div>
                     </div>
                 </div>
@@ -198,12 +200,12 @@ export default function ResultsPage({
                 {/* RIGHT: Per-topic detail */}
                 <div className={styles.rightPanel}>
                     <div className={styles.title}>
-                        {assessmentTitle || 'Risultati del test'}
+                        {assessmentTitle || t('title')}
                     </div>
 
                     <div className={styles.eyebrowRow}>
-                        <span className={styles.eyebrow}>Per argomento</span>
-                        <span className={styles.eyebrowHint}>punti ottenuti / disponibili</span>
+                        <span className={styles.eyebrow}>{t('bySubject')}</span>
+                        <span className={styles.eyebrowHint}>{t('pointsHint')}</span>
                     </div>
 
                     {/* Topic grid */}

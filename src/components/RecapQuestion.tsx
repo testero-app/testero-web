@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 import hljs from '../lib/highlight';
 import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
@@ -15,6 +16,7 @@ interface RecapQuestionProps {
 }
 
 export default function RecapQuestion({ question, displayIndex, shuffledOpts, answer, isAnswered }: RecapQuestionProps) {
+    const t = useTranslations('recap');
     const codeRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
@@ -31,12 +33,12 @@ export default function RecapQuestion({ question, displayIndex, shuffledOpts, an
                 <div className={styles.header}>
                     <span className={styles.number}>Domanda {displayIndex + 1} (Bonus)</span>
                     <Badge variant={hasAnswer ? 'avvia' : 'scaduto'}>
-                        {hasAnswer ? 'Risposta data' : 'Non data'}
+                        {hasAnswer ? t('answered') : t('notAnswered')}
                     </Badge>
                 </div>
                 <div className={styles.text}>{question.text}</div>
                 <div className={`${styles.openAnswer} ${!hasAnswer ? styles.openAnswerEmpty : ''}`}>
-                    {hasAnswer ? answerText : 'Nessuna risposta'}
+                    {hasAnswer ? answerText : t('noAnswer')}
                 </div>
             </div>
         );
@@ -51,7 +53,7 @@ export default function RecapQuestion({ question, displayIndex, shuffledOpts, an
             <div className={styles.header}>
                 <span className={styles.number}>Domanda {displayIndex + 1}</span>
                 <Badge variant={isAnswered ? 'avvia' : 'scaduto'}>
-                    {isAnswered ? 'Risposta data' : 'Non data'}
+                    {isAnswered ? t('answered') : t('notAnswered')}
                 </Badge>
             </div>
             <div className={styles.text}>{question.text}</div>
@@ -76,7 +78,7 @@ export default function RecapQuestion({ question, displayIndex, shuffledOpts, an
 
             {hasNessuna && motivation && (
                 <div className={styles.motivation}>
-                    <strong>Motivazione:</strong> {motivation}
+                    <strong>{t('motivation')}</strong> {motivation}
                 </div>
             )}
         </div>

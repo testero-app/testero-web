@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { type TAssessmentListItem } from '../context/AssessmentContext';
 import styles from './CertificazioniTab.module.css';
 
@@ -25,6 +26,7 @@ interface CertificazioniTabProps {
 }
 
 export default function CertificazioniTab({ assessments, loading, onStart }: CertificazioniTabProps) {
+    const t = useTranslations('certificazioni');
     if (loading) {
         return (
             <div className={styles.list}>
@@ -44,13 +46,12 @@ export default function CertificazioniTab({ assessments, loading, onStart }: Cer
                     </svg>
                 </span>
                 <span className={styles.bannerText}>
-                    La certificazione è un servizio <strong>della scuola</strong>: ne fissa contenuti, soglia ed esito.
-                    Testero la eroga come verifica a tempo e ne registra il risultato — non è un percorso a parte.
+                    {t.rich('banner', { strong: (c) => <strong>{c}</strong> })}
                 </span>
             </div>
 
             {assessments.length === 0 ? (
-                <div className={styles.empty}>Nessuna certificazione disponibile al momento.</div>
+                <div className={styles.empty}>{t('empty')}</div>
             ) : (
                 <div className={styles.list}>
                     {assessments.map((a) => (
