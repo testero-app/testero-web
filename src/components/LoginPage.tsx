@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import styles from './LoginPage.module.css';
 
 interface LoginPageProps {
@@ -18,6 +19,7 @@ const LogoSvg = (
 );
 
 export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
+    const t = useTranslations('login');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -47,14 +49,14 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
 
                 {/* Headline IN BASSO (margin-top: auto) */}
                 <div className={styles.brandBottom}>
-                    <div className={styles.brandHeadline}>Challenge<br />your knowledge.</div>
+                    <div className={styles.brandHeadline}>{t('brandLine1')}<br />{t('brandLine2')}</div>
                     <div className={styles.brandSub}>
-                        Allenati per argomento e sostieni le verifiche di certificazione esterna della tua scuola. Correzione immediata, esiti per argomento.
+                        {t('brandSub')}
                     </div>
                     <div className={styles.brandChips}>
-                        <span className={styles.chip}>allenamento</span>
-                        <span className={styles.chip}>certificazioni scuola</span>
-                        <span className={styles.chip}>mappa competenze</span>
+                        <span className={styles.chip}>{t('chipTraining')}</span>
+                        <span className={styles.chip}>{t('chipCertifications')}</span>
+                        <span className={styles.chip}>{t('chipCompetencies')}</span>
                     </div>
                 </div>
             </div>
@@ -63,20 +65,20 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
             <div className={styles.formPanel}>
               <div className={styles.formInner} style={{ width: 400, maxWidth: '100%' }}>
               <form onSubmit={handleSubmit}>
-                    <div className={styles.formTitle}>Accedi al tuo account</div>
-                    <div className={styles.formSub}>Usa le credenziali fornite dalla tua scuola.</div>
+                    <div className={styles.formTitle}>{t('title')}</div>
+                    <div className={styles.formSub}>{t('subtitle')}</div>
 
                     {error && (
                         <div className={styles.alert}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" strokeWidth="2">
                                 <circle cx="12" cy="12" r="9" /><path d="M12 8v5" /><circle cx="12" cy="16.4" r="0.6" fill="currentColor" />
                             </svg>
-                            Credenziali non valide
+                            {t('invalidCredentials')}
                         </div>
                     )}
 
                     {/* USERNAME — teal focus se valido, rosso se errore */}
-                    <div className={styles.formLabel}>Username</div>
+                    <div className={styles.formLabel}>{t('usernameLabel')}</div>
                     <div className={`${styles.field} ${error ? styles.fieldError : (usernameFocused || username ? styles.fieldFocus : '')}`}>
                         <span className={styles.fieldIcon}>
                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={error ? '#e5484d' : (usernameFocused || username ? '#0e7c7b' : '#9aa6b2')} strokeWidth="2">
@@ -86,7 +88,7 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
                         <input
                             ref={usernameRef}
                             type="text"
-                            placeholder="mario.rossi"
+                            placeholder={t('usernamePlaceholder')}
                             autoComplete="username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
@@ -98,7 +100,7 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
                     </div>
 
                     {/* PASSWORD — fondo #f8fafc + toggle occhio */}
-                    <div className={styles.formLabel}>Password</div>
+                    <div className={styles.formLabel}>{t('passwordLabel')}</div>
                     <div className={`${styles.field} ${error ? styles.fieldError : styles.fieldSubtle} ${styles.fieldLast}`}>
                         <span className={styles.fieldIcon}>
                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={error ? '#e5484d' : '#9aa6b2'} strokeWidth="2">
@@ -107,7 +109,7 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
                         </span>
                         <input
                             type={showPassword ? 'text' : 'password'}
-                            placeholder="password"
+                            placeholder={t('passwordPlaceholder')}
                             autoComplete="current-password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
@@ -118,7 +120,7 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
                             className={styles.toggleBtn}
                             onClick={() => setShowPassword(!showPassword)}
                             tabIndex={-1}
-                            aria-label={showPassword ? 'Nascondi password' : 'Mostra password'}
+                            aria-label={showPassword ? t('hidePassword') : t('showPassword')}
                         >
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9aa6b2" strokeWidth="2">
                                 <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" />
@@ -132,7 +134,7 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
                         type="submit"
                         disabled={loading || !username.trim() || !password.trim()}
                     >
-                        {loading ? 'Accesso...' : 'Accedi'}
+                        {loading ? t('submitting') : t('submit')}
                         {!loading && (
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#06302c" strokeWidth="2.6">
                                 <path d="M5 12h14M13 6l6 6-6 6" />
@@ -146,7 +148,7 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
                             <circle cx="12" cy="12" r="9" /><path d="M12 8v5" /><circle cx="12" cy="16.4" r="0.6" fill="#6b7a89" />
                         </svg>
                         <span style={{ fontSize: '12.5px', color: '#6b7a89', lineHeight: 1.45 }}>
-                            Al primo accesso il sistema può impiegare 1–2 minuti per avviarsi.
+                            {t('info')}
                         </span>
                     </div>
 
@@ -158,7 +160,7 @@ export default function LoginPage({ onLogin, loading, error }: LoginPageProps) {
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            Lascia un feedback
+                            {t('feedback')}
                         </a>
                     </div>
                 </form>
