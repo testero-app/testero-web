@@ -371,6 +371,19 @@ export async function updateProfile(email: string, token: string): Promise<TUser
     return res.json();
 }
 
+/** Persists the user's interface language. The PUT is field-wise, so email is untouched. */
+export async function updateLanguage(language: 'it' | 'en', token: string): Promise<TUser> {
+    const res = await fetch(`${API_BASE}/api/users/me`, {
+        method: 'PUT',
+        headers: authHeaders(token),
+        body: JSON.stringify({ language }),
+    });
+    if (!res.ok) {
+        await throwFromResponse(res, `Failed to update language: ${res.status}`);
+    }
+    return res.json();
+}
+
 export async function fetchNotificationCount(token: string): Promise<{ count: number }> {
     const res = await fetch(`${API_BASE}/api/notifications/count`, {
         headers: authHeaders(token),

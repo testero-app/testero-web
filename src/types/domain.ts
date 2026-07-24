@@ -65,6 +65,7 @@ export type TUser = {
     class_name: string;
     email?: string;
     role?: string;
+    language?: string;
 };
 
 /**

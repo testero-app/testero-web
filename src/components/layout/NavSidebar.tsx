@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import TesteroLogo from '../ui/TesteroLogo';
 import styles from './NavSidebar.module.css';
 
@@ -11,10 +12,10 @@ interface NavSidebarProps {
     onClose?: () => void;
 }
 
-const NAV_ITEMS: { id: string; label: string; icon: React.ReactNode }[] = [
+const NAV_ITEMS: { id: string; labelKey: string; icon: React.ReactNode }[] = [
     {
         id: 'allenamento',
-        label: 'Allenamento',
+        labelKey: 'training',
         icon: (
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
@@ -25,7 +26,7 @@ const NAV_ITEMS: { id: string; label: string; icon: React.ReactNode }[] = [
     },
     {
         id: 'competenze',
-        label: 'Competenze',
+        labelKey: 'competencies',
         icon: (
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="12" width="4" height="9" rx="1" />
@@ -36,7 +37,7 @@ const NAV_ITEMS: { id: string; label: string; icon: React.ReactNode }[] = [
     },
     {
         id: 'certificazioni',
-        label: 'Certificazioni',
+        labelKey: 'certifications',
         icon: (
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="8" r="6" />
@@ -46,7 +47,7 @@ const NAV_ITEMS: { id: string; label: string; icon: React.ReactNode }[] = [
     },
     {
         id: 'risultati',
-        label: 'I miei risultati',
+        labelKey: 'results',
         icon: (
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -57,6 +58,7 @@ const NAV_ITEMS: { id: string; label: string; icon: React.ReactNode }[] = [
 ];
 
 export default function NavSidebar({ activePage, onNavigate, open = false, onClose }: NavSidebarProps) {
+    const t = useTranslations('nav');
     // On tablet the sidebar is an overlay, so picking a destination must also
     // dismiss it — otherwise it stays on top of the page just navigated to.
     const handleNavigate = (page: string) => {
@@ -71,7 +73,7 @@ export default function NavSidebar({ activePage, onNavigate, open = false, onClo
                 <span className={styles.brandText}>Testero</span>
             </div>
 
-            <div className={styles.sectionLabel}>STUDIO</div>
+            <div className={styles.sectionLabel}>{t('sectionStudy')}</div>
 
             <ul className={styles.navList}>
                 {NAV_ITEMS.map((item) => {
@@ -84,7 +86,7 @@ export default function NavSidebar({ activePage, onNavigate, open = false, onClo
                                 aria-current={isActive ? 'page' : undefined}
                             >
                                 <span className={styles.navIcon}>{item.icon}</span>
-                                <span className={styles.navLabel}>{item.label}</span>
+                                <span className={styles.navLabel}>{t(item.labelKey)}</span>
                             </button>
                         </li>
                     );
