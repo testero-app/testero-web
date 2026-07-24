@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import { fetchTopicChapters } from '../lib/api';
 import TesteroLogo from './ui/TesteroLogo';
@@ -26,6 +27,7 @@ interface ConfiguratorePageProps {
 }
 
 export default function ConfiguratorePage({ topicId, topicName, token, onBack, onStart }: ConfiguratorePageProps) {
+    const t = useTranslations('configuratore');
     const [chapters, setChapters] = useState<ChapterItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedChapters, setSelectedChapters] = useState<Set<string>>(new Set());
@@ -114,9 +116,9 @@ export default function ConfiguratorePage({ topicId, topicName, token, onBack, o
                 {/* Left: Chapters */}
                 <div>
                     <div className={styles.chaptersHeader}>
-                        <span className={styles.chaptersTitle}>Capitoli</span>
+                        <span className={styles.chaptersTitle}>{t('chapters')}</span>
                         <button className={styles.selectAll} onClick={toggleAll}>
-                            {allSelected ? 'Deseleziona tutti' : 'Seleziona tutti'}
+                            {allSelected ? t('deselectAll') : t('selectAll')}
                         </button>
                     </div>
 
@@ -158,9 +160,9 @@ export default function ConfiguratorePage({ topicId, topicName, token, onBack, o
 
                 {/* Right: Session config */}
                 <div className={styles.sessionCard}>
-                    <div className={styles.sessionTitle}>La tua sessione</div>
+                    <div className={styles.sessionTitle}>{t('sessionTitle')}</div>
 
-                    <div className={styles.sectionLabel}>Difficoltà</div>
+                    <div className={styles.sectionLabel}>{t('difficultyLabel')}</div>
                     <div className={styles.diffGrid}>
                         {(['base', 'intermedio', 'avanzato', 'mista'] as Difficulty[]).map((d) => (
                             <button
@@ -168,12 +170,12 @@ export default function ConfiguratorePage({ topicId, topicName, token, onBack, o
                                 className={`${styles.diffBtn} ${difficulty === d ? styles.diffBtnActive : ''}`}
                                 onClick={() => setDifficulty(d)}
                             >
-                                {d.charAt(0).toUpperCase() + d.slice(1)}
+                                {t(`difficulty.${d}`)}
                             </button>
                         ))}
                     </div>
 
-                    <div className={styles.sectionLabel}>Numero di domande</div>
+                    <div className={styles.sectionLabel}>{t('questionCount')}</div>
                     <div className={styles.stepper}>
                         <button
                             className={styles.stepBtn}
@@ -201,8 +203,8 @@ export default function ConfiguratorePage({ topicId, topicName, token, onBack, o
                             </svg>
                         </span>
                         <div className={styles.timerInfo}>
-                            <div className={styles.timerLabel}>Timer</div>
-                            <div className={styles.timerMeta}>~{estimatedMinutes} min · 1:30 a domanda</div>
+                            <div className={styles.timerLabel}>{t('timer')}</div>
+                            <div className={styles.timerMeta}>{t('timerMeta', { min: estimatedMinutes })}</div>
                         </div>
                         <button
                             className={`${styles.toggle} ${timerEnabled ? styles.toggleOn : ''}`}
@@ -217,7 +219,7 @@ export default function ConfiguratorePage({ topicId, topicName, token, onBack, o
                         onClick={handleStart}
                         disabled={selectedChapters.size === 0 || availableCount === 0}
                     >
-                        Avvia allenamento
+                        {t('startTraining')}
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#06302c" strokeWidth="2.6">
                             <path d="M5 12h14M13 6l6 6-6 6" />
                         </svg>

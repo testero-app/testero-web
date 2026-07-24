@@ -55,5 +55,174 @@
     "competencies": "Competenze",
     "certifications": "Certificazioni",
     "results": "I miei risultati"
+  },
+  "shell": {
+    "allenamento": {
+      "title": "Allenamento",
+      "subtitle": "Pratica libera per argomento"
+    },
+    "competenze": {
+      "title": "Competenze",
+      "subtitle": "La tua padronanza per argomento"
+    },
+    "certificazioni": {
+      "title": "Certificazioni",
+      "subtitle": "Verifiche esterne della scuola"
+    },
+    "risultati": {
+      "title": "I miei risultati",
+      "subtitle": "Storico di verifiche e allenamento"
+    },
+    "profilo": {
+      "title": "Profilo",
+      "subtitle": "I tuoi dati personali"
+    },
+    "impostazioni": {
+      "title": "Impostazioni",
+      "subtitle": "Sicurezza, password e notifiche"
+    },
+    "menuLabel": "Apri il menu di navigazione"
+  },
+  "accountMenu": {
+    "student": "Studente",
+    "profile": "Profilo",
+    "settings": "Impostazioni",
+    "logout": "Esci"
+  },
+  "notifications": {
+    "title": "Notifiche",
+    "loading": "Caricamento...",
+    "empty": "Nessuna notifica",
+    "now": "Adesso",
+    "yesterday": "Ieri",
+    "minAgo": "{n} min fa",
+    "hoursAgo": "{n}h fa",
+    "daysAgo": "{n}g fa"
+  },
+  "assessment": {
+    "answerPlaceholder": "Scrivi qui la tua risposta...",
+    "motivationPlaceholder": "Motiva brevemente...",
+    "stimulus": "STIMOLO",
+    "showCode": "Mostra codice",
+    "hideCode": "Nascondi codice",
+    "codeFileName": "esercizio.py",
+    "questionCounter": "Domanda {n} · {total}",
+    "questionCounterOf": "Domanda {n} di {total}",
+    "crumbDefault": "Verifica",
+    "mapQuestions": "Mappa domande",
+    "legendCurrent": "Corrente",
+    "legendAnswered": "Risposta",
+    "legendFlagged": "Da rivedere"
+  },
+  "recap": {
+    "title": "Riepilogo risposte",
+    "download": "Scarica risposte",
+    "confirmSubmit": "Conferma e consegna",
+    "answered": "Risposta data",
+    "notAnswered": "Non data",
+    "noAnswer": "Nessuna risposta",
+    "motivation": "Motivazione:"
+  },
+  "modals": {
+    "cancel": "Annulla",
+    "start": "Inizia",
+    "startConfirm": "Sei sicuro di voler iniziare il test? Il tempo partirà immediatamente.",
+    "submitTitle": "Consegnare il test?",
+    "answeredCount": "Risposte date",
+    "unansweredCount": "Senza risposta",
+    "submit": "Consegna",
+    "finalConfirm": "Stai per consegnare il test. Dopo la consegna non potrai più modificare le risposte."
+  },
+  "appRouter": {
+    "trainingFallback": "Allenamento",
+    "errorTitle": "Errore",
+    "fileGenError": "Errore durante la generazione del file. Riprova.",
+    "ripassoLoadError": "Impossibile caricare il ripasso. Riprova."
+  },
+  "results": {
+    "passed": "Superato",
+    "notPassed": "Non superato",
+    "statQuestions": "Domande",
+    "statPoints": "Punti",
+    "statTime": "Tempo",
+    "title": "Risultati del test",
+    "bySubject": "Per argomento",
+    "pointsHint": "punti ottenuti / disponibili"
+  },
+  "ripasso": {
+    "title": "Riepilogo risposte",
+    "backToReport": "Torna al report",
+    "filterAll": "Tutte",
+    "filterWrong": "Solo errate",
+    "notAnswered": "Non data",
+    "correct": "Corretta",
+    "wrong": "Errata",
+    "correctAnswer": "Risposta corretta",
+    "yourAnswer": "La tua risposta",
+    "noAnswer": "Nessuna risposta",
+    "why": "Perché",
+    "bonus": "BONUS",
+    "questionLabel": "DOMANDA"
+  },
+  "risultati": {
+    "filterAll": "Tutti",
+    "filterCertifications": "Certificazioni",
+    "filterTraining": "Allenamento",
+    "filterLabel": "Filtra",
+    "empty": "Nessun risultato disponibile.",
+    "tagCertification": "Certificazione",
+    "tagTraining": "Allenamento",
+    "passed": "Superato",
+    "notPassed": "Non superato"
+  },
+  "certificazioni": {
+    "banner": "La certificazione è un servizio <strong>della scuola</strong>: ne fissa contenuti, soglia ed esito. Testero la eroga come verifica a tempo e ne registra il risultato — non è un percorso a parte.",
+    "empty": "Nessuna certificazione disponibile al momento."
+  },
+  "allenamento": {
+    "empty": "Nessun argomento disponibile al momento.",
+    "topics": "Argomenti"
+  },
+  "competenze": {
+    "title": "Le tue competenze",
+    "loading": "Caricamento...",
+    "empty": "Nessun dato disponibile. Completa almeno una verifica o una simulazione per vedere la tua padronanza per argomento."
+  },
+  "configuratore": {
+    "chapters": "Capitoli",
+    "deselectAll": "Deseleziona tutti",
+    "selectAll": "Seleziona tutti",
+    "sessionTitle": "La tua sessione",
+    "difficultyLabel": "Difficoltà",
+    "difficulty": {
+      "base": "Base",
+      "intermedio": "Intermedio",
+      "avanzato": "Avanzato",
+      "mista": "Mista"
+    },
+    "questionCount": "Numero di domande",
+    "timer": "Timer",
+    "timerMeta": "~{min} min · 1:30 a domanda",
+    "startTraining": "Avvia allenamento"
+  },
+  "profile": {
+    "saved": "Modifiche salvate con successo.",
+    "saveError": "Errore durante il salvataggio.",
+    "student": "Studente",
+    "studentId": "Matricola",
+    "school": "Scuola",
+    "class": "Classe",
+    "enrolledSince": "Iscritto dal",
+    "personalData": "Dati personali",
+    "firstName": "Nome",
+    "assignedBySchool": "assegnato dalla scuola",
+    "lastName": "Cognome",
+    "email": "Email",
+    "emailPlaceholder": "email@esempio.it",
+    "username": "Username",
+    "notEditable": "non modificabile",
+    "saving": "Salvataggio...",
+    "save": "Salva modifiche",
+    "cancel": "Annulla"
   }
 }

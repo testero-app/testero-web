@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { changePassword, fetchNotificationPreferences, updateNotificationPreferences, updateLanguage } from '../lib/api';
 import styles from './ProfilePage.module.css';
 
@@ -7,11 +8,15 @@ interface SettingsPageProps {
     token?: string;
 }
 
-/** Persists the language, syncs the cookie the layout reads, and reloads so the app re-renders localised. */
-function setLanguage(lang: 'it' | 'en', token: string | undefined) {
+/**
+ * Persists the language, syncs the cookie the layout reads, then refreshes the server
+ * components so the new locale takes effect. Uses router.refresh() rather than a full page
+ * reload so the in-memory session (token) survives — a reload would log the user out.
+ */
+function setLanguage(lang: 'it' | 'en', token: string | undefined, refresh: () => void) {
     document.cookie = `NEXT_LOCALE=${lang}; path=/; max-age=31536000; samesite=lax`;
     if (token) updateLanguage(lang, token).catch(() => {});
-    window.location.reload();
+    refresh();
 }
 
 function checkStrength(pwd: string) {
@@ -45,6 +50,7 @@ const CircleIcon = (
 export default function SettingsPage({ token }: SettingsPageProps) {
     const t = useTranslations('settings');
     const locale = useLocale();
+    const router = useRouter();
     // Password state
     const [currentPwd, setCurrentPwd] = useState('');
     const [newPwd, setNewPwd] = useState('');
@@ -203,7 +209,7 @@ export default function SettingsPage({ token }: SettingsPageProps) {
                             <select
                                 className={styles.fieldInput}
                                 value={locale}
-                                onChange={(e) => setLanguage(e.target.value as 'it' | 'en', token)}
+                                onChange={(e) => setLanguage(e.target.value as 'it' | 'en', token, () => router.refresh())}
                                 aria-label={t('languageTitle')}
                             >
                                 <option value="it">{t('languageItalian')}</option>

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { fetchTopics } from '../lib/api';
 import styles from './AllenamentoTab.module.css';
@@ -19,6 +20,7 @@ interface AllenamentoTabProps {
 }
 
 export default function AllenamentoTab({ token, onStartTopic }: AllenamentoTabProps) {
+    const t = useTranslations('allenamento');
     const [topics, setTopics] = useState<TopicItem[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -39,12 +41,12 @@ export default function AllenamentoTab({ token, onStartTopic }: AllenamentoTabPr
     }
 
     if (topics.length === 0) {
-        return <div style={{ textAlign: 'center', padding: '48px 24px', color: '#8696a6' }}>Nessun argomento disponibile al momento.</div>;
+        return <div style={{ textAlign: 'center', padding: '48px 24px', color: '#8696a6' }}>{t('empty')}</div>;
     }
 
     return (
         <>
-            <div className={styles.sectionLabel}>Argomenti</div>
+            <div className={styles.sectionLabel}>{t('topics')}</div>
             <div className={styles.grid}>
                 {topics.map((topic) => {
                     const disabled = !topic.enabled || topic.total_questions === 0;

@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import styles from './SubmitModal.module.css';
 
 interface SubmitModalProps {
@@ -15,6 +16,7 @@ export default function SubmitModal({
     answeredCount,
     totalQuestions,
 }: SubmitModalProps) {
+    const t = useTranslations('modals');
     if (!open) return null;
 
     const unansweredCount = totalQuestions - answeredCount;
@@ -34,7 +36,7 @@ export default function SubmitModal({
                 </div>
 
                 {/* Title & subtitle */}
-                <h2 className={styles.title}>Consegnare il test?</h2>
+                <h2 className={styles.title}>{t('submitTitle')}</h2>
                 <p className={styles.subtitle}>
                     Una volta consegnato non potrai più modificare le risposte.
                 </p>
@@ -45,13 +47,13 @@ export default function SubmitModal({
                         <div className={`${styles.statNumber} ${styles.statNumberAnswered}`}>
                             {answeredCount}
                         </div>
-                        <div className={styles.statLabel}>Risposte date</div>
+                        <div className={styles.statLabel}>{t('answeredCount')}</div>
                     </div>
                     <div className={`${styles.statBox} ${styles.statBoxUnanswered}`}>
                         <div className={`${styles.statNumber} ${styles.statNumberUnanswered}`}>
                             {unansweredCount}
                         </div>
-                        <div className={styles.statLabel}>Senza risposta</div>
+                        <div className={styles.statLabel}>{t('unansweredCount')}</div>
                     </div>
                 </div>
 

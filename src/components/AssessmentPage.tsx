@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import hljs from '../lib/highlight';
 import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
@@ -53,12 +54,13 @@ function Options({
     answer: TAnswer | undefined; onAnswer: (qid: string, a: TAnswer) => void;
     variantClass?: string;
 }) {
+    const t = useTranslations('assessment');
     if (question.type === 'open') {
         const text = answer?.text || '';
         return (
             <textarea
                 className={styles.openTextarea}
-                placeholder="Scrivi qui la tua risposta..."
+                placeholder={t('answerPlaceholder')}
                 value={text}
                 onChange={(e) => onAnswer(question.id, { text: e.target.value })}
             />
@@ -111,7 +113,7 @@ function Options({
                     <input
                         type="text"
                         className={styles.motivationInput}
-                        placeholder="Motiva brevemente..."
+                        placeholder={t('motivationPlaceholder')}
                         value={motivation}
                         onChange={(e) => onAnswer(question.id, { selectedIds, motivation: e.target.value })}
                     />
@@ -171,12 +173,13 @@ function VariantE({
     isFlagged: boolean; onToggleFlag: () => void;
     onPrev: () => void; onNext: () => void; onSubmit: () => void;
 }) {
+    const t = useTranslations('assessment');
     return (
         <div className={styles.bodyE}>
             {/* Head row */}
             <div className={styles.headE}>
                 <span className={styles.eyebrow}>
-                    Domanda {displayIndex + 1} · {total}
+                    {t('questionCounter', { n: displayIndex + 1, total })}
                 </span>
                 <FlagToggle active={isFlagged} onToggle={onToggleFlag} />
             </div>
@@ -214,6 +217,7 @@ function VariantF({
     isFlagged: boolean; onToggleFlag: () => void;
     onPrev: () => void; onNext: () => void; onSubmit: () => void;
 }) {
+    const t = useTranslations('assessment');
     const codeRef = useRef<HTMLElement>(null);
     // Tablet only: the code panel can be folded away to give the question the
     // full width. Starts expanded so a student who touches nothing still sees
@@ -237,15 +241,15 @@ function VariantF({
                     <span className={styles.codeDot} style={{ background: '#ff5f57' }} />
                     <span className={styles.codeDot} style={{ background: '#febc2e' }} />
                     <span className={styles.codeDot} style={{ background: '#28c840' }} />
-                    <span className={styles.codeFile}>esercizio.py</span>
-                    <span className={styles.codeTag}>STIMOLO</span>
+                    <span className={styles.codeFile}>{t('codeFileName')}</span>
+                    <span className={styles.codeTag}>{t('stimulus')}</span>
                     <button
                         type="button"
                         className={styles.codeToggle}
                         onClick={() => setCodeCollapsed((v) => !v)}
                         aria-expanded={!codeCollapsed}
                     >
-                        {codeCollapsed ? 'Mostra codice' : 'Nascondi codice'}
+                        {codeCollapsed ? t('showCode') : t('hideCode')}
                     </button>
                 </div>
                 <div className={styles.codePanelBody}>
@@ -287,7 +291,7 @@ function VariantF({
               <div className={styles.questionInner}>
                 <div className={styles.splitHead}>
                     <span className={styles.eyebrow}>
-                        Domanda {displayIndex + 1} di {total}
+                        {t('questionCounterOf', { n: displayIndex + 1, total })}
                     </span>
                     <FlagToggle active={isFlagged} onToggle={onToggleFlag} />
                 </div>

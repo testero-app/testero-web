@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import { fetchCompetencies } from '../lib/api';
 import styles from './CompetenzeTab.module.css';
@@ -112,6 +113,7 @@ function TopicNode({ topic, expandedIds, onToggle }: {
 }
 
 export default function CompetenzeTab({ token, onStartTraining }: CompetenzeTabProps) {
+    const t = useTranslations('competenze');
     const [topics, setTopics] = useState<TopicMastery[]>([]);
     const [loading, setLoading] = useState(true);
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
@@ -143,8 +145,8 @@ export default function CompetenzeTab({ token, onStartTraining }: CompetenzeTabP
     if (loading) {
         return (
             <div className={styles.container}>
-                <h2 className={styles.title}>Le tue competenze</h2>
-                <p className={styles.subtitle}>Caricamento...</p>
+                <h2 className={styles.title}>{t('title')}</h2>
+                <p className={styles.subtitle}>{t('loading')}</p>
             </div>
         );
     }
@@ -152,9 +154,9 @@ export default function CompetenzeTab({ token, onStartTraining }: CompetenzeTabP
     if (topics.length === 0) {
         return (
             <div className={styles.container}>
-                <h2 className={styles.title}>Le tue competenze</h2>
+                <h2 className={styles.title}>{t('title')}</h2>
                 <p className={styles.subtitle}>
-                    Nessun dato disponibile. Completa almeno una verifica o una simulazione per vedere la tua padronanza per argomento.
+                    {t('empty')}
                 </p>
             </div>
         );
@@ -162,7 +164,7 @@ export default function CompetenzeTab({ token, onStartTraining }: CompetenzeTabP
 
     return (
         <div className={styles.container}>
-            <h2 className={styles.title}>Le tue competenze</h2>
+            <h2 className={styles.title}>{t('title')}</h2>
             <p className={styles.subtitle}>
                 Padronanza media per argomento, dal tuo storico di verifiche e simulazioni. Espandi per i dettagli.
             </p>
