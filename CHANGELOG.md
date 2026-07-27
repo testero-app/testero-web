@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.9.1](https://github.com/testero-app/testero-web/compare/v2.9.0...v2.9.1) (2026-07-24)
+
+
+### Bug Fixes
+
+* **profile:** move security into Profile, restyle language selector ([#147](https://github.com/testero-app/testero-web/issues/147)) ([159d2e4](https://github.com/testero-app/testero-web/commit/159d2e4884bf2a104d011448571204f3990728a3))
+
 ## [2.9.0](https://github.com/testero-app/testero-web/compare/v2.8.3...v2.9.0) (2026-07-24)
 
 
