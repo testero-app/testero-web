@@ -18,7 +18,7 @@ import ConfiguratorePage from './ConfiguratorePage';
 import AssessmentHeader from './AssessmentHeader';
 import AssessmentPage from './AssessmentPage';
 import RecapPage from './RecapPage';
-import ResultsPage from './ResultsPage';
+import ResultsPage, { ResultsSummary } from './ResultsPage';
 import RipassoPage from './RipassoPage';
 import StartModal from './StartModal';
 import SubmitModal from './SubmitModal';
@@ -490,10 +490,20 @@ function RecapView() {
 
 // ─── Results View ─────────────────────────────────────────────────────────────
 
+/** mm:ss between two ISO timestamps, or a placeholder when either is missing. */
+function formatDuration(startedAt?: string | null, submittedAt?: string | null): string {
+    if (!startedAt || !submittedAt) return '--:--';
+    const diff = Math.round(
+        (new Date(submittedAt).getTime() - new Date(startedAt).getTime()) / 1000
+    );
+    const m = Math.floor(diff / 60).toString().padStart(2, '0');
+    const s = (diff % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+}
+
 function ResultsView() {
     const t = useTranslations('appRouter');
     const {
-        shuffledQuestions, shuffledOptions, answers,
         submissionResult, resetAssessment,
         assessmentConfig, token,
     } = useAssessment();
@@ -534,41 +544,33 @@ function ResultsView() {
         return null;
     }
 
-    const historySummary = isHistoryMode && historySubmission ? (() => {
-        const total = historySubmission.total_questions;
-        const correct = historySubmission.correct_count;
-        const scoreVal = historySubmission.score ?? correct;
-        const pctPassed = total > 0 ? correct / total >= 0.6 : false;
-
-        let dur = '--:--';
-        if (historySubmission.started_at && historySubmission.submitted_at) {
-            const diff = Math.round(
-                (new Date(historySubmission.submitted_at).getTime() -
-                 new Date(historySubmission.started_at).getTime()) / 1000
-            );
-            const m = Math.floor(diff / 60).toString().padStart(2, '0');
-            const s = (diff % 60).toString().padStart(2, '0');
-            dur = `${m}:${s}`;
+    // Both branches read score, maxScore and passed straight from the backend:
+    // it owns the scoring rules and the passing threshold of the assessment.
+    const summary: ResultsSummary = isHistoryMode && historySubmission
+        ? {
+            score: historySubmission.score ?? 0,
+            maxScore: historySubmission.max_score ?? 0,
+            correctCount: historySubmission.correct_count,
+            totalQuestions: historySubmission.total_questions,
+            passed: historySubmission.passed ?? false,
+            duration: formatDuration(historySubmission.started_at, historySubmission.submitted_at),
+            subjectScores: historySubmission.subject_scores,
         }
-
-        return {
-            score: Math.round(scoreVal),
-            maxScore: total,
-            correctCount: correct,
-            totalQuestions: total,
-            passed: pctPassed,
-            duration: dur,
+        : {
+            score: submissionResult?.score ?? 0,
+            maxScore: submissionResult?.max_score ?? 0,
+            correctCount: (submissionResult?.answers ?? [])
+                .filter(a => a.is_correct === true).length,
+            totalQuestions: (submissionResult?.answers ?? []).length,
+            passed: submissionResult?.passed ?? false,
+            duration: formatDuration(submissionResult?.started_at, submissionResult?.submitted_at),
+            subjectScores: submissionResult?.subject_scores,
         };
-    })() : undefined;
 
     return (
         <>
             <ResultsPage
-                shuffledQuestions={isHistoryMode ? undefined : shuffledQuestions}
-                shuffledOptions={isHistoryMode ? undefined : shuffledOptions}
-                answers={isHistoryMode ? undefined : answers}
-                answerResults={isHistoryMode ? undefined : submissionResult?.answers}
-                summary={historySummary}
+                summary={summary}
                 assessmentTitle={isHistoryMode ? historySubmission?.assessment_title : assessmentConfig?.title}
                 onBackToAssessments={handleBackToAssessments}
                 onReviewErrors={handleReviewErrors}

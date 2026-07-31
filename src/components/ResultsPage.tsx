@@ -1,8 +1,13 @@
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
-import { TQuestion, TOption, TAnswer, TAnswerResult } from '../context/AssessmentContext';
+import { TSubjectScore } from '../types/domain';
 import styles from './ResultsPage.module.css';
 
+/**
+ * Everything shown on this page comes from the backend: score, maxScore and
+ * passed are the authoritative values it computed for the submission. The page
+ * only formats them — it never re-derives a score or a pass threshold.
+ */
 export interface ResultsSummary {
     score: number;
     maxScore: number;
@@ -10,15 +15,11 @@ export interface ResultsSummary {
     totalQuestions: number;
     passed: boolean;
     duration: string;
-    subjectScores?: { subject_id: string; label: string; points_earned: number; points_available: number }[];
+    subjectScores?: TSubjectScore[];
 }
 
 interface ResultsPageProps {
-    shuffledQuestions?: TQuestion[];
-    shuffledOptions?: TOption[][];
-    answers?: Record<string, TAnswer>;
-    answerResults?: TAnswerResult[];
-    summary?: ResultsSummary;
+    summary: ResultsSummary;
     assessmentTitle?: string;
     onBackToAssessments: () => void;
     onReviewErrors?: () => void;
@@ -83,9 +84,6 @@ function TopicCard({ name, earned, available }: { name: string; earned: number; 
 /* ── Main component ──────────────────────────────────────────────── */
 
 export default function ResultsPage({
-    shuffledQuestions,
-    answers,
-    answerResults,
     summary,
     assessmentTitle,
     onBackToAssessments,
@@ -96,52 +94,15 @@ export default function ResultsPage({
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
-    let correctCount: number;
-    let totalQ: number;
-    let score: number;
-    let maxScore: number;
-    let subjectScores: { subject_id: string; label: string; points_earned: number; points_available: number }[] | undefined;
-    let duration: string;
-    let passed: boolean;
-
-    if (summary) {
-        // History mode: use pre-computed summary
-        correctCount = summary.correctCount;
-        totalQ = summary.totalQuestions;
-        score = summary.score;
-        maxScore = summary.maxScore;
-        passed = summary.passed;
-        duration = summary.duration;
-        subjectScores = summary.subjectScores;
-    } else {
-        // Fresh submission mode: compute from raw answers
-        const resultMap = new Map((answerResults ?? []).map(r => [r.question_snapshot_id, r]));
-        const mcQuestions = (shuffledQuestions ?? []).filter(q => q.type === 'multiple');
-        correctCount = mcQuestions.filter(q => resultMap.get(q.id)?.is_correct === true).length;
-        totalQ = mcQuestions.length;
-
-        score = (answerResults ?? []).reduce((sum, r) => {
-            const pts = (r as Record<string, unknown>).points_awarded;
-            if (typeof pts === 'number') return sum + pts;
-            return sum + (r.is_correct ? 1 : 0);
-        }, 0);
-        maxScore = totalQ;
-
-        subjectScores = ((answerResults as unknown as Record<string, unknown>[])?.[0] as Record<string, unknown>)?.subject_scores as
-            { subject_id: string; label: string; points_earned: number; points_available: number }[] | undefined;
-
-        const startedAt = (answerResults as unknown as Record<string, unknown>)?.started_at as string | undefined;
-        const submittedAt = (answerResults as unknown as Record<string, unknown>)?.submitted_at as string | undefined;
-        duration = '--:--';
-        if (startedAt && submittedAt) {
-            const diff = Math.round((new Date(submittedAt).getTime() - new Date(startedAt).getTime()) / 1000);
-            const m = Math.floor(diff / 60).toString().padStart(2, '0');
-            const s = (diff % 60).toString().padStart(2, '0');
-            duration = `${m}:${s}`;
-        }
-
-        passed = totalQ > 0 ? correctCount / totalQ >= 0.6 : false;
-    }
+    const {
+        score,
+        maxScore,
+        correctCount,
+        totalQuestions: totalQ,
+        passed,
+        duration,
+        subjectScores,
+    } = summary;
 
     return (
         <div className={styles.page}>
