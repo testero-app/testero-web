@@ -84,6 +84,15 @@ export type TAnswerResult = {
     type: string;
     is_correct: boolean | null;
     correct_option_snapshot_ids: string[];
+    points_awarded: number | null;
+};
+
+/** Mirrors the backend `SubmissionFeedbackResponse.SubjectScore`. */
+export type TSubjectScore = {
+    subject_id: string;
+    label: string;
+    points_earned: number;
+    points_available: number;
 };
 
 /** Mirrors the backend `SubmissionFeedbackResponse`. */
@@ -98,7 +107,7 @@ export type TSubmissionResult = {
     passed?: boolean | null;
     passing_score?: number | null;
     answers: TAnswerResult[];
-    subject_scores?: { id: string; label: string; score: number; max_score: number }[];
+    subject_scores?: TSubjectScore[];
 };
 
 export type TReviewOption = {
@@ -147,4 +156,5 @@ export type TSubmissionSummary = {
     correct_count: number;
     wrong_count: number;
     unanswered_count: number;
+    subject_scores?: TSubjectScore[];
 };
