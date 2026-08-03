@@ -8,16 +8,16 @@ import { fetchSubmissionReview, startTrainingSession } from '../lib/api';
 
 import LoginPage from './LoginPage';
 import AppShell from './layout/AppShell';
-import AllenamentoTab from './AllenamentoTab';
-import CompetenzeTab from './CompetenzeTab';
-import CertificazioniTab from './CertificazioniTab';
-import RisultatiTab from './RisultatiTab';
-import ConfiguratorePage from './ConfiguratorePage';
+import TrainingTab from './TrainingTab';
+import CompetenciesTab from './CompetenciesTab';
+import CertificationsTab from './CertificationsTab';
+import ResultsTab from './ResultsTab';
+import TrainingSetupPage from './TrainingSetupPage';
 import AssessmentHeader from './AssessmentHeader';
 import AssessmentPage from './AssessmentPage';
 import RecapPage from './RecapPage';
 import ResultsPage, { ResultsSummary } from './ResultsPage';
-import RipassoPage from './RipassoPage';
+import ReviewPage from './ReviewPage';
 import StartModal from './StartModal';
 import SubmitModal from './SubmitModal';
 import FinalModal from './FinalModal';
@@ -71,7 +71,7 @@ function TrainingView() {
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/login'); }}
         >
-            <AllenamentoTab
+            <TrainingTab
                 token={token}
                 onStartTopic={(topicId) => navigate('/training/setup', { state: { topicId } })}
             />
@@ -100,7 +100,7 @@ function CompetenciesView() {
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/login'); }}
         >
-            <CompetenzeTab
+            <CompetenciesTab
                 token={token}
                 onStartTraining={(topicId) => navigate('/training/setup', { state: { topicId } })}
             />
@@ -152,7 +152,7 @@ function CertificationsView() {
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/login'); }}
         >
-            <CertificazioniTab
+            <CertificationsTab
                 assessments={availableAssessments}
                 loading={loading}
                 onStart={handleStartCert}
@@ -199,7 +199,7 @@ function ResultsHubView() {
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/login'); }}
         >
-            <RisultatiTab
+            <ResultsTab
                 submissions={submissionHistory}
                 loading={loading}
                 onSelectSubmission={handleSelectSubmission}
@@ -303,7 +303,7 @@ function TrainingSetupView() {
     };
 
     return (
-        <ConfiguratorePage
+        <TrainingSetupPage
             topicId={topicId}
             topicName={topicName}
             token={token}
@@ -539,7 +539,7 @@ function ResultsView() {
             setAlertModal({
                 visible: true,
                 title: t('errorTitle'),
-                message: t('ripassoLoadError'),
+                message: t('reviewLoadError'),
             });
         }
     }, [submissionResult, historySubmission, token, navigate, t]);
@@ -606,7 +606,7 @@ function ReviewView() {
     if (!review) return null;
 
     return (
-        <RipassoPage
+        <ReviewPage
             review={review}
             onBackToReport={() => navigate(-1)}
         />

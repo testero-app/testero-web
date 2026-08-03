@@ -1,6 +1,6 @@
 import { useTranslations } from 'use-intl';
 import { type TAssessmentListItem } from '../context/AssessmentContext';
-import styles from './CertificazioniTab.module.css';
+import styles from './CertificationsTab.module.css';
 
 function getAbbrev(title: string): string {
     const words = title.split(/[\s-]+/);
@@ -19,13 +19,13 @@ function formatDifficulty(difficulty?: string | null): string {
     }
 }
 
-interface CertificazioniTabProps {
+interface CertificationsTabProps {
     assessments: TAssessmentListItem[];
     loading: boolean;
     onStart: (assessmentId: string) => void;
 }
 
-export default function CertificazioniTab({ assessments, loading, onStart }: CertificazioniTabProps) {
+export default function CertificationsTab({ assessments, loading, onStart }: CertificationsTabProps) {
     const t = useTranslations('certifications');
     if (loading) {
         return (
@@ -63,7 +63,7 @@ export default function CertificazioniTab({ assessments, loading, onStart }: Cer
                                     {a.questionsPerAssessment} domande · {a.timerMinutes} min · livello {formatDifficulty(a.difficulty)}
                                 </div>
                             </div>
-                            <button className={styles.avviaBtn} onClick={() => onStart(a.id)}>
+                            <button className={styles.startBtn} onClick={() => onStart(a.id)}>
                                 Avvia
                                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#06302c" strokeWidth="2.6">
                                     <path d="M5 12h14M13 6l6 6-6 6" />
