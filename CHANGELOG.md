@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.9.2](https://github.com/testero-app/testero-web/compare/v2.9.1...v2.9.2) (2026-07-31)
+
+
+### Bug Fixes
+
+* **results:** display the backend's score and outcome instead of recomputing ([#155](https://github.com/testero-app/testero-web/issues/155)) ([e38ddea](https://github.com/testero-app/testero-web/commit/e38ddea7e5eeb57bd1163264e2da81d9b067b860))
+
 ## [2.9.1](https://github.com/testero-app/testero-web/compare/v2.9.0...v2.9.1) (2026-07-24)
 
 
