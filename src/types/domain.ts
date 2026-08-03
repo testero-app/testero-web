@@ -2,71 +2,30 @@
 // Shapes exchanged with the backend, kept out of the context module so that
 // `lib/api` can depend on them without importing from a React component.
 //
-// These are still hand-written. Every field below was verified against the
-// backend OpenAPI spec (`/api/v3/api-docs`), but nothing keeps them in sync
-// automatically — see #134, which is blocked on the spec emitting `required`
-// metadata for response DTOs.
+// These are aliases onto `api-generated.ts`, which is generated from the backend's
+// OpenAPI spec (`npm run sync:openapi && npm run generate:api-types`). Do not restate
+// a backend field here: a DTO change must reach this file through regeneration, not
+// through someone remembering to mirror it — see #134.
 
-export type TOption = {
-    id: string;
-    text: string;
-    isFallback?: boolean;
-};
+import type { components } from './api-generated';
 
-export type TQuestion = {
-    id: string;
-    type: string;
-    text: string;
-    code?: string;
-    options?: TOption[];
-    points?: number;
-    subjects?: { id: string; label: string }[];
-};
+export type ApiSchemas = components['schemas'];
 
-export type TScoringRules = {
-    pointsPerCorrect: number;
-    pointsPerWrong: number;
-    pointsPerUnanswered: number;
-};
+export type TOption = ApiSchemas['OptionDto'];
 
-export type TAssessmentConfig = {
-    assessmentId: string;
-    title: string;
-    availableFrom: string | null;
-    availableUntil: string | null;
-    timerMinutes: number;
-    questionsPerAssessment: number;
-    scoring: TScoringRules;
-    shuffleQuestions: boolean;
-    shuffleOptions: boolean;
-    maxAttempts: number | null;
-    subjects?: { id: string; label: string }[];
-};
+export type TQuestion = ApiSchemas['QuestionDto'];
 
-export type TAssessmentListItem = {
-    id: string;
-    title: string;
-    availableFrom: string | null;
-    availableUntil: string | null;
-    timerMinutes: number;
-    questionsPerAssessment: number;
-    difficulty?: string;
-    type?: string;
-    status?: string;
-    score?: number | null;
-    subjects?: { id: string; label: string }[];
-};
+export type TScoringRules = ApiSchemas['ScoringRules'];
 
-export type TUser = {
-    id: string;
-    first_name: string;
-    last_name: string;
-    username: string;
-    class_name: string;
-    email?: string;
-    role?: string;
-    language?: string;
-};
+export type TAssessmentConfig = ApiSchemas['AssessmentConfigResponse'];
+
+export type TAssessmentListItem = ApiSchemas['AssessmentListItem'];
+
+/**
+ * The logged-in user. Login returns the core identity; `GET /users/me` adds the
+ * profile fields, so those are optional on the shape held in context.
+ */
+export type TUser = ApiSchemas['UserInfo'] & Partial<ApiSchemas['UserProfileResponse']>;
 
 /**
  * Frontend-only shape: how an in-progress answer is held in component state
@@ -79,82 +38,17 @@ export type TAnswer = {
     text?: string;
 };
 
-export type TAnswerResult = {
-    question_snapshot_id: string;
-    type: string;
-    is_correct: boolean | null;
-    correct_option_snapshot_ids: string[];
-    points_awarded: number | null;
-};
+export type TAnswerResult = ApiSchemas['AnswerResult'];
 
-/** Mirrors the backend `SubmissionFeedbackResponse.SubjectScore`. */
-export type TSubjectScore = {
-    subject_id: string;
-    label: string;
-    points_earned: number;
-    points_available: number;
-};
+export type TSubjectScore = ApiSchemas['SubjectScore'];
 
-/** Mirrors the backend `SubmissionFeedbackResponse`. */
-export type TSubmissionResult = {
-    id: string;
-    user_id: string;
-    assessment_snapshot_id: string;
-    started_at: string | null;
-    submitted_at: string;
-    score: number | null;
-    max_score?: number | null;
-    passed?: boolean | null;
-    passing_score?: number | null;
-    answers: TAnswerResult[];
-    subject_scores?: TSubjectScore[];
-};
+export type TSubmissionResult = ApiSchemas['SubmissionFeedbackResponse'];
 
-export type TReviewOption = {
-    id: string;
-    text: string;
-    position: number;
-    is_correct: boolean;
-};
+export type TReviewOption = ApiSchemas['ReviewOption'];
 
-export type TReviewQuestion = {
-    id: string;
-    type: string;
-    text: string;
-    code: string | null;
-    explanation: string | null;
-    position: number;
-    is_correct: boolean | null;
-    selected_option_ids: string[];
-    answer_text: string;
-    motivation: string;
-    options: TReviewOption[];
-    subjects?: { id: string; label: string }[];
-};
+export type TReviewQuestion = ApiSchemas['ReviewQuestion'];
 
-export type TSubmissionReview = {
-    id: string;
-    assessment_title: string;
-    started_at: string | null;
-    submitted_at: string;
-    score: number | null;
-    questions: TReviewQuestion[];
-};
+export type TSubmissionReview = ApiSchemas['SubmissionReviewResponse'];
 
-/** Mirrors the backend `SubmissionSummary` (an item of the history list). */
-export type TSubmissionSummary = {
-    id: string;
-    assessment_snapshot_id: string;
-    assessment_title: string;
-    type?: string;
-    started_at: string | null;
-    submitted_at: string;
-    score: number | null;
-    max_score?: number | null;
-    passed?: boolean | null;
-    total_questions: number;
-    correct_count: number;
-    wrong_count: number;
-    unanswered_count: number;
-    subject_scores?: TSubjectScore[];
-};
+/** An item of the submission history list. */
+export type TSubmissionSummary = ApiSchemas['SubmissionSummary'];

@@ -37,7 +37,8 @@ export function isOnlyFallbackSelected(question: TQuestion, selectedIds: string[
  *   If only the fallback option is selected, requires non-empty motivation.
  */
 export function isQuestionAnswered(
-    question: { type: string; options?: unknown[] },
+    // `options` is null for open questions, which is how the backend sends them.
+    question: { type: string; options?: unknown[] | null },
     answer: { selectedIds?: string[]; text?: string; motivation?: string } | undefined,
 ): boolean {
     if (question.type === 'open') {
