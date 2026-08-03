@@ -8,7 +8,7 @@ function getAbbrev(title: string): string {
     return title.substring(0, 2).toUpperCase();
 }
 
-function formatDifficulty(difficulty?: string): string {
+function formatDifficulty(difficulty?: string | null): string {
     if (!difficulty) return 'base';
     switch (difficulty.toUpperCase()) {
         case 'BEGINNER': return 'base';

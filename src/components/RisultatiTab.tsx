@@ -29,8 +29,8 @@ function formatDate(iso: string): string {
     });
 }
 
-function formatDuration(startedAt: string | null, submittedAt: string): string {
-    if (!startedAt) return '';
+function formatDuration(startedAt: string | null, submittedAt: string | null): string {
+    if (!startedAt || !submittedAt) return '';
     const ms = new Date(submittedAt).getTime() - new Date(startedAt).getTime();
     return `${Math.round(ms / 60000)} min`;
 }

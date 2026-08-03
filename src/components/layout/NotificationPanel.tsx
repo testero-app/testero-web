@@ -1,14 +1,12 @@
 import { useTranslations, useLocale } from 'next-intl';
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { fetchUnreadNotifications, markNotificationAsRead, markAllNotificationsAsRead } from '../../lib/api';
+import {
+    fetchUnreadNotifications,
+    markNotificationAsRead,
+    markAllNotificationsAsRead,
+    type TNotification,
+} from '../../lib/api';
 import styles from './NotificationPanel.module.css';
-
-interface Notification {
-    id: string;
-    title: string;
-    message: string;
-    created_at: string;
-}
 
 interface NotificationPanelProps {
     token: string;
@@ -16,7 +14,8 @@ interface NotificationPanelProps {
     onCountChange: () => void;
 }
 
-function formatTime(iso: string, t: (k: string, v?: Record<string, string | number | Date>) => string, locale: string): string {
+function formatTime(iso: string | null, t: (k: string, v?: Record<string, string | number | Date>) => string, locale: string): string {
+    if (!iso) return '';
     const date = new Date(iso);
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
@@ -36,7 +35,7 @@ export default function NotificationPanel({ token, count, onCountChange }: Notif
     const t = useTranslations('notifications');
     const locale = useLocale();
     const [open, setOpen] = useState(false);
-    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [notifications, setNotifications] = useState<TNotification[]>([]);
     const [loading, setLoading] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
 

@@ -1,4 +1,5 @@
 import type {
+    ApiSchemas,
     TAnswer,
     TAssessmentConfig,
     TAssessmentListItem,
@@ -17,94 +18,34 @@ type TErrorBody = {
     message?: string;
 };
 
-export type TLoginResponse = {
-    token: string;
-    user: TUser;
-};
+// Response shapes, aliased onto the generated schemas. Same rule as `types/domain.ts`:
+// nothing here restates a backend field by hand.
 
-export type TStartAssessmentResponse = {
-    submission_id: string;
-};
+export type TLoginResponse = ApiSchemas['LoginResponse'];
 
-/** Mirrors the backend `AssessmentQuestionsResponse`. */
-export type TAssessmentQuestionsResponse = {
-    assessmentId: string;
-    title: string;
-    availableFrom: string | null;
-    availableUntil: string | null;
-    timerMinutes: number;
-    totalQuestions: number;
-    questions: TQuestion[];
-};
+export type TStartAssessmentResponse = ApiSchemas['SubmissionStartResponse'];
 
-export type TSavedAnswer = {
-    question_snapshot_id: string;
-    type: string;
-    text: string;
-    motivation: string;
-    selected_option_ids: string[];
-    flagged: boolean;
-};
+export type TAssessmentQuestionsResponse = ApiSchemas['AssessmentQuestionsResponse'];
 
-export type TChapter = {
-    id: string;
-    label: string;
-    question_counts: { base: number; intermediate: number; advanced: number };
-};
+export type TSavedAnswer = ApiSchemas['SavedAnswer'];
 
-export type TTopic = {
-    id: string;
-    abbreviation: string;
-    title: string;
-    description: string;
-    enabled: boolean;
-    chapters: TChapter[];
-    total_chapters: number;
-    total_questions: number;
-};
+export type TChapter = ApiSchemas['ChapterItem'];
 
-export type TTopicChapters = {
-    chapters: TChapter[];
-    total_chapters: number;
-};
+export type TTopic = ApiSchemas['TopicItem'];
 
-export type TTrainingRequest = {
-    topic_id: string;
-    chapter_ids: string[];
-    difficulty: string;
-    question_count: number;
-    timer_enabled: boolean;
-};
+export type TTopicChapters = ApiSchemas['TopicChaptersResponse'];
 
-export type TTrainingResponse = {
-    assessment_snapshot_id: string;
-};
+export type TTrainingRequest = ApiSchemas['TrainingStartRequest'];
 
-export type TNotificationPreference = {
-    type: string;
-    enabled: boolean;
-};
+export type TTrainingResponse = ApiSchemas['TrainingStartResponse'];
 
-export type TNotification = {
-    id: string;
-    title: string;
-    message: string;
-    created_at: string;
-};
+export type TNotificationPreference = ApiSchemas['NotificationPreferenceDto'];
 
-export type TSubjectMastery = {
-    id: string;
-    label: string;
-    mastery: number;
-};
+export type TNotification = ApiSchemas['NotificationItemDto'];
 
-export type TTopicMastery = {
-    id: string;
-    title: string;
-    mastery: number;
-    children: TTopicMastery[];
-    subjects: TSubjectMastery[];
-};
+export type TSubjectMastery = ApiSchemas['SubjectMastery'];
+
+export type TTopicMastery = ApiSchemas['TopicMastery'];
 
 function authHeaders(token: string): HeadersInit {
     return {
