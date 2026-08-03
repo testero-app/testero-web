@@ -186,7 +186,8 @@
         "questionCount": "Number of questions",
         "timer": "Timer",
         "timerMeta": "~{min} min · 1:30 per question",
-        "startTraining": "Start training"
+        "startTraining": "Start training",
+        "startingTraining": "Starting…"
     },
     "profile": {
         "saved": "Changes saved successfully.",
