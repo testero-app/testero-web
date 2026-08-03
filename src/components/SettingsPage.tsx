@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useTranslations, useLocale } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { useTranslations, useLocale } from 'use-intl';
 import { fetchNotificationPreferences, updateNotificationPreferences, updateLanguage } from '../lib/api';
+import { useLocaleSwitch } from '../i18n/LocaleProvider';
+import type { Locale } from '../i18n/messages';
 import SegmentedControl from './ui/SegmentedControl';
 import styles from './ProfilePage.module.css';
 
@@ -12,21 +13,20 @@ interface SettingsPageProps {
 /** These toggles govern email delivery; in-app notifications are always on. */
 const EMAIL_CHANNEL = 'EMAIL';
 
-/**
- * Persists the language, syncs the cookie the layout reads, then refreshes the server
- * components so the new locale takes effect. Uses router.refresh() rather than a full page
- * reload so the in-memory session (token) survives — a reload would log the user out.
- */
-function setLanguage(lang: 'it' | 'en', token: string | undefined, refresh: () => void) {
-    document.cookie = `NEXT_LOCALE=${lang}; path=/; max-age=31536000; samesite=lax`;
-    if (token) updateLanguage(lang, token).catch(() => {});
-    refresh();
-}
-
 export default function SettingsPage({ token }: SettingsPageProps) {
     const t = useTranslations('settings');
     const locale = useLocale();
-    const router = useRouter();
+    const { setLocale } = useLocaleSwitch();
+
+    /**
+     * Switches the interface language and persists it on the user's profile. The provider owns
+     * the cookie and the <html lang>; the re-render is plain React state, so there is no page
+     * reload to lose the in-memory session over.
+     */
+    const setLanguage = useCallback((lang: Locale) => {
+        setLocale(lang);
+        if (token) updateLanguage(lang, token).catch(() => {});
+    }, [setLocale, token]);
 
     // Email notification preferences. The backend keys a preference by (event, channel) and
     // defaults every EMAIL channel to off, which is the state shown until the fetch lands.
@@ -72,7 +72,7 @@ export default function SettingsPage({ token }: SettingsPageProps) {
                                 { value: 'en', label: t('languageEnglish') },
                             ]}
                             value={locale}
-                            onChange={(v) => setLanguage(v as 'it' | 'en', token, () => router.refresh())}
+                            onChange={(v) => setLanguage(v as Locale)}
                         />
                     </div>
 

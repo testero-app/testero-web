@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { useState } from 'react';
 import { TUser } from '../context/AssessmentContext';
 import { updateProfile, changePassword } from '../lib/api';

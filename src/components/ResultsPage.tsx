@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { useEffect } from 'react';
 import { TSubjectScore } from '../types/domain';
 import styles from './ResultsPage.module.css';
@@ -89,7 +89,7 @@ export default function ResultsPage({
     onBackToAssessments,
     onReviewErrors,
 }: ResultsPageProps) {
-    const t = useTranslations('results');
+    const t = useTranslations('resultsSummary');
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);

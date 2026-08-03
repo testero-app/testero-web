@@ -10,7 +10,7 @@ import type {
     TUser,
 } from '../types/domain';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 /** Shape of the error bodies returned by the backend. */
 type TErrorBody = {

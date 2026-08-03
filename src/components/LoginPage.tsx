@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import styles from './LoginPage.module.css';
 
 interface LoginPageProps {
