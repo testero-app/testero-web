@@ -1,18 +1,7 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { fetchTopics } from '../lib/api';
+import { fetchTopics, type TTopic } from '../lib/api';
 import styles from './AllenamentoTab.module.css';
-
-interface TopicItem {
-    id: string;
-    abbreviation: string;
-    title: string;
-    description: string;
-    enabled: boolean;
-    chapters: { id: string; label: string; question_counts: { base: number; intermediate: number; advanced: number } }[];
-    total_chapters: number;
-    total_questions: number;
-}
 
 interface AllenamentoTabProps {
     token: string;
@@ -21,7 +10,7 @@ interface AllenamentoTabProps {
 
 export default function AllenamentoTab({ token, onStartTopic }: AllenamentoTabProps) {
     const t = useTranslations('allenamento');
-    const [topics, setTopics] = useState<TopicItem[]>([]);
+    const [topics, setTopics] = useState<TTopic[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

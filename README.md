@@ -62,9 +62,33 @@ The CI pipeline runs on every PR to `main`:
 
 | Step | What it does |
 |------|-------------|
+| **API types** | Regenerates the types from the spec and fails if the committed file is stale |
 | **TypeScript** | Verifies type safety (`tsc --noEmit`) |
 | **ESLint** | Enforces code quality and React best practices |
 | **Build** | Verifies the production build succeeds |
+
+## API Types
+
+The types describing backend payloads are **generated**, not written by hand:
+`src/types/api-generated.ts` comes from `openapi/openapi.json`, which is the spec
+published by [testero-backend](https://github.com/testero-app/testero-backend) at
+`docs/openapi.json`. `src/types/domain.ts` and `src/lib/api.ts` only alias those
+schemas, so a backend DTO change surfaces here as a type error instead of a
+runtime surprise.
+
+After a backend contract change:
+
+```bash
+npm run sync:openapi        # pulls the spec from main on GitHub
+npm run generate:api-types  # rewrites src/types/api-generated.ts
+```
+
+Both files are committed. While a backend change is still in review, point the
+sync at your local checkout:
+
+```bash
+OPENAPI_SRC=../testero-backend/docs/openapi.json npm run sync:openapi
+```
 
 The "Build & Verify" check is **required** — PRs cannot be merged if any
 step fails.

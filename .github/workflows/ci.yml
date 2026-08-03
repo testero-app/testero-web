@@ -31,6 +31,16 @@ jobs:
       - name: i18n message sync
         run: npm run check:i18n
 
+      # src/types/api-generated.ts is generated from the committed openapi/openapi.json. A diff
+      # here means the two were committed out of step — regenerate rather than hand-edit.
+      - name: API types match the spec
+        run: |
+          npm run generate:api-types
+          git diff --exit-code -- src/types/api-generated.ts || {
+            echo "::error::src/types/api-generated.ts is stale — run npm run generate:api-types and commit it."
+            exit 1
+          }
+
       - name: TypeScript check
         run: npx tsc --noEmit
 
