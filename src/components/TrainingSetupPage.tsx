@@ -23,13 +23,14 @@ interface TrainingSetupPageProps {
         difficulty: string;
         questionCount: number;
         timerEnabled: boolean;
-    }) => void;
+    }) => void | Promise<void>;
 }
 
 export default function TrainingSetupPage({ topicId, topicName, token, onBack, onStart }: TrainingSetupPageProps) {
     const t = useTranslations('trainingSetup');
     const [chapters, setChapters] = useState<ChapterItem[]>([]);
     const [loading, setLoading] = useState(true);
+    const [starting, setStarting] = useState(false);
     const [selectedChapters, setSelectedChapters] = useState<Set<string>>(new Set());
     const [difficulty, setDifficulty] = useState<Difficulty>('base');
     const [questionCount, setQuestionCount] = useState(15);
@@ -77,14 +78,23 @@ export default function TrainingSetupPage({ topicId, topicName, token, onBack, o
 
     const estimatedMinutes = Math.ceil(questionCount * 1.5);
 
-    const handleStart = () => {
-        onStart({
-            topicId,
-            chapterIds: Array.from(selectedChapters),
-            difficulty,
-            questionCount,
-            timerEnabled,
-        });
+    // Creating a training session copies every question into a snapshot, so the request can
+    // take seconds on a remote database. Without this guard the button stayed live and each
+    // further click created another session — and another submission — behind the first.
+    const handleStart = async () => {
+        if (starting) return;
+        setStarting(true);
+        try {
+            await onStart({
+                topicId,
+                chapterIds: Array.from(selectedChapters),
+                difficulty,
+                questionCount,
+                timerEnabled,
+            });
+        } finally {
+            setStarting(false);
+        }
     };
 
     return (
@@ -217,12 +227,15 @@ export default function TrainingSetupPage({ topicId, topicName, token, onBack, o
                     <button
                         className={styles.startBtn}
                         onClick={handleStart}
-                        disabled={selectedChapters.size === 0 || availableCount === 0}
+                        disabled={starting || selectedChapters.size === 0 || availableCount === 0}
+                        aria-busy={starting}
                     >
-                        {t('startTraining')}
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#06302c" strokeWidth="2.6">
-                            <path d="M5 12h14M13 6l6 6-6 6" />
-                        </svg>
+                        {starting ? t('startingTraining') : t('startTraining')}
+                        {!starting && (
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#06302c" strokeWidth="2.6">
+                                <path d="M5 12h14M13 6l6 6-6 6" />
+                            </svg>
+                        )}
                     </button>
                 </div>
             </div>
