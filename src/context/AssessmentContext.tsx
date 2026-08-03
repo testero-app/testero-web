@@ -1,5 +1,3 @@
-'use client';
-
 import { createContext, useCallback, useContext, useReducer } from "react";
 import { login as apiLogin, fetchAvailableAssessments, fetchAssessmentConfig, fetchAssessmentQuestions, startAssessment, submitAssessment, fetchSubmissionHistory, saveAnswer } from "../lib/api";
 
@@ -11,16 +9,11 @@ import { login as apiLogin, fetchAvailableAssessments, fetchAssessmentConfig, fe
 import type {
     TOption,
     TQuestion,
-    TScoringRules,
     TAssessmentConfig,
     TAssessmentListItem,
     TUser,
     TAnswer,
-    TAnswerResult,
     TSubmissionResult,
-    TReviewOption,
-    TReviewQuestion,
-    TSubmissionReview,
     TSubmissionSummary,
 } from "../types/domain";
 

@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import AccountMenu from './AccountMenu';
 import NotificationPanel from './NotificationPanel';
 import styles from './ShellTopBar.module.css';

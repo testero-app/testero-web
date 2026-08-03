@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { useState, useRef, useEffect } from 'react';
 import TesteroLogo from './ui/TesteroLogo';
 import styles from './AssessmentHeader.module.css';

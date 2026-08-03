@@ -14,9 +14,18 @@ This repository contains the **web frontend**. The backend lives in
 
 ## Stack
 
-- **Framework**: Next.js (App Router)
-- **Language**: JavaScript
-- **Hosting**: [Vercel](https://vercel.com) (any platform that supports Next.js works)
+- **Library**: React 19 with React Router — no framework
+- **Build**: [Vite](https://vite.dev)
+- **Language**: TypeScript
+- **i18n**: [use-intl](https://next-intl.dev/docs/environments/core-library) (IT/EN)
+- **Hosting**: the build is a folder of static files, so any static host or CDN serves it
+
+The app is a client-side SPA behind a login: every screen reads its data from the
+[backend API](https://github.com/testero-app/testero-backend) with a token held in memory.
+There is no server-side rendering and no server to run — `npm run build` emits `dist/`.
+
+Deep links work, so the host must serve `index.html` for unknown paths (`vercel.json` does this
+on Vercel; `try_files $uri /index.html` is the nginx equivalent).
 
 ## Getting Started
 
@@ -40,13 +49,14 @@ cp .env.example .env.local
 npm run dev
 ```
 
-The app will be available at `http://localhost:3000`.
+The app will be available at `http://localhost:3000` — the port the backend allows by default
+(`app.cors.origins`). `npm run preview` serves a production build on the same port.
 
 ### Environment Variables
 
 | Variable | Description |
 |----------|-------------|
-| `NEXT_PUBLIC_API_URL` | Backend API URL (e.g. `http://localhost:8080`) |
+| `VITE_API_URL` | Backend API URL (e.g. `http://localhost:8080`) |
 
 See [`.env.example`](./.env.example) for the expected format.
 

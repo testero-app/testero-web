@@ -1,227 +1,227 @@
 {
-  "login": {
-    "brandLine1": "Challenge",
-    "brandLine2": "your knowledge.",
-    "chipTraining": "training",
-    "chipCertifications": "school certifications",
-    "chipCompetencies": "competency map",
-    "brandSub": "Train by topic and sit your school's external certification assessments. Immediate grading, results by topic.",
-    "title": "Sign in to your account",
-    "subtitle": "Use the credentials provided by your school.",
-    "invalidCredentials": "Invalid credentials",
-    "usernameLabel": "Username",
-    "usernamePlaceholder": "mario.rossi",
-    "passwordLabel": "Password",
-    "passwordPlaceholder": "password",
-    "showPassword": "Show password",
-    "hidePassword": "Hide password",
-    "submit": "Sign in",
-    "submitting": "Signing in...",
-    "info": "On first access the system may take 1–2 minutes to start.",
-    "feedback": "Leave feedback",
-    "serverTimeout": "The server is not responding. Try again in a few seconds."
-  },
-  "settings": {
-    "notificationsTitle": "Notifications",
-    "notifResultsTitle": "Assessment results by email",
-    "notifResultsDesc": "Get a summary when an assessment is graded.",
-    "notifReminderTitle": "Assessment deadline reminders",
-    "notifReminderDesc": "A notice the day before the deadline.",
-    "languageTitle": "Language",
-    "languageDescription": "Choose the interface language.",
-    "languageItalian": "Italiano",
-    "languageEnglish": "English"
-  },
-  "nav": {
-    "sectionStudy": "STUDY",
-    "training": "Training",
-    "competencies": "Competencies",
-    "certifications": "Certifications",
-    "results": "My results"
-  },
-  "shell": {
-    "allenamento": {
-      "title": "Training",
-      "subtitle": "Free practice by topic"
+    "login": {
+        "brandLine1": "Challenge",
+        "brandLine2": "your knowledge.",
+        "chipTraining": "training",
+        "chipCertifications": "school certifications",
+        "chipCompetencies": "competency map",
+        "brandSub": "Train by topic and sit your school's external certification assessments. Immediate grading, results by topic.",
+        "title": "Sign in to your account",
+        "subtitle": "Use the credentials provided by your school.",
+        "invalidCredentials": "Invalid credentials",
+        "usernameLabel": "Username",
+        "usernamePlaceholder": "mario.rossi",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "password",
+        "showPassword": "Show password",
+        "hidePassword": "Hide password",
+        "submit": "Sign in",
+        "submitting": "Signing in...",
+        "info": "On first access the system may take 1–2 minutes to start.",
+        "feedback": "Leave feedback",
+        "serverTimeout": "The server is not responding. Try again in a few seconds."
     },
-    "competenze": {
-      "title": "Competencies",
-      "subtitle": "Your mastery by topic"
+    "settings": {
+        "notificationsTitle": "Notifications",
+        "notifResultsTitle": "Assessment results by email",
+        "notifResultsDesc": "Get a summary when an assessment is graded.",
+        "notifReminderTitle": "Assessment deadline reminders",
+        "notifReminderDesc": "A notice the day before the deadline.",
+        "languageTitle": "Language",
+        "languageDescription": "Choose the interface language.",
+        "languageItalian": "Italiano",
+        "languageEnglish": "English"
     },
-    "certificazioni": {
-      "title": "Certifications",
-      "subtitle": "Your school's external assessments"
+    "nav": {
+        "sectionStudy": "STUDY",
+        "training": "Training",
+        "competencies": "Competencies",
+        "certifications": "Certifications",
+        "results": "My results"
     },
-    "risultati": {
-      "title": "My results",
-      "subtitle": "History of assessments and training"
+    "shell": {
+        "training": {
+            "title": "Training",
+            "subtitle": "Free practice by topic"
+        },
+        "competencies": {
+            "title": "Competencies",
+            "subtitle": "Your mastery by topic"
+        },
+        "certifications": {
+            "title": "Certifications",
+            "subtitle": "Your school's external assessments"
+        },
+        "results": {
+            "title": "My results",
+            "subtitle": "History of assessments and training"
+        },
+        "profile": {
+            "title": "Profile",
+            "subtitle": "Your details and password"
+        },
+        "settings": {
+            "title": "Settings",
+            "subtitle": "Language and notifications"
+        },
+        "menuLabel": "Open the navigation menu"
     },
-    "profilo": {
-      "title": "Profile",
-      "subtitle": "Your details and password"
+    "accountMenu": {
+        "student": "Student",
+        "profile": "Profile",
+        "settings": "Settings",
+        "logout": "Log out"
     },
-    "impostazioni": {
-      "title": "Settings",
-      "subtitle": "Language and notifications"
+    "notifications": {
+        "title": "Notifications",
+        "loading": "Loading...",
+        "empty": "No notifications",
+        "now": "Now",
+        "yesterday": "Yesterday",
+        "minAgo": "{n} min ago",
+        "hoursAgo": "{n}h ago",
+        "daysAgo": "{n}d ago"
     },
-    "menuLabel": "Open the navigation menu"
-  },
-  "accountMenu": {
-    "student": "Student",
-    "profile": "Profile",
-    "settings": "Settings",
-    "logout": "Log out"
-  },
-  "notifications": {
-    "title": "Notifications",
-    "loading": "Loading...",
-    "empty": "No notifications",
-    "now": "Now",
-    "yesterday": "Yesterday",
-    "minAgo": "{n} min ago",
-    "hoursAgo": "{n}h ago",
-    "daysAgo": "{n}d ago"
-  },
-  "assessment": {
-    "answerPlaceholder": "Write your answer here...",
-    "motivationPlaceholder": "Briefly explain...",
-    "stimulus": "STIMULUS",
-    "showCode": "Show code",
-    "hideCode": "Hide code",
-    "codeFileName": "exercise.py",
-    "questionCounter": "Question {n} · {total}",
-    "questionCounterOf": "Question {n} of {total}",
-    "crumbDefault": "Assessment",
-    "mapQuestions": "Question map",
-    "legendCurrent": "Current",
-    "legendAnswered": "Answered",
-    "legendFlagged": "To review"
-  },
-  "recap": {
-    "title": "Answer summary",
-    "download": "Download answers",
-    "confirmSubmit": "Confirm and submit",
-    "answered": "Answered",
-    "notAnswered": "Not answered",
-    "noAnswer": "No answer",
-    "motivation": "Motivation:"
-  },
-  "modals": {
-    "cancel": "Cancel",
-    "start": "Start",
-    "startConfirm": "Are you sure you want to start the assessment? The timer will start immediately.",
-    "submitTitle": "Submit the assessment?",
-    "answeredCount": "Answered",
-    "unansweredCount": "Unanswered",
-    "submit": "Submit",
-    "finalConfirm": "You are about to submit the assessment. After submitting you can no longer change your answers."
-  },
-  "appRouter": {
-    "trainingFallback": "Training",
-    "errorTitle": "Error",
-    "fileGenError": "Error generating the file. Please try again.",
-    "ripassoLoadError": "Could not load the review. Please try again."
-  },
-  "results": {
-    "passed": "Passed",
-    "notPassed": "Not passed",
-    "statQuestions": "Questions",
-    "statPoints": "Points",
-    "statTime": "Time",
-    "title": "Assessment results",
-    "bySubject": "By topic",
-    "pointsHint": "points earned / available"
-  },
-  "ripasso": {
-    "title": "Answer summary",
-    "backToReport": "Back to report",
-    "filterAll": "All",
-    "filterWrong": "Wrong only",
-    "notAnswered": "Not answered",
-    "correct": "Correct",
-    "wrong": "Wrong",
-    "correctAnswer": "Correct answer",
-    "yourAnswer": "Your answer",
-    "noAnswer": "No answer",
-    "why": "Why",
-    "bonus": "BONUS",
-    "questionLabel": "QUESTION"
-  },
-  "risultati": {
-    "filterAll": "All",
-    "filterCertifications": "Certifications",
-    "filterTraining": "Training",
-    "filterLabel": "Filter",
-    "empty": "No results available.",
-    "tagCertification": "Certification",
-    "tagTraining": "Training",
-    "passed": "Passed",
-    "notPassed": "Not passed"
-  },
-  "certificazioni": {
-    "banner": "Certification is a <strong>school</strong> service: it sets the content, threshold and outcome. Testero delivers it as a timed assessment and records the result — it is not a separate track.",
-    "empty": "No certifications available at the moment."
-  },
-  "allenamento": {
-    "empty": "No topics available at the moment.",
-    "topics": "Topics"
-  },
-  "competenze": {
-    "title": "Your competencies",
-    "loading": "Loading...",
-    "empty": "No data available. Complete at least one assessment or simulation to see your mastery by topic."
-  },
-  "configuratore": {
-    "chapters": "Chapters",
-    "deselectAll": "Deselect all",
-    "selectAll": "Select all",
-    "sessionTitle": "Your session",
-    "difficultyLabel": "Difficulty",
-    "difficulty": {
-      "base": "Basic",
-      "intermedio": "Intermediate",
-      "avanzato": "Advanced",
-      "mista": "Mixed"
+    "assessment": {
+        "answerPlaceholder": "Write your answer here...",
+        "motivationPlaceholder": "Briefly explain...",
+        "stimulus": "STIMULUS",
+        "showCode": "Show code",
+        "hideCode": "Hide code",
+        "codeFileName": "exercise.py",
+        "questionCounter": "Question {n} · {total}",
+        "questionCounterOf": "Question {n} of {total}",
+        "crumbDefault": "Assessment",
+        "mapQuestions": "Question map",
+        "legendCurrent": "Current",
+        "legendAnswered": "Answered",
+        "legendFlagged": "To review"
     },
-    "questionCount": "Number of questions",
-    "timer": "Timer",
-    "timerMeta": "~{min} min · 1:30 per question",
-    "startTraining": "Start training"
-  },
-  "profile": {
-    "saved": "Changes saved successfully.",
-    "saveError": "Error while saving.",
-    "student": "Student",
-    "studentId": "Student ID",
-    "school": "School",
-    "class": "Class",
-    "enrolledSince": "Enrolled since",
-    "personalData": "Personal details",
-    "firstName": "First name",
-    "assignedBySchool": "assigned by the school",
-    "lastName": "Last name",
-    "email": "Email",
-    "emailPlaceholder": "email@example.com",
-    "username": "Username",
-    "notEditable": "not editable",
-    "saving": "Saving...",
-    "save": "Save changes",
-    "cancel": "Cancel",
-    "securityTitle": "Security",
-    "securityDescription": "Update the password you use to sign in.",
-    "currentPassword": "Current password",
-    "newPassword": "New password",
-    "confirmPassword": "Confirm new password",
-    "updatePassword": "Update password",
-    "updatingPassword": "Updating...",
-    "passwordsDontMatch": "The passwords do not match.",
-    "passwordRequirements": "The password does not meet the requirements.",
-    "passwordUpdated": "Password updated successfully.",
-    "genericError": "Error.",
-    "req8": "At least 8 characters",
-    "reqUpper": "One uppercase letter",
-    "reqNum": "One number",
-    "reqSymbol": "One symbol",
-    "fieldsManagedBySchool": "Some fields are managed by the school"
-  }
+    "recap": {
+        "title": "Answer summary",
+        "download": "Download answers",
+        "confirmSubmit": "Confirm and submit",
+        "answered": "Answered",
+        "notAnswered": "Not answered",
+        "noAnswer": "No answer",
+        "motivation": "Motivation:"
+    },
+    "modals": {
+        "cancel": "Cancel",
+        "start": "Start",
+        "startConfirm": "Are you sure you want to start the assessment? The timer will start immediately.",
+        "submitTitle": "Submit the assessment?",
+        "answeredCount": "Answered",
+        "unansweredCount": "Unanswered",
+        "submit": "Submit",
+        "finalConfirm": "You are about to submit the assessment. After submitting you can no longer change your answers."
+    },
+    "appRouter": {
+        "trainingFallback": "Training",
+        "errorTitle": "Error",
+        "fileGenError": "Error generating the file. Please try again.",
+        "ripassoLoadError": "Could not load the review. Please try again."
+    },
+    "resultsSummary": {
+        "passed": "Passed",
+        "notPassed": "Not passed",
+        "statQuestions": "Questions",
+        "statPoints": "Points",
+        "statTime": "Time",
+        "title": "Assessment results",
+        "bySubject": "By topic",
+        "pointsHint": "points earned / available"
+    },
+    "review": {
+        "title": "Answer summary",
+        "backToReport": "Back to report",
+        "filterAll": "All",
+        "filterWrong": "Wrong only",
+        "notAnswered": "Not answered",
+        "correct": "Correct",
+        "wrong": "Wrong",
+        "correctAnswer": "Correct answer",
+        "yourAnswer": "Your answer",
+        "noAnswer": "No answer",
+        "why": "Why",
+        "bonus": "BONUS",
+        "questionLabel": "QUESTION"
+    },
+    "results": {
+        "filterAll": "All",
+        "filterCertifications": "Certifications",
+        "filterTraining": "Training",
+        "filterLabel": "Filter",
+        "empty": "No results available.",
+        "tagCertification": "Certification",
+        "tagTraining": "Training",
+        "passed": "Passed",
+        "notPassed": "Not passed"
+    },
+    "certifications": {
+        "banner": "Certification is a <strong>school</strong> service: it sets the content, threshold and outcome. Testero delivers it as a timed assessment and records the result — it is not a separate track.",
+        "empty": "No certifications available at the moment."
+    },
+    "training": {
+        "empty": "No topics available at the moment.",
+        "topics": "Topics"
+    },
+    "competencies": {
+        "title": "Your competencies",
+        "loading": "Loading...",
+        "empty": "No data available. Complete at least one assessment or simulation to see your mastery by topic."
+    },
+    "trainingSetup": {
+        "chapters": "Chapters",
+        "deselectAll": "Deselect all",
+        "selectAll": "Select all",
+        "sessionTitle": "Your session",
+        "difficultyLabel": "Difficulty",
+        "difficulty": {
+            "base": "Basic",
+            "intermedio": "Intermediate",
+            "avanzato": "Advanced",
+            "mista": "Mixed"
+        },
+        "questionCount": "Number of questions",
+        "timer": "Timer",
+        "timerMeta": "~{min} min · 1:30 per question",
+        "startTraining": "Start training"
+    },
+    "profile": {
+        "saved": "Changes saved successfully.",
+        "saveError": "Error while saving.",
+        "student": "Student",
+        "studentId": "Student ID",
+        "school": "School",
+        "class": "Class",
+        "enrolledSince": "Enrolled since",
+        "personalData": "Personal details",
+        "firstName": "First name",
+        "assignedBySchool": "assigned by the school",
+        "lastName": "Last name",
+        "email": "Email",
+        "emailPlaceholder": "email@example.com",
+        "username": "Username",
+        "notEditable": "not editable",
+        "saving": "Saving...",
+        "save": "Save changes",
+        "cancel": "Cancel",
+        "securityTitle": "Security",
+        "securityDescription": "Update the password you use to sign in.",
+        "currentPassword": "Current password",
+        "newPassword": "New password",
+        "confirmPassword": "Confirm new password",
+        "updatePassword": "Update password",
+        "updatingPassword": "Updating...",
+        "passwordsDontMatch": "The passwords do not match.",
+        "passwordRequirements": "The password does not meet the requirements.",
+        "passwordUpdated": "Password updated successfully.",
+        "genericError": "Error.",
+        "req8": "At least 8 characters",
+        "reqUpper": "One uppercase letter",
+        "reqNum": "One number",
+        "reqSymbol": "One symbol",
+        "fieldsManagedBySchool": "Some fields are managed by the school"
+    }
 }

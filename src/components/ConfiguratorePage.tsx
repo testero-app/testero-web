@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { useState, useEffect } from 'react';
 import { fetchTopicChapters } from '../lib/api';
 import TesteroLogo from './ui/TesteroLogo';
@@ -27,7 +27,7 @@ interface ConfiguratorePageProps {
 }
 
 export default function ConfiguratorePage({ topicId, topicName, token, onBack, onStart }: ConfiguratorePageProps) {
-    const t = useTranslations('configuratore');
+    const t = useTranslations('trainingSetup');
     const [chapters, setChapters] = useState<ChapterItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedChapters, setSelectedChapters] = useState<Set<string>>(new Set());
