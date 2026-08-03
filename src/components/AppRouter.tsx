@@ -1,8 +1,6 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { MemoryRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Navigate, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { AssessmentProvider, useAssessment, TSubmissionSummary, TSubmissionReview } from '../context/AssessmentContext';
 import { isQuestionAnswered, DEFAULT_TIMER_MINUTES } from '../lib/questionUtils';
 import { useTimer } from '../hooks/useTimer';
@@ -31,13 +29,19 @@ import ErrorPage from './ErrorPage';
 // ─── Login View ──────────────────────────────────────────────────────────────
 
 function LoginView() {
-    const { doLogin, loading, error } = useAssessment();
+    const { user, doLogin, loading, error } = useAssessment();
     const navigate = useNavigate();
+
+    // Now that /login is a real URL, someone with a live session can land on it — send them on
+    // rather than showing a form they do not need.
+    useEffect(() => {
+        if (user) navigate('/training', { replace: true });
+    }, [user, navigate]);
 
     const handleLogin = useCallback(async (username: string, password: string) => {
         try {
             await doLogin(username, password);
-            navigate('/allenamento');
+            navigate('/training');
         } catch {
             // error is already in state
         }
@@ -46,30 +50,30 @@ function LoginView() {
     return <LoginPage onLogin={handleLogin} loading={loading} error={error} />;
 }
 
-// ─── Allenamento View ────────────────────────────────────────────────────────
+// ─── Training View ────────────────────────────────────────────────────────
 
-function AllenamentoView() {
+function TrainingView() {
     const { user, token, doLogout } = useAssessment();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user) navigate('/');
+        if (!user) navigate('/login');
     }, [user, navigate]);
 
     if (!user || !token) return null;
 
     return (
         <AppShell
-            activePage="allenamento"
+            activePage="training"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             token={token}
             onNavigate={(page) => navigate(`/${page}`)}
-            onLogout={() => { doLogout(); navigate('/'); }}
+            onLogout={() => { doLogout(); navigate('/login'); }}
         >
             <AllenamentoTab
                 token={token}
-                onStartTopic={(topicId) => navigate('/configuratore', { state: { topicId } })}
+                onStartTopic={(topicId) => navigate('/training/setup', { state: { topicId } })}
             />
         </AppShell>
     );
@@ -77,28 +81,28 @@ function AllenamentoView() {
 
 // ─── Competenze View ─────────────────────────────────────────────────────────
 
-function CompetenzeView() {
+function CompetenciesView() {
     const { user, token, doLogout } = useAssessment();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user) navigate('/');
+        if (!user) navigate('/login');
     }, [user, navigate]);
 
     if (!user || !token) return null;
 
     return (
         <AppShell
-            activePage="competenze"
+            activePage="competencies"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             token={token}
             onNavigate={(page) => navigate(`/${page}`)}
-            onLogout={() => { doLogout(); navigate('/'); }}
+            onLogout={() => { doLogout(); navigate('/login'); }}
         >
             <CompetenzeTab
                 token={token}
-                onStartTraining={(topicId) => navigate('/configuratore', { state: { topicId } })}
+                onStartTraining={(topicId) => navigate('/training/setup', { state: { topicId } })}
             />
         </AppShell>
     );
@@ -106,7 +110,7 @@ function CompetenzeView() {
 
 // ─── Certificazioni View ────────────────────────────────────────────────────
 
-function CertificazioniView() {
+function CertificationsView() {
     const {
         user, token, availableAssessments, loading,
         loadAvailableAssessments, selectAssessment, doLogout,
@@ -116,7 +120,7 @@ function CertificazioniView() {
     const [pendingAssessmentId, setPendingAssessmentId] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!user) { navigate('/'); return; }
+        if (!user) { navigate('/login'); return; }
         loadAvailableAssessments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
@@ -141,12 +145,12 @@ function CertificazioniView() {
 
     return (
         <AppShell
-            activePage="certificazioni"
+            activePage="certifications"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             token={token}
             onNavigate={(page) => navigate(`/${page}`)}
-            onLogout={() => { doLogout(); navigate('/'); }}
+            onLogout={() => { doLogout(); navigate('/login'); }}
         >
             <CertificazioniTab
                 assessments={availableAssessments}
@@ -164,7 +168,7 @@ function CertificazioniView() {
 
 // ─── Risultati Hub View ─────────────────────────────────────────────────────
 
-function RisultatiHubView() {
+function ResultsHubView() {
     const {
         user, token, submissionHistory, loading,
         loadSubmissionHistory, doLogout,
@@ -172,7 +176,7 @@ function RisultatiHubView() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user) { navigate('/'); return; }
+        if (!user) { navigate('/login'); return; }
         loadSubmissionHistory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
@@ -180,7 +184,7 @@ function RisultatiHubView() {
     const handleSelectSubmission = useCallback((submissionId: string) => {
         const submission = submissionHistory.find(s => s.id === submissionId);
         if (submission) {
-            navigate('/results', { state: { historySubmission: submission } });
+            navigate('/results/summary', { state: { historySubmission: submission } });
         }
     }, [submissionHistory, navigate]);
 
@@ -188,12 +192,12 @@ function RisultatiHubView() {
 
     return (
         <AppShell
-            activePage="risultati"
+            activePage="results"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             token={token}
             onNavigate={(page) => navigate(`/${page}`)}
-            onLogout={() => { doLogout(); navigate('/'); }}
+            onLogout={() => { doLogout(); navigate('/login'); }}
         >
             <RisultatiTab
                 submissions={submissionHistory}
@@ -211,24 +215,24 @@ function ProfileView() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user) navigate('/');
+        if (!user) navigate('/login');
     }, [user, navigate]);
 
     if (!user || !token) return null;
 
     return (
         <AppShell
-            activePage="profilo"
+            activePage="profile"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             token={token}
             onNavigate={(page) => navigate(`/${page}`)}
-            onLogout={() => { doLogout(); navigate('/'); }}
+            onLogout={() => { doLogout(); navigate('/login'); }}
         >
             <ProfilePage
                 user={user}
                 token={token ?? undefined}
-                onLogout={() => { doLogout(); navigate('/'); }}
+                onLogout={() => { doLogout(); navigate('/login'); }}
             />
         </AppShell>
     );
@@ -241,28 +245,28 @@ function SettingsView() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user) navigate('/');
+        if (!user) navigate('/login');
     }, [user, navigate]);
 
     if (!user || !token) return null;
 
     return (
         <AppShell
-            activePage="impostazioni"
+            activePage="settings"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             token={token}
             onNavigate={(page) => navigate(`/${page}`)}
-            onLogout={() => { doLogout(); navigate('/'); }}
+            onLogout={() => { doLogout(); navigate('/login'); }}
         >
             <SettingsPage token={token ?? undefined} />
         </AppShell>
     );
 }
 
-// ─── Configuratore View ────────────────────────────────────────────────────
+// ─── Training Setup View ────────────────────────────────────────────────────
 
-function ConfiguratoreView() {
+function TrainingSetupView() {
     const t = useTranslations('appRouter');
     const { user, token, selectAssessment } = useAssessment();
     const navigate = useNavigate();
@@ -271,7 +275,7 @@ function ConfiguratoreView() {
     const topicName = (location.state as { topicName?: string })?.topicName || t('trainingFallback');
 
     useEffect(() => {
-        if (!user) navigate('/');
+        if (!user) navigate('/login');
     }, [user, navigate]);
 
     if (!user || !token) return null;
@@ -303,7 +307,7 @@ function ConfiguratoreView() {
             topicId={topicId}
             topicName={topicName}
             token={token}
-            onBack={() => navigate('/allenamento')}
+            onBack={() => navigate('/training')}
             onStart={handleStart}
         />
     );
@@ -315,7 +319,7 @@ function AssessmentView() {
     const t = useTranslations('appRouter');
     const {
         user, assessmentConfig, shuffledQuestions, shuffledOptions,
-        currentIndex, answers, flagged, timerExpired,
+        currentIndex, answers, flagged,
         setAnswer, toggleFlag, goToQuestion, setTimerExpired, doSubmit,
     } = useAssessment();
     const navigate = useNavigate();
@@ -360,7 +364,7 @@ function AssessmentView() {
         timer.stop();
         try {
             await doSubmit();
-            navigate('/results');
+            navigate('/results/summary');
         } catch (err) {
             setAlertModal({
                 visible: true,
@@ -443,7 +447,7 @@ function RecapView() {
         setShowFinalModal(false);
         try {
             await doSubmit();
-            navigate('/results');
+            navigate('/results/summary');
         } catch (err) {
             setAlertModal({
                 visible: true,
@@ -516,13 +520,13 @@ function ResultsView() {
 
     useEffect(() => {
         if (!submissionResult && !historySubmission) {
-            navigate('/allenamento');
+            navigate('/training');
         }
     }, [submissionResult, historySubmission, navigate]);
 
     const handleBackToAssessments = () => {
         resetAssessment();
-        navigate('/allenamento');
+        navigate('/training');
     };
 
     const handleReviewErrors = useCallback(async () => {
@@ -530,7 +534,7 @@ function ResultsView() {
         if (!submissionId || !token) return;
         try {
             const review = await fetchSubmissionReview(submissionId, token);
-            navigate('/ripasso', { state: { review } });
+            navigate('/review', { state: { review } });
         } catch {
             setAlertModal({
                 visible: true,
@@ -585,9 +589,9 @@ function ResultsView() {
     );
 }
 
-// ─── Ripasso View ────────────────────────────────────────────────────────────
+// ─── Review View ────────────────────────────────────────────────────────────
 
-function RipassoView() {
+function ReviewView() {
     const { user } = useAssessment();
     const navigate = useNavigate();
     const location = useLocation();
@@ -595,8 +599,8 @@ function RipassoView() {
     const review = (location.state as { review?: TSubmissionReview })?.review;
 
     useEffect(() => {
-        if (!user) navigate('/');
-        else if (!review) navigate('/allenamento');
+        if (!user) navigate('/login');
+        else if (!review) navigate('/training');
     }, [user, review, navigate]);
 
     if (!review) return null;
@@ -618,7 +622,7 @@ function NotFoundView() {
             code="404"
             title="Pagina non trovata"
             message="La pagina che stai cercando non esiste."
-            onAction={() => navigate('/')}
+            onAction={() => navigate('/login')}
         />
     );
 }
@@ -628,23 +632,26 @@ function NotFoundView() {
 export default function AppRouter() {
     return (
         <AssessmentProvider>
-            <MemoryRouter initialEntries={['/']}>
+            <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<LoginView />} />
-                    <Route path="/allenamento" element={<AllenamentoView />} />
-                    <Route path="/competenze" element={<CompetenzeView />} />
-                    <Route path="/certificazioni" element={<CertificazioniView />} />
-                    <Route path="/risultati" element={<RisultatiHubView />} />
-                    <Route path="/profilo" element={<ProfileView />} />
-                    <Route path="/impostazioni" element={<SettingsView />} />
-                    <Route path="/configuratore" element={<ConfiguratoreView />} />
+                    {/* The session lives in memory, so landing on any screen without one
+                        bounces to the login — each view guards itself. */}
+                    <Route path="/" element={<Navigate to="/login" replace />} />
+                    <Route path="/login" element={<LoginView />} />
+                    <Route path="/training" element={<TrainingView />} />
+                    <Route path="/competencies" element={<CompetenciesView />} />
+                    <Route path="/certifications" element={<CertificationsView />} />
+                    <Route path="/results" element={<ResultsHubView />} />
+                    <Route path="/profile" element={<ProfileView />} />
+                    <Route path="/settings" element={<SettingsView />} />
+                    <Route path="/training/setup" element={<TrainingSetupView />} />
                     <Route path="/assessment" element={<AssessmentView />} />
                     <Route path="/recap" element={<RecapView />} />
-                    <Route path="/results" element={<ResultsView />} />
-                    <Route path="/ripasso" element={<RipassoView />} />
+                    <Route path="/results/summary" element={<ResultsView />} />
+                    <Route path="/review" element={<ReviewView />} />
                     <Route path="*" element={<NotFoundView />} />
                 </Routes>
-            </MemoryRouter>
+            </BrowserRouter>
         </AssessmentProvider>
     );
 }

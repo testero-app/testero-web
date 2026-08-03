@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
 import { isQuestionAnswered } from '../lib/questionUtils';
 import RecapQuestion from './RecapQuestion';

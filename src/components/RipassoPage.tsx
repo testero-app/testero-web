@@ -1,6 +1,4 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { useState, useMemo } from 'react';
 import type { TSubmissionReview, TReviewQuestion } from '../context/AssessmentContext';
 import TesteroLogo from './ui/TesteroLogo';
@@ -18,7 +16,7 @@ interface RipassoPageProps {
  * Replaces the old HistoryDetailPage for post-submission review.
  */
 export default function RipassoPage({ review, onBackToReport }: RipassoPageProps) {
-    const t = useTranslations('ripasso');
+    const t = useTranslations('review');
     const [showOnlyWrong, setShowOnlyWrong] = useState(false);
 
     const wrongQuestions = useMemo(
@@ -99,10 +97,9 @@ interface QuestionCardProps {
 }
 
 function QuestionCard({ question, displayIndex }: QuestionCardProps) {
-    const t = useTranslations('ripasso');
+    const t = useTranslations('review');
     const isCorrect = question.is_correct === true;
     const isWrong = question.is_correct === false;
-    const isUnanswered = question.is_correct === null;
 
     const selectedSet = new Set(question.selected_option_ids ?? []);
     const correctSet = new Set(
@@ -228,7 +225,7 @@ interface ExplanationBoxProps {
 }
 
 function ExplanationBox({ question }: ExplanationBoxProps) {
-    const t = useTranslations('ripasso');
+    const t = useTranslations('review');
     const explanation =
         question.explanation?.trim() ||
         question.motivation?.trim() ||

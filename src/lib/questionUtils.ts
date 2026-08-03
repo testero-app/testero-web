@@ -1,4 +1,4 @@
-import { TQuestion, TAnswer } from '../context/AssessmentContext';
+import { TQuestion } from '../context/AssessmentContext';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 

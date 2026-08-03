@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { useState } from 'react';
 import { type TSubmissionSummary } from '../context/AssessmentContext';
 import styles from './RisultatiTab.module.css';
@@ -6,7 +6,7 @@ import styles from './RisultatiTab.module.css';
 type FilterType = 'tutti' | 'certificazioni' | 'allenamento';
 
 function getAbbrev(title: string): string {
-    const words = title.split(/[\s\-]+/);
+    const words = title.split(/[\s-]+/);
     if (words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase();
     return title.substring(0, 2).toUpperCase();
 }
@@ -42,7 +42,7 @@ interface RisultatiTabProps {
 }
 
 export default function RisultatiTab({ submissions, loading, onSelectSubmission }: RisultatiTabProps) {
-    const t = useTranslations('risultati');
+    const t = useTranslations('results');
     const [filter, setFilter] = useState<FilterType>('tutti');
 
     const certCount = submissions.filter((s) => categoryOf(s.type) === 'certificazione').length;

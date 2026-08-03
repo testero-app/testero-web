@@ -1,9 +1,9 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { type TAssessmentListItem } from '../context/AssessmentContext';
 import styles from './CertificazioniTab.module.css';
 
 function getAbbrev(title: string): string {
-    const words = title.split(/[\s\-]+/);
+    const words = title.split(/[\s-]+/);
     if (words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase();
     return title.substring(0, 2).toUpperCase();
 }
@@ -26,7 +26,7 @@ interface CertificazioniTabProps {
 }
 
 export default function CertificazioniTab({ assessments, loading, onStart }: CertificazioniTabProps) {
-    const t = useTranslations('certificazioni');
+    const t = useTranslations('certifications');
     if (loading) {
         return (
             <div className={styles.list}>

@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { useEffect, useRef, useState } from 'react';
 import hljs from '../lib/highlight';
 import { TQuestion, TOption, TAnswer } from '../context/AssessmentContext';
@@ -320,7 +320,7 @@ function VariantF({
 
 export default function AssessmentPage({
     shuffledQuestions, shuffledOptions, currentIndex, answers, flagged,
-    answeredSet, answeredCount, onGoTo, onPrev, onNext, onAnswer, onToggleFlag, onSubmit,
+    onPrev, onNext, onAnswer, onToggleFlag, onSubmit,
 }: AssessmentPageProps) {
     const question = shuffledQuestions[currentIndex];
     const opts = shuffledOptions[currentIndex] || [];

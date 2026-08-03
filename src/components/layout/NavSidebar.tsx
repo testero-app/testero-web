@@ -1,8 +1,8 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import TesteroLogo from '../ui/TesteroLogo';
 import styles from './NavSidebar.module.css';
 
-export type NavPage = 'allenamento' | 'competenze' | 'certificazioni' | 'risultati' | 'profilo' | 'impostazioni';
+export type NavPage = 'training' | 'competencies' | 'certifications' | 'results' | 'profile' | 'settings';
 
 interface NavSidebarProps {
     activePage: NavPage;
@@ -14,7 +14,7 @@ interface NavSidebarProps {
 
 const NAV_ITEMS: { id: string; labelKey: string; icon: React.ReactNode }[] = [
     {
-        id: 'allenamento',
+        id: 'training',
         labelKey: 'training',
         icon: (
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -25,7 +25,7 @@ const NAV_ITEMS: { id: string; labelKey: string; icon: React.ReactNode }[] = [
         ),
     },
     {
-        id: 'competenze',
+        id: 'competencies',
         labelKey: 'competencies',
         icon: (
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -36,7 +36,7 @@ const NAV_ITEMS: { id: string; labelKey: string; icon: React.ReactNode }[] = [
         ),
     },
     {
-        id: 'certificazioni',
+        id: 'certifications',
         labelKey: 'certifications',
         icon: (
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -46,7 +46,7 @@ const NAV_ITEMS: { id: string; labelKey: string; icon: React.ReactNode }[] = [
         ),
     },
     {
-        id: 'risultati',
+        id: 'results',
         labelKey: 'results',
         icon: (
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

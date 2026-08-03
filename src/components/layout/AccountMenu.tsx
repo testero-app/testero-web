@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import styles from './AccountMenu.module.css';
 

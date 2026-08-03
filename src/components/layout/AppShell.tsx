@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { fetchNotificationCount } from '../../lib/api';
 import NavSidebar, { type NavPage } from './NavSidebar';
 import ShellTopBar from './ShellTopBar';
@@ -17,42 +17,42 @@ interface AppShellProps {
 
 // Only the icon is static; title/subtitle come from the 'shell' message namespace, keyed by page id.
 const PAGE_META: Record<string, { icon: React.ReactNode }> = {
-    allenamento: {
+    training: {
         icon: (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" />
             </svg>
         ),
     },
-    competenze: {
+    competencies: {
         icon: (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="12" width="4" height="9" rx="1" /><rect x="10" y="7" width="4" height="14" rx="1" /><rect x="17" y="3" width="4" height="18" rx="1" />
             </svg>
         ),
     },
-    certificazioni: {
+    certifications: {
         icon: (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="8" r="6" /><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
             </svg>
         ),
     },
-    risultati: {
+    results: {
         icon: (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" /><path d="M7 7h10M7 12h10M7 17h6" />
             </svg>
         ),
     },
-    profilo: {
+    profile: {
         icon: (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
             </svg>
         ),
     },
-    impostazioni: {
+    settings: {
         icon: (
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" />
@@ -65,7 +65,7 @@ export default function AppShell({
     activePage, userName, userClass, token, onNavigate, onLogout, children,
 }: AppShellProps) {
     const t = useTranslations('shell');
-    const page = PAGE_META[activePage] ? activePage : 'allenamento';
+    const page = PAGE_META[activePage] ? activePage : 'training';
     const meta = PAGE_META[page];
     const [notificationCount, setNotificationCount] = useState(0);
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -126,8 +126,8 @@ export default function AppShell({
                     token={token}
                     notificationCount={notificationCount}
                     onNotificationCountChange={refreshNotificationCount}
-                    onProfile={() => onNavigate('profilo')}
-                    onSettings={() => onNavigate('impostazioni')}
+                    onProfile={() => onNavigate('profile')}
+                    onSettings={() => onNavigate('settings')}
                     onLogout={onLogout}
                 />
                 <div className={styles.content}>

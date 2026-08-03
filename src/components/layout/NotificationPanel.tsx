@@ -1,4 +1,4 @@
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations, useLocale } from 'use-intl';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import {
     fetchUnreadNotifications,

@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations } from 'use-intl';
 import { useEffect, useState } from 'react';
 import { fetchTopics, type TTopic } from '../lib/api';
 import styles from './AllenamentoTab.module.css';
@@ -9,7 +9,7 @@ interface AllenamentoTabProps {
 }
 
 export default function AllenamentoTab({ token, onStartTopic }: AllenamentoTabProps) {
-    const t = useTranslations('allenamento');
+    const t = useTranslations('training');
     const [topics, setTopics] = useState<TTopic[]>([]);
     const [loading, setLoading] = useState(true);
 
