@@ -150,7 +150,7 @@
 
 /* ── "In preparazione" label ─────────────────────────────────── */
 
-.prepLabel {
+.inPreparationLabel {
     font-size: 13px;
     font-weight: 600;
     color: var(--ts-text-faint);

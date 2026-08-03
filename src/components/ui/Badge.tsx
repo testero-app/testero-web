@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import styles from './Badge.module.css';
 
-type BadgeVariant = 'avvia' | 'inCorso' | 'completato' | 'nuovo' | 'scaduto' | 'superato' | 'nonSuperato';
+type BadgeVariant = 'start' | 'inProgress' | 'completed' | 'new' | 'expired' | 'passed' | 'failed';
 
 interface BadgeProps {
     variant: BadgeVariant;

@@ -32,7 +32,7 @@ export default function RecapQuestion({ question, displayIndex, shuffledOpts, an
             <div className={styles.question}>
                 <div className={styles.header}>
                     <span className={styles.number}>Domanda {displayIndex + 1} (Bonus)</span>
-                    <Badge variant={hasAnswer ? 'avvia' : 'scaduto'}>
+                    <Badge variant={hasAnswer ? 'start' : 'expired'}>
                         {hasAnswer ? t('answered') : t('notAnswered')}
                     </Badge>
                 </div>
@@ -52,7 +52,7 @@ export default function RecapQuestion({ question, displayIndex, shuffledOpts, an
         <div className={styles.question}>
             <div className={styles.header}>
                 <span className={styles.number}>Domanda {displayIndex + 1}</span>
-                <Badge variant={isAnswered ? 'avvia' : 'scaduto'}>
+                <Badge variant={isAnswered ? 'start' : 'expired'}>
                     {isAnswered ? t('answered') : t('notAnswered')}
                 </Badge>
             </div>

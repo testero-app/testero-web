@@ -10,37 +10,37 @@
     white-space: nowrap;
 }
 
-.avvia {
+.start {
     background: var(--m-success-bg);
     color: var(--m-teal-dark);
 }
 
-.inCorso {
+.inProgress {
     background: var(--m-teal);
     color: var(--m-white);
 }
 
-.completato {
+.completed {
     background: var(--m-border-disabled);
     color: var(--m-text-primary);
 }
 
-.nuovo {
+.new {
     background: var(--m-warning-bg);
     color: var(--m-warning-dark);
 }
 
-.scaduto {
+.expired {
     background: var(--m-error-bg);
     color: var(--m-error-text);
 }
 
-.superato {
+.passed {
     background: var(--m-success-bg);
     color: var(--m-teal-dark);
 }
 
-.nonSuperato {
+.failed {
     background: var(--m-error-bg);
     color: var(--m-error-text);
 }
