@@ -1,9 +1,9 @@
 import { useTranslations } from 'use-intl';
 import { useState } from 'react';
 import { type TSubmissionSummary } from '../context/AssessmentContext';
-import styles from './RisultatiTab.module.css';
+import styles from './ResultsTab.module.css';
 
-type FilterType = 'tutti' | 'certificazioni' | 'allenamento';
+type FilterType = 'all' | 'certifications' | 'training';
 
 function getAbbrev(title: string): string {
     const words = title.split(/[\s-]+/);
@@ -13,12 +13,12 @@ function getAbbrev(title: string): string {
 
 // Maps the backend AssessmentType onto the two categories this tab filters by.
 // The enum is TRAINING | EXAM | CERT_SIMULATION, plus "CERTIFICATION" which the
-// server substitutes when a snapshot's type is null. Only TRAINING is
-// "allenamento"; EXAM and CERT_SIMULATION are both formal, graded assessments
+// server substitutes when a snapshot's type is null. Only TRAINING counts as
+// training; EXAM and CERT_SIMULATION are both formal, graded assessments
 // and belong under certifications. Negating TRAINING (rather than listing the
 // certification values) keeps any future non-training type on the safe side.
-function categoryOf(type: string | undefined): 'certificazione' | 'allenamento' {
-    return type === 'TRAINING' ? 'allenamento' : 'certificazione';
+function categoryOf(type: string | undefined): 'certification' | 'training' {
+    return type === 'TRAINING' ? 'training' : 'certification';
 }
 
 function formatDate(iso: string): string {
@@ -35,24 +35,24 @@ function formatDuration(startedAt: string | null, submittedAt: string | null): s
     return `${Math.round(ms / 60000)} min`;
 }
 
-interface RisultatiTabProps {
+interface ResultsTabProps {
     submissions: TSubmissionSummary[];
     loading: boolean;
     onSelectSubmission: (submissionId: string) => void;
 }
 
-export default function RisultatiTab({ submissions, loading, onSelectSubmission }: RisultatiTabProps) {
+export default function ResultsTab({ submissions, loading, onSelectSubmission }: ResultsTabProps) {
     const t = useTranslations('results');
-    const [filter, setFilter] = useState<FilterType>('tutti');
+    const [filter, setFilter] = useState<FilterType>('all');
 
-    const certCount = submissions.filter((s) => categoryOf(s.type) === 'certificazione').length;
-    const trainCount = submissions.filter((s) => categoryOf(s.type) === 'allenamento').length;
+    const certCount = submissions.filter((s) => categoryOf(s.type) === 'certification').length;
+    const trainCount = submissions.filter((s) => categoryOf(s.type) === 'training').length;
 
-    const filtered = filter === 'tutti'
+    const filtered = filter === 'all'
         ? submissions
         : submissions.filter((s) => {
             const category = categoryOf(s.type);
-            return filter === 'certificazioni' ? category === 'certificazione' : category === 'allenamento';
+            return filter === 'certifications' ? category === 'certification' : category === 'training';
         });
 
     if (loading) {
@@ -65,9 +65,9 @@ export default function RisultatiTab({ submissions, loading, onSelectSubmission 
     }
 
     const filters: { id: FilterType; label: string; count: number }[] = [
-        { id: 'tutti', label: t('filterAll'), count: submissions.length },
-        { id: 'certificazioni', label: t('filterCertifications'), count: certCount },
-        { id: 'allenamento', label: t('filterTraining'), count: trainCount },
+        { id: 'all', label: t('filterAll'), count: submissions.length },
+        { id: 'certifications', label: t('filterCertifications'), count: certCount },
+        { id: 'training', label: t('filterTraining'), count: trainCount },
     ];
 
     return (
@@ -107,7 +107,7 @@ export default function RisultatiTab({ submissions, loading, onSelectSubmission 
                                     <div className={styles.rowTitleLine}>
                                         <span className={styles.rowTitle}>{s.assessment_title}</span>
                                         <span className={styles.typeTag}>
-                                            {category === 'certificazione' ? t('tagCertification') : t('tagTraining')}
+                                            {category === 'certification' ? t('tagCertification') : t('tagTraining')}
                                         </span>
                                     </div>
                                     <div className={styles.progressRow}>

@@ -1,9 +1,9 @@
 import { useTranslations } from 'use-intl';
 import { useState, useEffect } from 'react';
 import { fetchCompetencies } from '../lib/api';
-import styles from './CompetenzeTab.module.css';
+import styles from './CompetenciesTab.module.css';
 
-interface CompetenzeTabProps {
+interface CompetenciesTabProps {
     token: string;
     onStartTraining: (topicId: string) => void;
 }
@@ -112,7 +112,7 @@ function TopicNode({ topic, expandedIds, onToggle }: {
     );
 }
 
-export default function CompetenzeTab({ token, onStartTraining }: CompetenzeTabProps) {
+export default function CompetenciesTab({ token, onStartTraining }: CompetenciesTabProps) {
     const t = useTranslations('competencies');
     const [topics, setTopics] = useState<TopicMastery[]>([]);
     const [loading, setLoading] = useState(true);

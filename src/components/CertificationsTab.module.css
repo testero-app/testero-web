@@ -81,7 +81,7 @@
     margin-top: 4px;
 }
 
-.avviaBtn {
+.startBtn {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -98,7 +98,7 @@
     flex: none;
 }
 
-.avviaBtn:hover {
+.startBtn:hover {
     filter: brightness(1.05);
 }
 

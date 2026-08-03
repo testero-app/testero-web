@@ -2,20 +2,20 @@ import { useTranslations } from 'use-intl';
 import { useState, useMemo } from 'react';
 import type { TSubmissionReview, TReviewQuestion } from '../context/AssessmentContext';
 import TesteroLogo from './ui/TesteroLogo';
-import styles from './RipassoPage.module.css';
+import styles from './ReviewPage.module.css';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-interface RipassoPageProps {
+interface ReviewPageProps {
     review: TSubmissionReview;
     onBackToReport: () => void;
 }
 
 /**
- * RipassoPage — full-page review of submitted answers.
+ * ReviewPage — full-page review of submitted answers.
  * Replaces the old HistoryDetailPage for post-submission review.
  */
-export default function RipassoPage({ review, onBackToReport }: RipassoPageProps) {
+export default function ReviewPage({ review, onBackToReport }: ReviewPageProps) {
     const t = useTranslations('review');
     const [showOnlyWrong, setShowOnlyWrong] = useState(false);
 

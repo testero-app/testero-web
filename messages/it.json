@@ -120,7 +120,7 @@
         "trainingFallback": "Allenamento",
         "errorTitle": "Errore",
         "fileGenError": "Errore durante la generazione del file. Riprova.",
-        "ripassoLoadError": "Impossibile caricare il ripasso. Riprova."
+        "reviewLoadError": "Impossibile caricare il ripasso. Riprova."
     },
     "resultsSummary": {
         "passed": "Superato",

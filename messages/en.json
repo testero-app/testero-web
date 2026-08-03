@@ -120,7 +120,7 @@
         "trainingFallback": "Training",
         "errorTitle": "Error",
         "fileGenError": "Error generating the file. Please try again.",
-        "ripassoLoadError": "Could not load the review. Please try again."
+        "reviewLoadError": "Could not load the review. Please try again."
     },
     "resultsSummary": {
         "passed": "Passed",

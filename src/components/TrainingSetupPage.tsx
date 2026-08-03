@@ -2,7 +2,7 @@ import { useTranslations } from 'use-intl';
 import { useState, useEffect } from 'react';
 import { fetchTopicChapters } from '../lib/api';
 import TesteroLogo from './ui/TesteroLogo';
-import styles from './ConfiguratorePage.module.css';
+import styles from './TrainingSetupPage.module.css';
 
 interface ChapterItem {
     id: string;
@@ -12,7 +12,7 @@ interface ChapterItem {
 
 type Difficulty = 'base' | 'intermedio' | 'avanzato' | 'mista';
 
-interface ConfiguratorePageProps {
+interface TrainingSetupPageProps {
     topicId: string;
     topicName: string;
     token: string;
@@ -26,7 +26,7 @@ interface ConfiguratorePageProps {
     }) => void;
 }
 
-export default function ConfiguratorePage({ topicId, topicName, token, onBack, onStart }: ConfiguratorePageProps) {
+export default function TrainingSetupPage({ topicId, topicName, token, onBack, onStart }: TrainingSetupPageProps) {
     const t = useTranslations('trainingSetup');
     const [chapters, setChapters] = useState<ChapterItem[]>([]);
     const [loading, setLoading] = useState(true);
