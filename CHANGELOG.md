@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0](https://github.com/testero-app/testero-web/compare/v2.9.2...v3.0.0) (2026-08-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* the app is no longer a Next.js application. Deployment must serve `dist/` as static files with an SPA fallback (`vercel.json` covers Vercel), and the API base URL variable is now VITE_API_URL instead of NEXT_PUBLIC_API_URL.
+
+### Features
+
+* replace Next.js with React and Vite, and name every screen in English ([fe3ce8f](https://github.com/testero-app/testero-web/commit/fe3ce8fce46ff2ddaa0344c601d9ef74713411b7))
+
+
+### Bug Fixes
+
+* **settings:** send the notification preference the API actually expects ([0ee42e6](https://github.com/testero-app/testero-web/commit/0ee42e6470e05c424483bbb85715400fdc48be75)), closes [#134](https://github.com/testero-app/testero-web/issues/134)
+
 ## [2.9.2](https://github.com/testero-app/testero-web/compare/v2.9.1...v2.9.2) (2026-07-31)
 
 
