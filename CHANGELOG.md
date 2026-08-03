@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.1](https://github.com/testero-app/testero-web/compare/v3.0.0...v3.0.1) (2026-08-03)
+
+
+### Bug Fixes
+
+* **training:** block the start button while the session is being created ([#166](https://github.com/testero-app/testero-web/issues/166)) ([163001b](https://github.com/testero-app/testero-web/commit/163001b747978be2f5684d342882a2538f691995))
+
 ## [3.0.0](https://github.com/testero-app/testero-web/compare/v2.9.2...v3.0.0) (2026-08-03)
 
 
