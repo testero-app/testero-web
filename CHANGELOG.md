@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0](https://github.com/testero-app/testero-web/compare/v3.0.1...v4.0.0) (2026-08-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* requires testero-backend#247, which removes assessment_snapshot_id from the training start response.
+
+### Features
+
+* load a free training session from the submission ([#168](https://github.com/testero-app/testero-web/issues/168)) ([cf9c486](https://github.com/testero-app/testero-web/commit/cf9c48679058590e0c5d964e1cd62b7359642b86))
+
 ## [3.0.1](https://github.com/testero-app/testero-web/compare/v3.0.0...v3.0.1) (2026-08-03)
 
 
