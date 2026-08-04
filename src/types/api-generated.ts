@@ -294,6 +294,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/submissions/{submissionId}/questions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getSubmissionQuestions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/submissions/{submissionId}/review": {
         parameters: {
             query?: never;
@@ -494,7 +510,7 @@ export interface components {
             pagination: components["schemas"]["PaginationMetadata"];
         };
         AssessmentQuestionsResponse: {
-            assessmentId: string;
+            assessmentId: string | null;
             availableFrom: string | null;
             availableUntil: string | null;
             questions: components["schemas"]["QuestionDto"][];
@@ -762,15 +778,14 @@ export interface components {
             title: string;
         };
         TrainingStartRequest: {
-            chapter_ids: string[];
-            difficulty: string;
+            chapter_ids?: string[];
+            difficulty?: string;
             /** Format: int32 */
             question_count: number;
             timer_enabled: boolean;
-            topic_id: string;
+            topic_id?: string;
         };
         TrainingStartResponse: {
-            assessment_snapshot_id: string;
             submission_id: string;
             /** Format: int32 */
             timer_minutes: number | null;
@@ -1249,6 +1264,28 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    getSubmissionQuestions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                submissionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["AssessmentQuestionsResponse"];
+                };
             };
         };
     };
