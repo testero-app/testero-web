@@ -268,7 +268,7 @@ function SettingsView() {
 
 function TrainingSetupView() {
     const t = useTranslations('appRouter');
-    const { user, token, selectAssessment } = useAssessment();
+    const { user, token, selectTrainingSession } = useAssessment();
     const navigate = useNavigate();
     const location = useLocation();
     const topicId = (location.state as { topicId?: string })?.topicId || '';
@@ -295,7 +295,7 @@ function TrainingSetupView() {
                 question_count: config.questionCount,
                 timer_enabled: config.timerEnabled,
             }, token);
-            await selectAssessment(result.assessment_snapshot_id);
+            await selectTrainingSession(result.submission_id);
             navigate('/assessment');
         } catch (err) {
             alert('Errore nell\'avvio dell\'allenamento: ' + (err as Error).message);

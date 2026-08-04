@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useReducer } from "react";
-import { login as apiLogin, fetchAvailableAssessments, fetchAssessmentConfig, fetchAssessmentQuestions, startAssessment, submitAssessment, fetchSubmissionHistory, saveAnswer } from "../lib/api";
+import { login as apiLogin, fetchAvailableAssessments, fetchAssessmentConfig, fetchAssessmentQuestions, fetchSubmissionQuestions, startAssessment, submitAssessment, fetchSubmissionHistory, saveAnswer } from "../lib/api";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -184,6 +184,7 @@ export interface AssessmentContextType {
     loadAvailableAssessments: () => Promise<void>;
     loadSubmissionHistory: () => Promise<void>;
     selectAssessment: (assessmentId: string) => Promise<void>;
+    selectTrainingSession: (submissionId: string) => Promise<void>;
     setAnswer: (questionId: string, answer: TAnswer) => void;
     toggleFlag: (questionId: string) => void;
     goToQuestion: (index: number) => void;
@@ -278,6 +279,49 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
         }
     }, [state.token]);
 
+    /**
+     * Loads a free training session, which the backend has already created and drawn. It has
+     * no assessment behind it, so the settings the app needs — title, timer — come from the
+     * paper itself, and the scoring is the fixed one of practice: a point per correct answer.
+     */
+    const selectTrainingSession = useCallback(async (submissionId: string) => {
+        if (!state.token) return;
+        dispatch({ type: 'SET_LOADING', payload: true });
+        dispatch({ type: 'SET_ERROR', payload: null });
+        try {
+            dispatch({ type: 'SET_SUBMISSION_ID', payload: submissionId });
+
+            const data = await fetchSubmissionQuestions(submissionId, state.token);
+            dispatch({
+                type: 'SET_ASSESSMENT_CONFIG',
+                payload: {
+                    // A free session has no assessment: it is identified by itself.
+                    assessmentId: data.assessmentId ?? submissionId,
+                    title: data.title,
+                    availableFrom: null,
+                    availableUntil: null,
+                    timerMinutes: data.timerMinutes,
+                    questionsPerAssessment: data.totalQuestions,
+                    scoring: { pointsPerCorrect: 1, pointsPerWrong: 0, pointsPerUnanswered: 0 },
+                    shuffleQuestions: false,
+                    shuffleOptions: false,
+                    maxAttempts: null,
+                    subjects: [],
+                },
+            });
+
+            const options = data.questions.map((q: TQuestion) =>
+                q.type === 'multiple' && q.options ? q.options : []
+            );
+            dispatch({ type: 'SET_QUESTIONS', payload: { questions: data.questions, options } });
+        } catch (err) {
+            dispatch({ type: 'SET_ERROR', payload: (err as Error).message });
+            throw err;
+        } finally {
+            dispatch({ type: 'SET_LOADING', payload: false });
+        }
+    }, [state.token]);
+
     const setAnswer = useCallback((questionId: string, answer: TAnswer) => {
         dispatch({ type: 'SET_ANSWER', payload: { questionId, answer } });
     }, []);
@@ -331,6 +375,7 @@ export const AssessmentProvider = ({ children }: AssessmentProviderProps) => {
             loadAvailableAssessments,
             loadSubmissionHistory,
             selectAssessment,
+            selectTrainingSession,
             setAnswer,
             toggleFlag,
             goToQuestion,
