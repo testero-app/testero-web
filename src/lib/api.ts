@@ -253,6 +253,23 @@ export async function fetchTopicChapters(topicId: string, token: string): Promis
     return res.json();
 }
 
+/**
+ * The questions administered in a submission. Free training sessions have no assessment to
+ * ask for their paper, so this is the only way to read it; sittings can use it too.
+ */
+export async function fetchSubmissionQuestions(
+    submissionId: string,
+    token: string,
+): Promise<TAssessmentQuestionsResponse> {
+    const res = await fetch(`${API_BASE}/api/submissions/${submissionId}/questions`, {
+        headers: authHeaders(token),
+    });
+    if (!res.ok) {
+        await throwFromResponse(res, `Failed to fetch submission questions: ${res.status}`);
+    }
+    return res.json();
+}
+
 export async function startTrainingSession(request: TTrainingRequest, token: string): Promise<TTrainingResponse> {
     const res = await fetch(`${API_BASE}/api/training/start`, {
         method: 'POST',
