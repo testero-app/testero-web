@@ -59,10 +59,12 @@ would solve and any proposed solution.
 
 ## CI Pipeline
 
-Every PR to `main` runs through four automated checks (in order):
+Every PR to `main` runs through five automated checks (in order):
 
 | Step | Command | What it catches |
 |------|---------|-----------------|
+| **i18n sync** | `npm run check:i18n` | Message keys present in one locale but missing from another |
+| **API types** | `npm run generate:api-types` | `src/types/api-generated.ts` drifted from `openapi/openapi.json` |
 | **TypeScript** | `npx tsc --noEmit` | Type errors, missing imports |
 | **ESLint** | `npm run lint` | Code quality, React hooks rules, best practices |
 | **Build** | `npm run build` | Build failures, broken pages |
@@ -70,16 +72,28 @@ Every PR to `main` runs through four automated checks (in order):
 The "Build & Verify" check is a required status check — PRs cannot be
 merged until all steps pass.
 
+`src/types/api-generated.ts` is generated, not hand-written. CI regenerates
+it and fails if the result differs from what is committed. To change it,
+refresh the spec with `npm run sync:openapi`, regenerate, and commit both
+the spec and the generated types.
+
 ### Running Checks Locally
 
 ```bash
 # Run all checks (same as CI)
-npx tsc --noEmit && npm run lint && npm run build
+npm run check:i18n \
+  && npm run generate:api-types \
+  && git diff --exit-code -- src/types/api-generated.ts \
+  && npx tsc --noEmit \
+  && npm run lint \
+  && npm run build
 
 # Run individual checks
-npx tsc --noEmit     # type check
-npm run lint         # eslint
-npm run build        # production build
+npm run check:i18n        # i18n message sync
+npm run generate:api-types # regenerate API types, then check git diff is empty
+npx tsc --noEmit          # type check
+npm run lint              # eslint
+npm run build             # production build
 ```
 
 ## Developer Certificate of Origin (DCO)
