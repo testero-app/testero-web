@@ -1,6 +1,6 @@
 import { useTranslations } from 'use-intl';
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { BrowserRouter, Navigate, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Navigate, Routes, Route, useNavigate, useLocation } from 'react-router';
 import { AssessmentProvider, useAssessment, TSubmissionSummary, TSubmissionReview } from '../context/AssessmentContext';
 import { isQuestionAnswered, DEFAULT_TIMER_MINUTES } from '../lib/questionUtils';
 import { useTimer } from '../hooks/useTimer';
