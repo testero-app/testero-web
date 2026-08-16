@@ -3,7 +3,6 @@ import { useTranslations, useLocale } from 'use-intl';
 import { fetchNotificationPreferences, updateNotificationPreferences, updateLanguage } from '../lib/api';
 import { useLocaleSwitch } from '../i18n/LocaleProvider';
 import type { Locale } from '../i18n/messages';
-import SegmentedControl from './ui/SegmentedControl';
 import styles from './ProfilePage.module.css';
 
 interface SettingsPageProps {
@@ -66,14 +65,14 @@ export default function SettingsPage({ token }: SettingsPageProps) {
                     <div className={styles.contentCard}>
                         <div className={styles.cardTitle}>{t('languageTitle')}</div>
                         <div className={styles.cardDescription}>{t('languageDescription')}</div>
-                        <SegmentedControl
-                            options={[
-                                { value: 'it', label: t('languageItalian') },
-                                { value: 'en', label: t('languageEnglish') },
-                            ]}
+                        <select
+                            className={styles.langSelect}
                             value={locale}
-                            onChange={(v) => setLanguage(v as Locale)}
-                        />
+                            onChange={(e) => setLanguage(e.target.value as Locale)}
+                        >
+                            <option value="it">{t('languageItalian')}</option>
+                            <option value="en">{t('languageEnglish')}</option>
+                        </select>
                     </div>
 
                     {/* Notifiche */}

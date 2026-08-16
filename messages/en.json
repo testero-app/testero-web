@@ -50,7 +50,7 @@
         },
         "certifications": {
             "title": "Certifications",
-            "subtitle": "Your school's external assessments"
+            "subtitle": "Certification simulations"
         },
         "results": {
             "title": "My results",
@@ -109,7 +109,8 @@
     "modals": {
         "cancel": "Cancel",
         "start": "Start",
-        "startConfirm": "Are you sure you want to start the assessment? The timer will start immediately.",
+        "startTitle": "Start the test?",
+        "startConfirm": "The timer will start immediately.",
         "submitTitle": "Submit the assessment?",
         "answeredCount": "Answered",
         "unansweredCount": "Unanswered",
@@ -160,7 +161,8 @@
     },
     "certifications": {
         "banner": "Certification is a <strong>school</strong> service: it sets the content, threshold and outcome. Testero delivers it as a timed assessment and records the result — it is not a separate track.",
-        "empty": "No certifications available at the moment."
+        "subtitle": "Prepare with simulations of official certifications.",
+        "empty": "No simulations available at the moment."
     },
     "training": {
         "empty": "No topics available at the moment.",
