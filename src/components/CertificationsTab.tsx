@@ -38,17 +38,7 @@ export default function CertificationsTab({ assessments, loading, onStart }: Cer
 
     return (
         <>
-            <div className={styles.banner}>
-                <span className={styles.bannerIcon}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="12" cy="8" r="4" />
-                        <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
-                    </svg>
-                </span>
-                <span className={styles.bannerText}>
-                    {t.rich('banner', { strong: (c) => <strong>{c}</strong> })}
-                </span>
-            </div>
+            <p className={styles.subtitle}>{t('subtitle')}</p>
 
             {assessments.length === 0 ? (
                 <div className={styles.empty}>{t('empty')}</div>

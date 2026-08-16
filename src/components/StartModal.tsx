@@ -13,7 +13,7 @@ export default function StartModal({ visible, onConfirm, onCancel }: StartModalP
         <Modal
             open={visible}
             onClose={onCancel}
-            title="Conferma inizio test"
+            title={t('startTitle')}
             actions={
                 <>
                     <Button variant="ghost" onClick={onCancel}>{t('cancel')}</Button>

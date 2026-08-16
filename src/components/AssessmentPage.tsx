@@ -241,8 +241,6 @@ function VariantF({
                     <span className={styles.codeDot} style={{ background: '#ff5f57' }} />
                     <span className={styles.codeDot} style={{ background: '#febc2e' }} />
                     <span className={styles.codeDot} style={{ background: '#28c840' }} />
-                    <span className={styles.codeFile}>{t('codeFileName')}</span>
-                    <span className={styles.codeTag}>{t('stimulus')}</span>
                     <button
                         type="button"
                         className={styles.codeToggle}
@@ -279,10 +277,6 @@ function VariantF({
                             }}>{question.code}</code>
                         </pre>
                     </div>
-                </div>
-                <div className={styles.noteF}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7f97a8" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
-                    Leggi attentamente il codice prima di rispondere
                 </div>
             </div>
 
