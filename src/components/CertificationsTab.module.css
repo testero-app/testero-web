@@ -1,5 +1,11 @@
 /* ── CertificazioniTab ────────────────────────────────────────── */
 
+.subtitle {
+    font-size: 14px;
+    color: var(--ts-text-soft);
+    margin: 0 0 16px;
+}
+
 .banner {
     display: flex;
     align-items: flex-start;

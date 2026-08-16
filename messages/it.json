@@ -50,7 +50,7 @@
         },
         "certifications": {
             "title": "Certificazioni",
-            "subtitle": "Verifiche esterne della scuola"
+            "subtitle": "Simulazioni di certificazione"
         },
         "results": {
             "title": "I miei risultati",
@@ -109,7 +109,8 @@
     "modals": {
         "cancel": "Annulla",
         "start": "Inizia",
-        "startConfirm": "Sei sicuro di voler iniziare il test? Il tempo partirà immediatamente.",
+        "startTitle": "Iniziare il test?",
+        "startConfirm": "Il tempo partirà immediatamente.",
         "submitTitle": "Consegnare il test?",
         "answeredCount": "Risposte date",
         "unansweredCount": "Senza risposta",
@@ -160,7 +161,8 @@
     },
     "certifications": {
         "banner": "La certificazione è un servizio <strong>della scuola</strong>: ne fissa contenuti, soglia ed esito. Testero la eroga come verifica a tempo e ne registra il risultato — non è un percorso a parte.",
-        "empty": "Nessuna certificazione disponibile al momento."
+        "subtitle": "Preparati con simulazioni delle certificazioni ufficiali.",
+        "empty": "Nessuna simulazione disponibile al momento."
     },
     "training": {
         "empty": "Nessun argomento disponibile al momento.",
