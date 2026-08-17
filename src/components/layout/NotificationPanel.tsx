@@ -1,7 +1,9 @@
 import { useTranslations, useLocale } from 'use-intl';
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router';
 import {
     fetchUnreadNotifications,
+    fetchSubmissionHistory,
     markNotificationAsRead,
     markAllNotificationsAsRead,
     type TNotification,
@@ -34,6 +36,7 @@ function formatTime(iso: string | null, t: (k: string, v?: Record<string, string
 export default function NotificationPanel({ token, count, onCountChange }: NotificationPanelProps) {
     const t = useTranslations('notifications');
     const locale = useLocale();
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [notifications, setNotifications] = useState<TNotification[]>([]);
     const [loading, setLoading] = useState(false);
@@ -76,11 +79,25 @@ export default function NotificationPanel({ token, count, onCountChange }: Notif
         });
     }, [loadNotifications]);
 
-    const handleMarkOne = useCallback(async (id: string) => {
-        await markNotificationAsRead(id, token);
-        setNotifications((prev) => prev.filter((n) => n.id !== id));
+    const handleClickNotification = useCallback(async (notification: TNotification) => {
+        await markNotificationAsRead(notification.id, token);
+        setNotifications((prev) => prev.filter((n) => n.id !== notification.id));
         onCountChange();
-    }, [token, onCountChange]);
+        close();
+
+        const sourceId = notification.source_event_id;
+        if (!sourceId) return;
+
+        if (notification.event === 'EXAM_RESULT' || notification.event === 'CERT_SIMULATION_RESULT') {
+            try {
+                const history = await fetchSubmissionHistory(token);
+                const match = history.find((s) => s.id === sourceId);
+                if (match) navigate('/results/summary', { state: { historySubmission: match } });
+            } catch { /* submission may have been deleted — just mark as read */ }
+        } else if (notification.event === 'DEADLINE_REMINDER') {
+            navigate('/certifications');
+        }
+    }, [token, onCountChange, close, navigate]);
 
     const handleMarkAll = useCallback(async () => {
         await markAllNotificationsAsRead(token);
@@ -122,7 +139,7 @@ export default function NotificationPanel({ token, count, onCountChange }: Notif
                                 key={n.id}
                                 className={styles.item}
                                 role="menuitem"
-                                onClick={() => handleMarkOne(n.id)}
+                                onClick={() => handleClickNotification(n)}
                             >
                                 <span className={styles.itemTitle}>{n.title}</span>
                                 <span className={styles.itemMessage}>{n.message}</span>
