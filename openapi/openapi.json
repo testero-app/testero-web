@@ -385,6 +385,10 @@
           "read": {
             "type": "boolean"
           },
+          "source_event_id": {
+            "nullable": true,
+            "type": "string"
+          },
           "title": {
             "type": "string"
           }
@@ -395,6 +399,7 @@
           "id",
           "message",
           "read",
+          "source_event_id",
           "title"
         ],
         "type": "object"
