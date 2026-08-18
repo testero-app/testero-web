@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0](https://github.com/testero-app/testero-web/compare/v4.0.1...v4.1.0) (2026-08-18)
+
+
+### Features
+
+* **competencies:** cap student view at 3 hierarchy levels ([#185](https://github.com/testero-app/testero-web/issues/185)) ([88dc8b1](https://github.com/testero-app/testero-web/commit/88dc8b1b267390b7b8d759aa874b2ab0c122845d))
+* **notification:** navigate to source event on notification click ([#183](https://github.com/testero-app/testero-web/issues/183)) ([c775868](https://github.com/testero-app/testero-web/commit/c7758685742fd0d91157ca8b9b28a69bcb272317))
+
 ## [4.0.1](https://github.com/testero-app/testero-web/compare/v4.0.0...v4.0.1) (2026-08-16)
 
 
