@@ -28,13 +28,14 @@ function getBarColor(pct: number): string {
     return 'var(--ts-danger)';
 }
 
-function TopicNode({ topic, expandedIds, onToggle }: {
+function TopicNode({ topic, expandedIds, onToggle, depth = 0 }: {
     topic: TopicMastery;
     expandedIds: Set<string>;
     onToggle: (id: string) => void;
+    depth?: number;
 }) {
     const isExpanded = expandedIds.has(topic.id);
-    const hasContent = topic.subjects.length > 0 || topic.children.length > 0;
+    const hasContent = depth < 3 && (topic.subjects.length > 0 || topic.children.length > 0);
 
     return (
         <div className={styles.topicRow}>
@@ -84,6 +85,7 @@ function TopicNode({ topic, expandedIds, onToggle }: {
                             topic={child}
                             expandedIds={expandedIds}
                             onToggle={onToggle}
+                            depth={depth + 1}
                         />
                     ))}
                     {topic.subjects.map((subject) => (
