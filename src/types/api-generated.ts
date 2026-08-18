@@ -559,6 +559,7 @@ export interface components {
             id: string;
             message: string;
             read: boolean;
+            source_event_id: string | null;
             title: string;
         };
         NotificationPreferenceDto: {
