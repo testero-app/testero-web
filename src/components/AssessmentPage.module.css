@@ -110,7 +110,7 @@
 
 /* Shared elements */
 .eyebrow { font-family: var(--ts-font-mono); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #0e7c7b; }
-.qTitle { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; color: #102a43; line-height: 1.2; margin: 14px 0 22px; }
+.qTitle { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; color: #102a43; line-height: 1.2; margin: 14px 0 22px; white-space: pre-line; }
 
 /* Flag toggle */
 .flag { display: inline-flex; align-items: center; gap: 8px; font-family: var(--ts-font-ui); font-size: 14px; font-weight: 600; color: #8696a6; cursor: pointer; background: none; border: none; }
