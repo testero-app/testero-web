@@ -114,7 +114,7 @@ function TopicNode({ topic, expandedIds, onToggle, depth = 0 }: {
     );
 }
 
-export default function CompetenciesTab({ token, onStartTraining }: CompetenciesTabProps) {
+export default function CompetenciesTab({ token }: CompetenciesTabProps) {
     const t = useTranslations('competencies');
     const [topics, setTopics] = useState<TopicMastery[]>([]);
     const [loading, setLoading] = useState(true);
