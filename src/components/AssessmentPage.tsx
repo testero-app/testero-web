@@ -6,6 +6,59 @@ import styles from './AssessmentPage.module.css';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
+/* ── QuestionText — renders question with optional spec grid ─────── */
+
+const LIST_LINE = /^[-–•]\s*(.+?):\s*(.+)$/;
+
+function QuestionText({ text }: { text: string }) {
+    const lines = text.split('\n');
+    const blocks: { type: 'text' | 'list'; content: string; items?: { key: string; value: string }[] }[] = [];
+    let currentList: { key: string; value: string }[] = [];
+
+    for (const line of lines) {
+        const match = line.match(LIST_LINE);
+        if (match) {
+            currentList.push({ key: match[1].trim(), value: match[2].trim() });
+        } else {
+            if (currentList.length > 0) {
+                blocks.push({ type: 'list', content: '', items: currentList });
+                currentList = [];
+            }
+            if (line.trim()) {
+                blocks.push({ type: 'text', content: line.trim() });
+            }
+        }
+    }
+    if (currentList.length > 0) {
+        blocks.push({ type: 'list', content: '', items: currentList });
+    }
+
+    // No list items found — render as plain paragraph
+    if (blocks.every(b => b.type === 'text')) {
+        return <p className={styles.qText}>{text}</p>;
+    }
+
+    return (
+        <div className={styles.qTextBlock}>
+            {blocks.map((block, i) =>
+                block.type === 'text' ? (
+                    <p key={i} className={styles.qText}>{block.content}</p>
+                ) : (
+                    <div key={i} className={styles.specGrid}>
+                        {block.items!.map((item, j) => (
+                            <div key={j} className={styles.specRow}>
+                                <span className={styles.specDot}>•</span>
+                                <span className={styles.specChip}>{item.key}</span>
+                                <span className={styles.specValue}>{item.value}</span>
+                            </div>
+                        ))}
+                    </div>
+                ),
+            )}
+        </div>
+    );
+}
+
 interface AssessmentPageProps {
     shuffledQuestions: TQuestion[];
     shuffledOptions: TOption[][];
@@ -173,19 +226,15 @@ function VariantE({
     isFlagged: boolean; onToggleFlag: () => void;
     onPrev: () => void; onNext: () => void; onSubmit: () => void;
 }) {
-    const t = useTranslations('assessment');
     return (
         <div className={styles.bodyE}>
             {/* Head row */}
             <div className={styles.headE}>
-                <span className={styles.eyebrow}>
-                    {t('questionCounter', { n: displayIndex + 1, total })}
-                </span>
                 <FlagToggle active={isFlagged} onToggle={onToggleFlag} />
             </div>
 
-            {/* Question title */}
-            <h2 className={styles.qTitle}>{question.text}</h2>
+            {/* Question text */}
+            <QuestionText text={question.text} />
 
             {/* Options (no code in this variant — code goes to split F) */}
             <Options
@@ -284,13 +333,10 @@ function VariantF({
             <div className={styles.questionPanel}>
               <div className={styles.questionInner}>
                 <div className={styles.splitHead}>
-                    <span className={styles.eyebrow}>
-                        {t('questionCounterOf', { n: displayIndex + 1, total })}
-                    </span>
                     <FlagToggle active={isFlagged} onToggle={onToggleFlag} />
                 </div>
 
-                <h2 className={styles.qTitle}>{question.text}</h2>
+                <QuestionText text={question.text} />
 
                 <Options
                     question={question}
