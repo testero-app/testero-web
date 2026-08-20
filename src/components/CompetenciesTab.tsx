@@ -35,7 +35,7 @@ function TopicNode({ topic, expandedIds, onToggle, depth = 0 }: {
     depth?: number;
 }) {
     const isExpanded = expandedIds.has(topic.id);
-    const hasContent = depth < 3 && (topic.subjects.length > 0 || topic.children.length > 0);
+    const hasContent = depth < 3 && (topic.subjects.length > 1 || topic.children.length > 0);
 
     return (
         <div className={styles.topicRow}>
@@ -88,7 +88,7 @@ function TopicNode({ topic, expandedIds, onToggle, depth = 0 }: {
                             depth={depth + 1}
                         />
                     ))}
-                    {topic.subjects.map((subject) => (
+                    {topic.subjects.length > 1 && topic.subjects.map((subject) => (
                         <div key={subject.id} className={styles.chapterRow}>
                             <span className={styles.chapterName}>{subject.label}</span>
                             <div className={styles.chapterBarTrack}>
@@ -181,12 +181,6 @@ export default function CompetenciesTab({ token, onStartTraining }: Competencies
                     />
                 ))}
 
-                <button
-                    className={styles.trainBtn}
-                    onClick={() => onStartTraining(topics[0]?.id ?? '')}
-                >
-                    Allenati sui punti deboli
-                </button>
             </div>
         </div>
     );
