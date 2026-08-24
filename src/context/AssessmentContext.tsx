@@ -75,9 +75,30 @@ type TAction =
     | { type: 'SET_SUBMISSION_HISTORY'; payload: TSubmissionSummary[] }
     | { type: 'TOGGLE_FLAG'; payload: string };
 
+function loadSession(): { token: string; user: TUser } | null {
+    try {
+        const token = localStorage.getItem('testero_token');
+        const userJson = localStorage.getItem('testero_user');
+        if (token && userJson) return { token, user: JSON.parse(userJson) };
+    } catch { /* corrupted storage */ }
+    return null;
+}
+
+function saveSession(token: string, user: TUser) {
+    localStorage.setItem('testero_token', token);
+    localStorage.setItem('testero_user', JSON.stringify(user));
+}
+
+function clearSession() {
+    localStorage.removeItem('testero_token');
+    localStorage.removeItem('testero_user');
+}
+
+const restored = loadSession();
+
 const initialState: TState = {
-    token: null,
-    user: null,
+    token: restored?.token ?? null,
+    user: restored?.user ?? null,
     availableAssessments: [],
     assessmentConfig: null,
     submissionId: null,
@@ -96,9 +117,11 @@ const initialState: TState = {
 function reducer(state: TState, action: TAction): TState {
     switch (action.type) {
         case 'LOGIN_SUCCESS':
+            saveSession(action.payload.token, action.payload.user);
             return { ...state, token: action.payload.token, user: action.payload.user, error: null };
         case 'LOGOUT':
-            return { ...initialState };
+            clearSession();
+            return { ...initialState, token: null, user: null };
         case 'SET_AVAILABLE_ASSESSMENTS':
             return { ...state, availableAssessments: action.payload };
         case 'SET_ASSESSMENT_CONFIG':
