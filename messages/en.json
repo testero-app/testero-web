@@ -35,26 +35,21 @@
     "nav": {
         "sectionStudy": "STUDY",
         "training": "Training",
-        "competencies": "Competencies",
-        "certifications": "Certifications",
-        "results": "My results"
+        "progress": "Progress",
+        "certifications": "Certifications"
     },
     "shell": {
         "training": {
             "title": "Training",
             "subtitle": "Free practice by topic"
         },
-        "competencies": {
-            "title": "Competencies",
-            "subtitle": "Your mastery by topic"
+        "progress": {
+            "title": "Progress",
+            "subtitle": "Competencies and test history"
         },
         "certifications": {
             "title": "Certifications",
             "subtitle": "Certification simulations"
-        },
-        "results": {
-            "title": "My results",
-            "subtitle": "History of assessments and training"
         },
         "profile": {
             "title": "Profile",
@@ -147,6 +142,17 @@
         "why": "Why",
         "bonus": "BONUS",
         "questionLabel": "QUESTION"
+    },
+    "progress": {
+        "tabSummary": "Summary",
+        "tabHistory": "History",
+        "competenciesTitle": "Competencies by topic",
+        "trainWeakLink": "Train on weak points",
+        "colName": "Assessment",
+        "colType": "Type",
+        "colDate": "Date",
+        "colPoints": "Points",
+        "colResult": "Result"
     },
     "results": {
         "filterAll": "All",
