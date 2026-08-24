@@ -134,7 +134,7 @@
 
 .table {
     display: grid;
-    grid-template-columns: minmax(180px, 1fr) 112px 100px 74px 104px;
+    grid-template-columns: 3fr 0.85fr 0.85fr 0.7fr 1fr;
     border: 1px solid var(--ts-border);
     border-radius: var(--ts-r-lg);
     overflow: hidden;
