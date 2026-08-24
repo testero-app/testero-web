@@ -8,17 +8,23 @@ const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
 /* ── QuestionText — renders question with optional spec grid ─────── */
 
-const LIST_LINE = /^[-–•]\s*(.+?):\s*(.+)$/;
+const LIST_KV = /^[-–•]\s*(.+?):\s*(.+)$/;
+const LIST_SIMPLE = /^[-–•]\s+(.+)$/;
+
+interface ListItem { key?: string; value: string }
 
 function QuestionText({ text }: { text: string }) {
     const lines = text.split('\n');
-    const blocks: { type: 'text' | 'list'; content: string; items?: { key: string; value: string }[] }[] = [];
-    let currentList: { key: string; value: string }[] = [];
+    const blocks: { type: 'text' | 'list'; content: string; items?: ListItem[] }[] = [];
+    let currentList: ListItem[] = [];
 
     for (const line of lines) {
-        const match = line.match(LIST_LINE);
-        if (match) {
-            currentList.push({ key: match[1].trim(), value: match[2].trim() });
+        const kvMatch = line.match(LIST_KV);
+        const simpleMatch = !kvMatch && line.match(LIST_SIMPLE);
+        if (kvMatch) {
+            currentList.push({ key: kvMatch[1].trim(), value: kvMatch[2].trim() });
+        } else if (simpleMatch) {
+            currentList.push({ value: simpleMatch[1].trim() });
         } else {
             if (currentList.length > 0) {
                 blocks.push({ type: 'list', content: '', items: currentList });
@@ -33,7 +39,6 @@ function QuestionText({ text }: { text: string }) {
         blocks.push({ type: 'list', content: '', items: currentList });
     }
 
-    // No list items found — render as plain paragraph
     if (blocks.every(b => b.type === 'text')) {
         return <p className={styles.qText}>{text}</p>;
     }
@@ -44,14 +49,21 @@ function QuestionText({ text }: { text: string }) {
                 block.type === 'text' ? (
                     <p key={i} className={styles.qText}>{block.content}</p>
                 ) : (
-                    <div key={i} className={styles.specGrid}>
-                        {block.items!.map((item, j) => (
-                            <div key={j} className={styles.specRow}>
-                                <span className={styles.specDot}>•</span>
-                                <span className={styles.specChip}>{item.key}</span>
-                                <span className={styles.specValue}>{item.value}</span>
-                            </div>
-                        ))}
+                    <div key={i} className={block.items!.some(it => it.key) ? styles.specGrid : styles.bulletList}>
+                        {block.items!.map((item, j) =>
+                            item.key ? (
+                                <div key={j} className={styles.specRow}>
+                                    <span className={styles.specDot}>•</span>
+                                    <span className={styles.specChip}>{item.key}</span>
+                                    <span className={styles.specValue}>{item.value}</span>
+                                </div>
+                            ) : (
+                                <div key={j} className={styles.bulletItem}>
+                                    <span className={styles.specDot}>•</span>
+                                    <span className={styles.bulletText}>{item.value}</span>
+                                </div>
+                            ),
+                        )}
                     </div>
                 ),
             )}
