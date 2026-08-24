@@ -36,7 +36,9 @@
         "sectionStudy": "STUDY",
         "training": "Training",
         "progress": "Progress",
-        "certifications": "Certifications"
+        "certifications": "Simulations",
+        "sectionClasse": "CLASS",
+        "verifiche": "Assessments"
     },
     "shell": {
         "training": {
@@ -48,8 +50,12 @@
             "subtitle": "Competencies and test history"
         },
         "certifications": {
-            "title": "Certifications",
-            "subtitle": "Certification simulations"
+            "title": "Simulations",
+            "subtitle": "Certification-style mock exams"
+        },
+        "verifiche": {
+            "title": "Assessments",
+            "subtitle": "Assignments from your class"
         },
         "profile": {
             "title": "Profile",
@@ -152,22 +158,31 @@
         "colType": "Type",
         "colDate": "Date",
         "colPoints": "Points",
-        "colResult": "Result"
+        "colResult": "Result",
+        "tabVerifiche": "Assessments",
+        "verificheNote": "Closed class assessments.",
+        "verificheActiveLink": "Active ones are in Assessments.",
+        "filterAll": "All",
+        "filterRecover": "To recover",
+        "colVerifica": "ASSESSMENT",
+        "colClasse": "CLASS",
+        "colScadenza": "DEADLINE",
+        "notTaken": "Not taken"
     },
     "results": {
         "filterAll": "All",
-        "filterCertifications": "Certifications",
+        "filterCertifications": "Simulations",
         "filterTraining": "Training",
         "filterLabel": "Filter",
         "empty": "No results available.",
-        "tagCertification": "Certification",
+        "tagCertification": "Simulation",
         "tagTraining": "Training",
         "passed": "Passed",
         "notPassed": "Not passed"
     },
     "certifications": {
-        "banner": "Certification is a <strong>school</strong> service: it sets the content, threshold and outcome. Testero delivers it as a timed assessment and records the result — it is not a separate track.",
-        "subtitle": "Prepare with simulations of official certifications.",
+        "banner": "A simulation mirrors a real certification exam: same number of questions, same duration, same threshold. It does not grant any title — it helps you gauge your readiness.",
+        "subtitle": "Mock exams that mirror the format and duration of certification exams. Timed: starts on the first click.",
         "empty": "No simulations available at the moment."
     },
     "training": {
@@ -232,5 +247,18 @@
         "reqNum": "One number",
         "reqSymbol": "One symbol",
         "fieldsManagedBySchool": "Some fields are managed by the school"
+    },
+    "verifiche": {
+        "title": "Assigned assessments",
+        "subtitle": "Assignments from your class, with a deadline. One attempt, timed: starts on the first click.",
+        "banner": "If the deadline passes without a submission, the assessment is marked as <strong>not taken</strong>. The result is recorded in your progress and shared with the teacher.",
+        "daSvolgere": "To complete",
+        "programmate": "Scheduled",
+        "pastLink": "Past assessments →",
+        "expiresIn": "Expires in {days} days · {date}",
+        "expiresToday": "Expires today at 23:59",
+        "opensOn": "Opens on {date}",
+        "empty": "No assessments assigned at the moment.",
+        "attempt": "1 attempt"
     }
 }

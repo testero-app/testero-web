@@ -4,11 +4,14 @@ import { type TSubmissionSummary } from '../context/AssessmentContext';
 import CompetenciesTab from './CompetenciesTab';
 import styles from './ProgressPage.module.css';
 
-type TabId = 'summary' | 'history';
+type TabId = 'summary' | 'verifiche' | 'history';
 type FilterType = 'all' | 'certifications' | 'training';
+type VerificheFilter = 'all' | 'recover';
 
-function categoryOf(type: string | undefined): 'certification' | 'training' {
-    return type === 'TRAINING' ? 'training' : 'certification';
+function categoryOf(type: string | undefined): 'certification' | 'training' | 'exam' {
+    if (type === 'TRAINING') return 'training';
+    if (type === 'EXAM') return 'exam';
+    return 'certification';
 }
 
 function formatDate(iso: string, locale: string): string {
@@ -39,19 +42,33 @@ export default function ProgressPage({
     const locale = useLocale();
     const [activeTab, setActiveTab] = useState<TabId>('summary');
     const [filter, setFilter] = useState<FilterType>('all');
+    const [verificheFilter, setVerificheFilter] = useState<VerificheFilter>('all');
 
-    const certCount = submissions.filter((s) => categoryOf(s.type) === 'certification').length;
-    const trainCount = submissions.filter((s) => categoryOf(s.type) === 'training').length;
+    // Storico: exclude EXAM type
+    const historySubmissions = submissions.filter((s) => categoryOf(s.type) !== 'exam');
+
+    const certCount = historySubmissions.filter((s) => categoryOf(s.type) === 'certification').length;
+    const trainCount = historySubmissions.filter((s) => categoryOf(s.type) === 'training').length;
 
     const filtered = filter === 'all'
-        ? submissions
-        : submissions.filter((s) => {
+        ? historySubmissions
+        : historySubmissions.filter((s) => {
             const category = categoryOf(s.type);
             return filter === 'certifications' ? category === 'certification' : category === 'training';
         });
 
+    // Verifiche tab: only EXAM submissions
+    const examSubmissions = submissions.filter((s) => s.type === 'EXAM');
+    const filteredExams = verificheFilter === 'all'
+        ? examSubmissions
+        : examSubmissions.filter((s) => {
+            const passed = s.total_questions > 0
+                && s.correct_count / s.total_questions >= 0.6;
+            return !passed;
+        });
+
     const filters: { id: FilterType; label: string; count: number }[] = [
-        { id: 'all', label: tr('filterAll'), count: submissions.length },
+        { id: 'all', label: tr('filterAll'), count: historySubmissions.length },
         { id: 'certifications', label: tr('filterCertifications'), count: certCount },
         { id: 'training', label: tr('filterTraining'), count: trainCount },
     ];
@@ -65,6 +82,12 @@ export default function ProgressPage({
                     onClick={() => setActiveTab('summary')}
                 >
                     {tp('tabSummary')}
+                </button>
+                <button
+                    className={activeTab === 'verifiche' ? styles.tabActive : styles.tab}
+                    onClick={() => setActiveTab('verifiche')}
+                >
+                    {tp('tabVerifiche')}
                 </button>
                 <button
                     className={activeTab === 'history' ? styles.tabActive : styles.tab}
@@ -89,6 +112,116 @@ export default function ProgressPage({
                     <div className={styles.card}>
                         <CompetenciesTab token={token} onStartTraining={onStartTraining} />
                     </div>
+                </>
+            )}
+
+            {/* ── Verifiche ──────────────────────────────────────── */}
+            {activeTab === 'verifiche' && (
+                <>
+                    <div className={styles.verificheNote}>
+                        <span>{tp('verificheNote')} </span>
+                        <button
+                            className={styles.verificheActiveLink}
+                            onClick={() => {
+                                // Navigate handled at parent level — but for now
+                                // this is an in-page note, not a real navigation
+                            }}
+                        >
+                            {tp('verificheActiveLink')}
+                        </button>
+                    </div>
+
+                    <div className={styles.filters}>
+                        <button
+                            className={`${styles.filterPill} ${verificheFilter === 'all' ? styles.filterPillActive : ''}`}
+                            onClick={() => setVerificheFilter('all')}
+                        >
+                            {tp('filterAll')}
+                        </button>
+                        <button
+                            className={`${styles.filterPill} ${verificheFilter === 'recover' ? styles.filterPillActive : ''}`}
+                            onClick={() => setVerificheFilter('recover')}
+                        >
+                            {tp('filterRecover')}
+                        </button>
+                    </div>
+
+                    {submissionsLoading ? (
+                        <div>
+                            <div className={styles.skeleton} />
+                            <div className={styles.skeleton} style={{ marginTop: 12 }} />
+                        </div>
+                    ) : filteredExams.length === 0 ? (
+                        <div className={styles.empty}>{tr('empty')}</div>
+                    ) : (
+                        <div className={styles.verificheTable}>
+                            <div className={styles.tableHeader}>
+                                <div className={styles.tableHeaderCell}>{tp('colVerifica')}</div>
+                                <div className={styles.tableHeaderCell}>{tp('colClasse')}</div>
+                                <div className={styles.tableHeaderCell}>{tp('colScadenza')}</div>
+                                <div className={styles.tableHeaderCell}>{tp('colPoints')}</div>
+                                <div className={styles.tableHeaderCell}>{tp('colResult')}</div>
+                            </div>
+
+                            {filteredExams.map((s) => {
+                                const passed = s.total_questions > 0
+                                    && s.correct_count / s.total_questions >= 0.6;
+                                const submitted = !!s.submitted_at;
+
+                                let badgeClass: string;
+                                let badgeLabel: string;
+                                if (!submitted) {
+                                    badgeClass = styles.badgeNotTaken;
+                                    badgeLabel = tp('notTaken');
+                                } else if (passed) {
+                                    badgeClass = styles.badgePass;
+                                    badgeLabel = tr('passed');
+                                } else {
+                                    badgeClass = styles.badgeFail;
+                                    badgeLabel = tr('notPassed');
+                                }
+
+                                return (
+                                    <div
+                                        key={s.id}
+                                        className={styles.tableRow}
+                                        onClick={() => onSelectSubmission(s.id)}
+                                        role="button"
+                                        tabIndex={0}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter' || e.key === ' ') {
+                                                onSelectSubmission(s.id);
+                                            }
+                                        }}
+                                    >
+                                        <div className={styles.tableCell}>
+                                            <span className={styles.cellName}>
+                                                {s.assessment_title}
+                                            </span>
+                                        </div>
+                                        <div className={styles.tableCell}>
+                                            <span className={styles.cellType}>—</span>
+                                        </div>
+                                        <div className={styles.tableCell}>
+                                            <span className={styles.cellDate}>
+                                                {s.submitted_at ? formatDate(s.submitted_at, locale) : '—'}
+                                            </span>
+                                        </div>
+                                        <div className={styles.tableCell}>
+                                            <span className={styles.cellPoints}>
+                                                {s.correct_count}/{s.total_questions}
+                                            </span>
+                                        </div>
+                                        <div className={styles.tableCell}>
+                                            <span className={`${styles.badge} ${badgeClass}`}>
+                                                {badgeLabel}
+                                            </span>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
                 </>
             )}
 

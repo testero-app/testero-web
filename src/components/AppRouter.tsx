@@ -11,6 +11,7 @@ import LoginPage from './LoginPage';
 import AppShell from './layout/AppShell';
 import TrainingTab from './TrainingTab';
 import CertificationsTab from './CertificationsTab';
+import VerifichePage from './VerifichePage';
 import ProgressPage from './ProgressPage';
 import TrainingSetupPage from './TrainingSetupPage';
 import AssessmentHeader from './AssessmentHeader';
@@ -135,6 +136,65 @@ function CertificationsView() {
                 assessments={availableAssessments}
                 loading={loading}
                 onStart={handleStartCert}
+            />
+            <StartModal
+                visible={showStartModal}
+                onConfirm={handleStartConfirm}
+                onCancel={() => setShowStartModal(false)}
+            />
+        </AppShell>
+    );
+}
+
+// ─── Verifiche View ─────────────────────────────────────────────────────────
+
+function VerificheView() {
+    const {
+        user, token, availableAssessments, loading,
+        loadAvailableAssessments, selectAssessment, doLogout,
+    } = useAssessment();
+    const navigate = useNavigate();
+    const [showStartModal, setShowStartModal] = useState(false);
+    const [pendingAssessmentId, setPendingAssessmentId] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!user) { navigate('/login'); return; }
+        loadAvailableAssessments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
+
+    const handleStartVerifica = useCallback((assessmentId: string) => {
+        setPendingAssessmentId(assessmentId);
+        setShowStartModal(true);
+    }, []);
+
+    const handleStartConfirm = useCallback(async () => {
+        if (!pendingAssessmentId) return;
+        setShowStartModal(false);
+        try {
+            await selectAssessment(pendingAssessmentId);
+            navigate('/assessment');
+        } catch {
+            // error in state
+        }
+    }, [pendingAssessmentId, selectAssessment, navigate]);
+
+    if (!user || !token) return null;
+
+    return (
+        <AppShell
+            activePage="verifiche"
+            userName={`${user.first_name} ${user.last_name}`}
+            userClass={user.class_name}
+            token={token}
+            onNavigate={(page) => navigate(`/${page}`)}
+            onLogout={() => { doLogout(); navigate('/login'); }}
+        >
+            <VerifichePage
+                token={token}
+                assessments={availableAssessments}
+                loading={loading}
+                onStart={handleStartVerifica}
             />
             <StartModal
                 visible={showStartModal}
@@ -623,6 +683,7 @@ export default function AppRouter() {
                     <Route path="/progress" element={<RequireAuth><ProgressView /></RequireAuth>} />
                     <Route path="/competencies" element={<Navigate to="/progress" replace />} />
                     <Route path="/results" element={<Navigate to="/progress" replace />} />
+                    <Route path="/verifiche" element={<RequireAuth><VerificheView /></RequireAuth>} />
                     <Route path="/certifications" element={<RequireAuth><CertificationsView /></RequireAuth>} />
                     <Route path="/profile" element={<RequireAuth><ProfileView /></RequireAuth>} />
                     <Route path="/settings" element={<RequireAuth><SettingsView /></RequireAuth>} />
