@@ -35,26 +35,21 @@
     "nav": {
         "sectionStudy": "STUDIO",
         "training": "Allenamento",
-        "competencies": "Competenze",
-        "certifications": "Certificazioni",
-        "results": "I miei risultati"
+        "progress": "Progressi",
+        "certifications": "Certificazioni"
     },
     "shell": {
         "training": {
             "title": "Allenamento",
             "subtitle": "Pratica libera per argomento"
         },
-        "competencies": {
-            "title": "Competenze",
-            "subtitle": "La tua padronanza per argomento"
+        "progress": {
+            "title": "Progressi",
+            "subtitle": "Competenze e storico delle prove"
         },
         "certifications": {
             "title": "Certificazioni",
             "subtitle": "Simulazioni di certificazione"
-        },
-        "results": {
-            "title": "I miei risultati",
-            "subtitle": "Storico di verifiche e allenamento"
         },
         "profile": {
             "title": "Profilo",
@@ -147,6 +142,17 @@
         "why": "Perché",
         "bonus": "BONUS",
         "questionLabel": "DOMANDA"
+    },
+    "progress": {
+        "tabSummary": "Riepilogo",
+        "tabHistory": "Storico",
+        "competenciesTitle": "Competenze per argomento",
+        "trainWeakLink": "Allenati sui punti deboli",
+        "colName": "Prova",
+        "colType": "Tipo",
+        "colDate": "Data",
+        "colPoints": "Punti",
+        "colResult": "Esito"
     },
     "results": {
         "filterAll": "Tutti",

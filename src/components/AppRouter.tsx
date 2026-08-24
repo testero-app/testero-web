@@ -10,9 +10,8 @@ import type { ReactNode } from 'react';
 import LoginPage from './LoginPage';
 import AppShell from './layout/AppShell';
 import TrainingTab from './TrainingTab';
-import CompetenciesTab from './CompetenciesTab';
 import CertificationsTab from './CertificationsTab';
-import ResultsTab from './ResultsTab';
+import ProgressPage from './ProgressPage';
 import TrainingSetupPage from './TrainingSetupPage';
 import AssessmentHeader from './AssessmentHeader';
 import AssessmentPage from './AssessmentPage';
@@ -88,35 +87,6 @@ function TrainingView() {
     );
 }
 
-// ─── Competenze View ─────────────────────────────────────────────────────────
-
-function CompetenciesView() {
-    const { user, token, doLogout } = useAssessment();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!user) navigate('/login');
-    }, [user, navigate]);
-
-    if (!user || !token) return null;
-
-    return (
-        <AppShell
-            activePage="competencies"
-            userName={`${user.first_name} ${user.last_name}`}
-            userClass={user.class_name}
-            token={token}
-            onNavigate={(page) => navigate(`/${page}`)}
-            onLogout={() => { doLogout(); navigate('/login'); }}
-        >
-            <CompetenciesTab
-                token={token}
-                onStartTraining={(topicId) => navigate('/training/setup', { state: { topicId } })}
-            />
-        </AppShell>
-    );
-}
-
 // ─── Certificazioni View ────────────────────────────────────────────────────
 
 function CertificationsView() {
@@ -175,9 +145,9 @@ function CertificationsView() {
     );
 }
 
-// ─── Risultati Hub View ─────────────────────────────────────────────────────
+// ─── Progressi View ─────────────────────────────────────────────────────────
 
-function ResultsHubView() {
+function ProgressView() {
     const {
         user, token, submissionHistory, loading,
         loadSubmissionHistory, doLogout,
@@ -201,17 +171,19 @@ function ResultsHubView() {
 
     return (
         <AppShell
-            activePage="results"
+            activePage="progress"
             userName={`${user.first_name} ${user.last_name}`}
             userClass={user.class_name}
             token={token}
             onNavigate={(page) => navigate(`/${page}`)}
             onLogout={() => { doLogout(); navigate('/login'); }}
         >
-            <ResultsTab
+            <ProgressPage
+                token={token}
                 submissions={submissionHistory}
-                loading={loading}
+                submissionsLoading={loading}
                 onSelectSubmission={handleSelectSubmission}
+                onStartTraining={(topicId) => navigate('/training/setup', { state: { topicId } })}
             />
         </AppShell>
     );
@@ -648,9 +620,10 @@ export default function AppRouter() {
                     <Route path="/" element={<Navigate to="/login" replace />} />
                     <Route path="/login" element={<LoginView />} />
                     <Route path="/training" element={<RequireAuth><TrainingView /></RequireAuth>} />
-                    <Route path="/competencies" element={<RequireAuth><CompetenciesView /></RequireAuth>} />
+                    <Route path="/progress" element={<RequireAuth><ProgressView /></RequireAuth>} />
+                    <Route path="/competencies" element={<Navigate to="/progress" replace />} />
+                    <Route path="/results" element={<Navigate to="/progress" replace />} />
                     <Route path="/certifications" element={<RequireAuth><CertificationsView /></RequireAuth>} />
-                    <Route path="/results" element={<RequireAuth><ResultsHubView /></RequireAuth>} />
                     <Route path="/profile" element={<RequireAuth><ProfileView /></RequireAuth>} />
                     <Route path="/settings" element={<RequireAuth><SettingsView /></RequireAuth>} />
                     <Route path="/training/setup" element={<RequireAuth><TrainingSetupView /></RequireAuth>} />
