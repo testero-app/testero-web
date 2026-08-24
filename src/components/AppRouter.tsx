@@ -6,6 +6,7 @@ import { isQuestionAnswered, DEFAULT_TIMER_MINUTES } from '../lib/questionUtils'
 import { useTimer } from '../hooks/useTimer';
 import { fetchSubmissionReview, startTrainingSession } from '../lib/api';
 
+import type { ReactNode } from 'react';
 import LoginPage from './LoginPage';
 import AppShell from './layout/AppShell';
 import TrainingTab from './TrainingTab';
@@ -25,6 +26,14 @@ import AlertModal from './AlertModal';
 import ProfilePage from './ProfilePage';
 import SettingsPage from './SettingsPage';
 import ErrorPage from './ErrorPage';
+
+// ─── Auth Guard ──────────────────────────────────────────────────────────────
+
+function RequireAuth({ children }: { children: ReactNode }) {
+    const { user } = useAssessment();
+    if (!user) return <Navigate to="/login" replace />;
+    return <>{children}</>;
+}
 
 // ─── Login View ──────────────────────────────────────────────────────────────
 
@@ -638,17 +647,17 @@ export default function AppRouter() {
                         bounces to the login — each view guards itself. */}
                     <Route path="/" element={<Navigate to="/login" replace />} />
                     <Route path="/login" element={<LoginView />} />
-                    <Route path="/training" element={<TrainingView />} />
-                    <Route path="/competencies" element={<CompetenciesView />} />
-                    <Route path="/certifications" element={<CertificationsView />} />
-                    <Route path="/results" element={<ResultsHubView />} />
-                    <Route path="/profile" element={<ProfileView />} />
-                    <Route path="/settings" element={<SettingsView />} />
-                    <Route path="/training/setup" element={<TrainingSetupView />} />
-                    <Route path="/assessment" element={<AssessmentView />} />
-                    <Route path="/recap" element={<RecapView />} />
-                    <Route path="/results/summary" element={<ResultsView />} />
-                    <Route path="/review" element={<ReviewView />} />
+                    <Route path="/training" element={<RequireAuth><TrainingView /></RequireAuth>} />
+                    <Route path="/competencies" element={<RequireAuth><CompetenciesView /></RequireAuth>} />
+                    <Route path="/certifications" element={<RequireAuth><CertificationsView /></RequireAuth>} />
+                    <Route path="/results" element={<RequireAuth><ResultsHubView /></RequireAuth>} />
+                    <Route path="/profile" element={<RequireAuth><ProfileView /></RequireAuth>} />
+                    <Route path="/settings" element={<RequireAuth><SettingsView /></RequireAuth>} />
+                    <Route path="/training/setup" element={<RequireAuth><TrainingSetupView /></RequireAuth>} />
+                    <Route path="/assessment" element={<RequireAuth><AssessmentView /></RequireAuth>} />
+                    <Route path="/recap" element={<RequireAuth><RecapView /></RequireAuth>} />
+                    <Route path="/results/summary" element={<RequireAuth><ResultsView /></RequireAuth>} />
+                    <Route path="/review" element={<RequireAuth><ReviewView /></RequireAuth>} />
                     <Route path="*" element={<NotFoundView />} />
                 </Routes>
             </BrowserRouter>
