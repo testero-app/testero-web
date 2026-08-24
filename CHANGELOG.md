@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.4](https://github.com/testero-app/testero-web/compare/v4.1.3...v4.1.4) (2026-08-24)
+
+
+### Bug Fixes
+
+* redirect to login immediately on hard refresh without session ([#196](https://github.com/testero-app/testero-web/issues/196)) ([0aa110e](https://github.com/testero-app/testero-web/commit/0aa110e2aed3b209c8a1b79d2d0346f541f5416a))
+
 ## [4.1.3](https://github.com/testero-app/testero-web/compare/v4.1.2...v4.1.3) (2026-08-20)
 
 
