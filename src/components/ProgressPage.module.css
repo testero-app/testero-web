@@ -1,0 +1,250 @@
+/* ── ProgressPage ─────────────────────────────────────────────── */
+
+.container {
+    max-width: 820px;
+}
+
+/* ── Tab bar ─────────────────────────────────────────────────── */
+
+.tabBar {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--ts-border-soft);
+    margin-bottom: 28px;
+}
+
+.tab {
+    font-family: var(--ts-font-ui);
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--ts-text-soft);
+    background: transparent;
+    border: none;
+    padding: 10px 22px 12px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.12s, border-color 0.12s;
+}
+
+.tab:hover {
+    color: var(--ts-ink);
+}
+
+.tabActive {
+    composes: tab;
+    color: var(--ts-ink);
+    font-weight: 700;
+    border-bottom-color: var(--ts-teal);
+}
+
+/* ── Summary tab ─────────────────────────────────────────────── */
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.sectionTitle {
+    font-family: var(--ts-font-ui);
+    font-size: 19px;
+    font-weight: 800;
+    color: #102a43;
+    margin: 0;
+}
+
+.weakLink {
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    font-weight: 700;
+    color: #0e7c7b;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.12s;
+}
+
+.weakLink:hover {
+    opacity: 0.8;
+}
+
+.card {
+    background: var(--ts-surface);
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-xl);
+    padding: 28px 30px;
+    box-shadow: var(--ts-shadow-card);
+}
+
+/* ── History tab ─────────────────────────────────────────────── */
+
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filterLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ts-text-soft);
+    margin-right: 4px;
+}
+
+.filterPill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ts-text-soft);
+    background: #fff;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-pill);
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+}
+
+.filterPill:hover {
+    background: var(--ts-surface-subtle);
+}
+
+.filterPillActive {
+    background: var(--ts-navy);
+    color: #fff;
+    border-color: var(--ts-navy);
+    font-weight: 700;
+}
+
+.filterPillActive:hover {
+    background: var(--ts-navy);
+}
+
+.filterCount {
+    font-weight: 700;
+}
+
+/* ── Table ────────────────────────────────────────────────────── */
+
+.table {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) 112px 100px 74px 104px;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    overflow: hidden;
+    background: var(--ts-surface);
+}
+
+.tableHeader {
+    display: contents;
+}
+
+.tableHeaderCell {
+    background: #f7f9fb;
+    border-bottom: 1px solid #e1e6ec;
+    padding: 12px 18px;
+    font-family: var(--ts-font-ui);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8696a6;
+    white-space: nowrap;
+}
+
+.tableRow {
+    display: contents;
+    cursor: pointer;
+}
+
+.tableRow:hover > .tableCell {
+    background: var(--ts-surface-subtle);
+}
+
+.tableCell {
+    padding: 14px 18px;
+    border-bottom: 1px solid #eef1f5;
+    display: flex;
+    align-items: center;
+    transition: background 0.1s;
+}
+
+.cellName {
+    font-family: var(--ts-font-ui);
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #102a43;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cellType {
+    font-family: var(--ts-font-ui);
+    font-size: 12.5px;
+    color: #6b7a89;
+}
+
+.cellDate {
+    font-family: var(--ts-font-mono);
+    font-size: 12.5px;
+    color: #8696a6;
+}
+
+.cellPoints {
+    font-family: var(--ts-font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: #102a43;
+}
+
+/* ── Badges ───────────────────────────────────────────────────── */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 11px;
+    border-radius: 7px;
+    white-space: nowrap;
+}
+
+.badgePass {
+    color: #0e7c7b;
+    background: #e6fcfa;
+}
+
+.badgeFail {
+    color: #c0353a;
+    background: #fdeded;
+}
+
+/* ── Empty / Skeleton ────────────────────────────────────────── */
+
+.empty {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--ts-text-faint);
+    font-size: 14px;
+}
+
+.skeleton {
+    height: 78px;
+    background: linear-gradient(90deg, #f0f4f8 25%, #e7eaee 50%, #f0f4f8 75%);
+    background-size: 200% 100%;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}

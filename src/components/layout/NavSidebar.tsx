@@ -2,7 +2,7 @@ import { useTranslations } from 'use-intl';
 import TesteroLogo from '../ui/TesteroLogo';
 import styles from './NavSidebar.module.css';
 
-export type NavPage = 'training' | 'competencies' | 'certifications' | 'results' | 'profile' | 'settings';
+export type NavPage = 'training' | 'progress' | 'certifications' | 'profile' | 'settings';
 
 interface NavSidebarProps {
     activePage: NavPage;
@@ -25,8 +25,8 @@ const NAV_ITEMS: { id: string; labelKey: string; icon: React.ReactNode }[] = [
         ),
     },
     {
-        id: 'competencies',
-        labelKey: 'competencies',
+        id: 'progress',
+        labelKey: 'progress',
         icon: (
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="12" width="4" height="9" rx="1" />
@@ -42,16 +42,6 @@ const NAV_ITEMS: { id: string; labelKey: string; icon: React.ReactNode }[] = [
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="8" r="6" />
                 <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
-            </svg>
-        ),
-    },
-    {
-        id: 'results',
-        labelKey: 'results',
-        icon: (
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <path d="M7 7h10M7 12h10M7 17h6" />
             </svg>
         ),
     },

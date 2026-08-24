@@ -145,43 +145,23 @@ export default function CompetenciesTab({ token }: CompetenciesTabProps) {
     };
 
     if (loading) {
-        return (
-            <div className={styles.container}>
-                <h2 className={styles.title}>{t('title')}</h2>
-                <p className={styles.subtitle}>{t('loading')}</p>
-            </div>
-        );
+        return <p className={styles.subtitle}>{t('loading')}</p>;
     }
 
     if (topics.length === 0) {
-        return (
-            <div className={styles.container}>
-                <h2 className={styles.title}>{t('title')}</h2>
-                <p className={styles.subtitle}>
-                    {t('empty')}
-                </p>
-            </div>
-        );
+        return <p className={styles.subtitle}>{t('empty')}</p>;
     }
 
     return (
-        <div className={styles.container}>
-            <h2 className={styles.title}>{t('title')}</h2>
-            <p className={styles.subtitle}>
-                Padronanza media per argomento, dal tuo storico di verifiche e simulazioni. Espandi per i dettagli.
-            </p>
-
-            <div className={styles.card}>
-                {topics.map((topic) => (
-                    <TopicNode
-                        key={topic.id}
-                        topic={topic}
-                        expandedIds={expandedIds}
-                        onToggle={handleToggle}
-                    />
-                ))}
-
-            </div>
-        </div>
+        <>
+            {topics.map((topic) => (
+                <TopicNode
+                    key={topic.id}
+                    topic={topic}
+                    expandedIds={expandedIds}
+                    onToggle={handleToggle}
+                />
+            ))}
+        </>
     );
 }
