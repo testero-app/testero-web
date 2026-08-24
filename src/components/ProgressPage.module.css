@@ -79,6 +79,45 @@
     box-shadow: var(--ts-shadow-card);
 }
 
+/* ── Verifiche tab ──────────────────────────────────────────── */
+
+.verificheNote {
+    font-size: 13.5px;
+    color: var(--ts-text-soft);
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.verificheActiveLink {
+    font-family: var(--ts-font-ui);
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #0e7c7b;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.12s;
+}
+
+.verificheActiveLink:hover {
+    opacity: 0.8;
+}
+
+.verificheTable {
+    display: grid;
+    grid-template-columns: 3fr 0.85fr 0.85fr 0.7fr 1fr;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    overflow: hidden;
+    background: var(--ts-surface);
+}
+
+.badgeNotTaken {
+    color: #5f7183;
+    background: #eef1f5;
+}
+
 /* ── History tab ─────────────────────────────────────────────── */
 
 .filters {

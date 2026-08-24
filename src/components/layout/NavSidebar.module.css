@@ -117,6 +117,17 @@
     white-space: nowrap;
 }
 
+.badge {
+    font-family: var(--ts-font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: #06302c;
+    background: #14b8a6;
+    padding: 2px 7px;
+    border-radius: 6px;
+    margin-left: auto;
+}
+
 @media (pointer: coarse) {
     .navItem {
         min-height: 44px;

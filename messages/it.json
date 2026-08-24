@@ -36,7 +36,9 @@
         "sectionStudy": "STUDIO",
         "training": "Allenamento",
         "progress": "Progressi",
-        "certifications": "Certificazioni"
+        "certifications": "Simulazioni",
+        "sectionClasse": "CLASSE",
+        "verifiche": "Verifiche"
     },
     "shell": {
         "training": {
@@ -48,8 +50,12 @@
             "subtitle": "Competenze e storico delle prove"
         },
         "certifications": {
-            "title": "Certificazioni",
-            "subtitle": "Simulazioni di certificazione"
+            "title": "Simulazioni",
+            "subtitle": "Prove in stile esame di certificazione"
+        },
+        "verifiche": {
+            "title": "Verifiche",
+            "subtitle": "Prove assegnate alla tua classe"
         },
         "profile": {
             "title": "Profilo",
@@ -152,22 +158,31 @@
         "colType": "Tipo",
         "colDate": "Data",
         "colPoints": "Punti",
-        "colResult": "Esito"
+        "colResult": "Esito",
+        "tabVerifiche": "Verifiche",
+        "verificheNote": "Verifiche di classe già chiuse.",
+        "verificheActiveLink": "Le attive sono in Verifiche.",
+        "filterAll": "Tutte",
+        "filterRecover": "Da recuperare",
+        "colVerifica": "VERIFICA",
+        "colClasse": "CLASSE",
+        "colScadenza": "SCADENZA",
+        "notTaken": "Non svolta"
     },
     "results": {
         "filterAll": "Tutti",
-        "filterCertifications": "Certificazioni",
+        "filterCertifications": "Simulazioni",
         "filterTraining": "Allenamento",
         "filterLabel": "Filtra",
         "empty": "Nessun risultato disponibile.",
-        "tagCertification": "Certificazione",
+        "tagCertification": "Simulazione",
         "tagTraining": "Allenamento",
         "passed": "Superato",
         "notPassed": "Non superato"
     },
     "certifications": {
-        "banner": "La certificazione è un servizio <strong>della scuola</strong>: ne fissa contenuti, soglia ed esito. Testero la eroga come verifica a tempo e ne registra il risultato — non è un percorso a parte.",
-        "subtitle": "Preparati con simulazioni delle certificazioni ufficiali.",
+        "banner": "Una simulazione riproduce un esame di certificazione reale: stesso numero di domande, stessa durata, stessa soglia. Non rilascia alcun titolo — serve a capire se sei pronto.",
+        "subtitle": "Prove che replicano forma e durata degli esami di certificazione. A tempo: parte al primo click.",
         "empty": "Nessuna simulazione disponibile al momento."
     },
     "training": {
@@ -232,5 +247,18 @@
         "reqNum": "Un numero",
         "reqSymbol": "Un simbolo",
         "fieldsManagedBySchool": "Alcuni campi li gestisce la scuola"
+    },
+    "verifiche": {
+        "title": "Verifiche assegnate",
+        "subtitle": "Prove assegnate alla tua classe, con scadenza. Un solo tentativo, a tempo: parte al primo click.",
+        "banner": "Se la scadenza passa senza che tu abbia consegnato, la verifica risulta <strong>non svolta</strong>. Il risultato viene registrato nei tuoi progressi e condiviso con il docente.",
+        "daSvolgere": "Da svolgere",
+        "programmate": "Programmate",
+        "pastLink": "Verifiche passate →",
+        "expiresIn": "Scade tra {days} giorni · {date}",
+        "expiresToday": "Scade oggi alle 23:59",
+        "opensOn": "Si apre il {date}",
+        "empty": "Nessuna verifica assegnata al momento.",
+        "attempt": "1 tentativo"
     }
 }
