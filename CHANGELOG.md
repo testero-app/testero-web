@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.0](https://github.com/testero-app/testero-web/compare/v4.1.4...v4.2.0) (2026-08-24)
+
+
+### Features
+
+* add Verifiche section, rename Certificazioni to Simulazioni ([#203](https://github.com/testero-app/testero-web/issues/203)) ([d71be7b](https://github.com/testero-app/testero-web/commit/d71be7b8f7515ba2aac494337daf89283aa87492))
+* merge Competenze + I miei risultati into Progressi section ([#198](https://github.com/testero-app/testero-web/issues/198)) ([2aa7de4](https://github.com/testero-app/testero-web/commit/2aa7de48de129698e8faa8b7a21788243126f595))
+* persist session in localStorage for refresh survival ([#202](https://github.com/testero-app/testero-web/issues/202)) ([e80aa50](https://github.com/testero-app/testero-web/commit/e80aa50f3326b962e2b9578c7c9fabe5e0b09928))
+
+
+### Bug Fixes
+
+* **ui:** fine-tune progress table column proportions ([#201](https://github.com/testero-app/testero-web/issues/201)) ([5b6b6cc](https://github.com/testero-app/testero-web/commit/5b6b6ccf772062bebd36daada7f33c593d022acd))
+* **ui:** progress table takes full width ([#200](https://github.com/testero-app/testero-web/issues/200)) ([18b0da1](https://github.com/testero-app/testero-web/commit/18b0da1a53a00031700208c9c182482472de9657))
+
 ## [4.1.4](https://github.com/testero-app/testero-web/compare/v4.1.3...v4.1.4) (2026-08-24)
 
 
