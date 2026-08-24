@@ -1,0 +1,200 @@
+/* ── VerifichePage ─────────────────────────────────────────────── */
+
+.container {
+    width: 100%;
+}
+
+.header {
+    margin-bottom: 8px;
+}
+
+.title {
+    font-family: var(--ts-font-ui);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ts-ink);
+    margin: 0 0 6px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: var(--ts-text-soft);
+    margin: 0 0 20px;
+    line-height: 1.5;
+}
+
+/* ── Warning banner ──────────────────────────────────────────── */
+
+.banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 3px solid #f59e0b;
+    border-radius: var(--ts-r-lg);
+    padding: 18px 20px;
+    margin-bottom: 28px;
+}
+
+.bannerIcon {
+    flex: none;
+    color: #d97706;
+    margin-top: 2px;
+}
+
+.bannerText {
+    font-size: 14px;
+    color: var(--ts-text);
+    line-height: 1.5;
+}
+
+.bannerText strong {
+    font-weight: 700;
+}
+
+/* ── Section headers ─────────────────────────────────────────── */
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    margin-top: 4px;
+}
+
+.sectionTitle {
+    font-family: var(--ts-font-ui);
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ts-ink);
+    margin: 0;
+}
+
+.sectionCount {
+    font-weight: 400;
+    color: var(--ts-text-soft);
+    margin-left: 6px;
+}
+
+.pastLink {
+    font-family: var(--ts-font-ui);
+    font-size: 13px;
+    font-weight: 700;
+    color: #0e7c7b;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity 0.12s;
+}
+
+.pastLink:hover {
+    opacity: 0.8;
+}
+
+/* ── Cards ────────────────────────────────────────────────────── */
+
+.cardList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: var(--ts-surface);
+    border: 1px solid var(--ts-border);
+    border-left: 3px solid var(--ts-teal);
+    border-radius: var(--ts-r-lg);
+    padding: 18px 20px;
+    box-shadow: var(--ts-shadow-card);
+}
+
+.cardDimmed {
+    composes: card;
+    opacity: 0.55;
+    border-left-color: var(--ts-border);
+}
+
+.cardIcon {
+    width: 46px;
+    height: 46px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--ts-teal-bg);
+    color: var(--ts-teal-700);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--ts-font-mono);
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.cardBody {
+    flex: 1;
+    min-width: 0;
+}
+
+.cardTitle {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ts-ink);
+}
+
+.cardMeta {
+    font-size: 12.5px;
+    color: var(--ts-text-faint);
+    font-family: var(--ts-font-mono);
+    margin-top: 4px;
+}
+
+.startBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--ts-teal);
+    color: var(--ts-teal-ink);
+    font-family: var(--ts-font-ui);
+    font-weight: 800;
+    font-size: 14px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--ts-r-md);
+    cursor: pointer;
+    transition: filter 0.12s;
+    flex: none;
+}
+
+.startBtn:hover {
+    filter: brightness(1.05);
+}
+
+/* ── Empty state ─────────────────────────────────────────────── */
+
+.empty {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--ts-text-faint);
+    font-size: 14px;
+}
+
+/* ── Loading ─────────────────────────────────────────────────── */
+
+.skeleton {
+    height: 82px;
+    background: linear-gradient(90deg, #f0f4f8 25%, #e7eaee 50%, #f0f4f8 75%);
+    background-size: 200% 100%;
+    border: 1px solid var(--ts-border);
+    border-radius: var(--ts-r-lg);
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
