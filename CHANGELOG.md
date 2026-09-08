@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.3](https://github.com/testero-app/testero-web/compare/v4.2.2...v4.2.3) (2026-09-08)
+
+
+### Bug Fixes
+
+* **deps:** override nanoid and @humanfs/node to patched versions ([#221](https://github.com/testero-app/testero-web/issues/221)) ([c454ce4](https://github.com/testero-app/testero-web/commit/c454ce480c2de8f125401dba1ef452be6fd83b4e))
+
 ## [4.2.2](https://github.com/testero-app/testero-web/compare/v4.2.1...v4.2.2) (2026-08-25)
 
 
